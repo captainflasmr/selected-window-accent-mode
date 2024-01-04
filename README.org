@@ -1,0 +1,32 @@
+#+title: README selected-window-accent-mode
+#+options: toc:t author:t title:t
+#+startup: showall
+#+author: James Dyer
+
+* selected-window-accent-mode
+
+** intro
+
+This package provides functions to accentuate and reset the active window
+by changing its fringe, mode-line, and margins based on the 'highlight' face.
+
+** documentation
+
+To use this package, save the above code to a file called `fd-find.el` in your Emacs load path (e.g. `~/.emacs.d/lisp/`) and add the following line to your Emacs init file:
+
+#+begin_src elisp
+;; now use-package has the :vc keyword in use-package!
+(use-package selected-window-accent-mode
+  :defer t
+  :vc (:fetcher github :repo "captainflasmr/selected-window-accent-mode"))
+#+end_src
+
+For the moment just simply now:
+
+#+begin_src elisp
+(selected-window-accent-mode)
+#+end_src
+
+** roadmap
+
+** TODO
