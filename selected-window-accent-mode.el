@@ -1,9 +1,9 @@
-;; Author: Your Name <your.email@example.com>
-;; Maintainer: Your Name <your.email@example.com>
-;; Version: 1.0
+;; Author: James Dyer <captainflasmr@gmail.com>
+;; Maintainer: Your Name <captainflasmr@gmail.com>
+;; Version: 0.1
 ;; Package-Requires: ((emacs "24.1"))
 ;; Keywords: faces, windows
-;; URL: http://example.com/your-package-homepage
+;; URL: http://https://github.com/captainflasmr/selected-window-accent-mode
 
 ;;; Commentary:
 
