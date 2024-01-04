@@ -1,16 +1,16 @@
-#+title: README selected-window-accent-mode
-#+options: toc:t author:t title:t
+#+title: selected-window-accent-mode
+#+options: toc:nil author:t title:t num:t
 #+startup: showall
 #+author: James Dyer
 
-* selected-window-accent-mode
+#+TOC: headlines 2 local
 
-** intro
+* intro
 
 This package provides functions to accentuate and reset the active window
 by changing its fringe, mode-line, and margins based on the 'highlight' face.
 
-** documentation
+* documentation
 
 To use this package put the following into your emacs init file as now use-package has the :vc keyword!
 
@@ -26,9 +26,9 @@ and to activate:
 (selected-window-accent-mode)
 #+end_src
 
-** FIX
-*** TODO [#A] (selected-window-accent-mode) not working in init file needs to be manually run
-*** TODO [#B] when first built and installed we get the following errors
+* FIX
+** TODO [#A] (selected-window-accent-mode) not working in init file needs to be manually run
+** TODO [#B] when first built and installed we get the following errors
 
 #+begin_src
 In selected-window-accent:
@@ -42,8 +42,8 @@ selected-window-accent-mode.el:25:14: Warning: the function ‘color-darken-name
 selected-window-accent-mode.el:24:12: Warning: the function ‘color-desaturate-name’ is not known to be defined.
 #+end_src
 
-** roadmap
-*** TODO define custom variables for:
+* roadmap
+** TODO define custom variables for:
 - fringe width
 - fringe configuration:
   - all
@@ -51,4 +51,4 @@ selected-window-accent-mode.el:24:12: Warning: the function ‘color-desaturate-
   - right
   - modeline
   - fence
-*** TODO enable custom-accent-colour configuration
+** TODO enable custom-accent-colour configuration
