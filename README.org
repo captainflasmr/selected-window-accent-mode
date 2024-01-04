@@ -12,21 +12,43 @@ by changing its fringe, mode-line, and margins based on the 'highlight' face.
 
 ** documentation
 
-To use this package, save the above code to a file called `fd-find.el` in your Emacs load path (e.g. `~/.emacs.d/lisp/`) and add the following line to your Emacs init file:
+To use this package put the following into your emacs init file as now use-package has the :vc keyword!
 
 #+begin_src elisp
-;; now use-package has the :vc keyword in use-package!
 (use-package selected-window-accent-mode
   :defer t
   :vc (:fetcher github :repo "captainflasmr/selected-window-accent-mode"))
 #+end_src
 
-For the moment just simply now:
+and to activate:
 
 #+begin_src elisp
 (selected-window-accent-mode)
 #+end_src
 
-** roadmap
+** FIX
+*** TODO [#A] (selected-window-accent-mode) not working in init file needs to be manually run
+*** TODO [#B] when first built and installed we get the following errors
 
-** TODO
+#+begin_src
+In selected-window-accent:
+selected-window-accent-mode.el:18:2: Warning: docstring wider than 80 characters
+selected-window-accent-mode.el:35:24: Warning: reference to free variable ‘visual-fill-column-mode’
+selected-window-accent-mode.el:59:20: Warning: defcustom for ‘selected-window-accent-mode’ fails to specify containing group
+
+In end of data:
+selected-window-accent-mode.el:36:21: Warning: the function ‘visual-fill-column-mode’ is not known to be defined.
+selected-window-accent-mode.el:25:14: Warning: the function ‘color-darken-name’ is not known to be defined.
+selected-window-accent-mode.el:24:12: Warning: the function ‘color-desaturate-name’ is not known to be defined.
+#+end_src
+
+** roadmap
+*** TODO define custom variables for:
+- fringe width
+- fringe configuration:
+  - all
+  - left
+  - right
+  - modeline
+  - fence
+*** TODO enable custom-accent-colour configuration
