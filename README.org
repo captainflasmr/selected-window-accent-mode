@@ -26,10 +26,15 @@ and to activate:
 (selected-window-accent-mode)
 #+end_src
 
-* FIX
-** TODO [#A] (selected-window-accent-mode) not working in init file needs to be manually run
-** TODO [#B] when first built and installed we get the following errors
+* BUGS
+Fix these to get to a tagged Version 0.1
 
+In order of priority
+
+** TODO (selected-window-accent-mode) not working in init file needs to be manually run
+** TODO improve documentation
+** TODO careful with removing header-line on all windows for example magit commit window and probably some others may needs to add some logic depending on mode
+** TODO when first built and installed we get the following errors
 #+begin_src
 In selected-window-accent:
 selected-window-accent-mode.el:18:2: Warning: docstring wider than 80 characters
@@ -41,6 +46,7 @@ selected-window-accent-mode.el:36:21: Warning: the function ‘visual-fill-colum
 selected-window-accent-mode.el:25:14: Warning: the function ‘color-darken-name’ is not known to be defined.
 selected-window-accent-mode.el:24:12: Warning: the function ‘color-desaturate-name’ is not known to be defined.
 #+end_src
+** TODO am I happy with the name of this package?
 
 * roadmap
 ** TODO define custom variables for:
@@ -51,4 +57,6 @@ selected-window-accent-mode.el:24:12: Warning: the function ‘color-desaturate-
   - right
   - modeline
   - fence
+- saturation adjustment
+- darken adjustment
 ** TODO enable custom-accent-colour configuration
