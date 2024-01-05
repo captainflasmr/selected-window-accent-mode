@@ -19,25 +19,28 @@
   "Set accent colours for the selected window's fringes, mode line, and margins with optional CUSTOM-ACCENT-COLOUR."
   (interactive)
   (let* ((init-accent-colour (or custom-accent-colour (face-attribute 'highlight :background)))
-         (accent-offset (if (string-greaterp init-accent-colour "#888888888888") -10 -10))
+         (accent-offset (if (string-greaterp init-accent-colour "#888888888888") 0 0))
          (accent-bg-colour
           (color-desaturate-name
-            (color-darken-name init-accent-colour accent-offset) 20))
+            (color-darken-name init-accent-colour accent-offset) 0))
          (accent-fg-colour (if (string-greaterp accent-bg-colour "#888888888888") "#000000" "#ffffff")))
     (set-face-attribute 'fringe nil :background accent-bg-colour)
-    (set-face-attribute 'mode-line-active nil :background accent-bg-colour :foreground accent-fg-colour)
+    (set-face-attribute 'mode-line-active nil :background accent-bg-colour :foreground accent-fg-colour :height 20)
+    (set-face-attribute 'header-line nil :background accent-bg-colour :foreground accent-fg-colour :height 20)
     (walk-windows
      (lambda (window)
        (if (eq window (selected-window))
-           (progn
-             (set-window-margins window 1 0)
-             (with-selected-window window
-               (if (eq visual-fill-column-mode t)
-                   (visual-fill-column-mode t)))
-             (set-window-fringes window 10 10 t nil))
          (progn
-           (set-window-margins window 2 0)
+           (set-window-margins window 1 0)
            (with-selected-window window
+             (setq header-line-format '(""))
+             (if (eq visual-fill-column-mode t)
+               (visual-fill-column-mode t)))
+           (set-window-fringes window 6 6 t nil))
+         (progn
+           (set-window-margins window 1 0)
+           (with-selected-window window
+             (setq header-line-format nil)
              (if (eq visual-fill-column-mode t)
                  (visual-fill-column-mode t)))
            (set-window-fringes window 0 0 t nil))
@@ -49,6 +52,7 @@
   (interactive)
   (set-face-attribute 'fringe nil :background nil)
   (set-face-attribute 'mode-line-active nil :background nil :foreground nil)
+  (set-face-attribute 'header-line nil :background nil :foreground nil)
   (walk-windows
    (lambda (window)
      ;; Reset margins and fringes to default. Adjust as needed.
