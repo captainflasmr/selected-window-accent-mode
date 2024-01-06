@@ -7,203 +7,6 @@
 
 ;;; Commentary:
 
-;; 1 Summary
-;; =========
-
-;;   The Selected Window Accent Mode is an Emacs package designed to
-;;   visually distinguish the currently selected window by applying a
-;;   unique accent color to its fringes, mode line, header line, and
-;;   margins.
-
-
-;; 2 Installation
-;; ==============
-
-;; 2.1 use-package (emacs 29)
-;; ~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-;;   Put the following into your emacs init file:
-
-;;   ,----
-;;   | (use-package selected-window-accent-mode
-;;   |   :defer t
-;;   |   :vc (:fetcher github :repo "captainflasmr/selected-window-accent-mode"))
-;;   `----
-
-
-;; 2.2 use-package (MELPA)
-;; ~~~~~~~~~~~~~~~~~~~~~~~
-
-;;   - TODO
-
-
-;; 2.3 from source
-;; ~~~~~~~~~~~~~~~
-
-;;   Download the `.el` file and place it in your Emacs `load-path`. Then
-;;   either manually load it or add it to your configuration to be loaded
-;;   at startup.
-
-;;   ,----
-;;   | (require 'selected-window-accent-mode)
-;;   `----
-
-
-;; 3 Usage
-;; =======
-
-;;   Toggle the mode on and off interactively with `M-x
-;;   selected-window-accent-mode'
-
-
-;; 4 Examples
-;; ==========
-
-;; 4.1 Example 1
-;; ~~~~~~~~~~~~~
-
-;;   To enable the accent mode automatically upon starting Emacs, add the
-;;   following line to your `.emacs` or `init.el` file:
-
-;;   ,----
-;;   | (use-package selected-window-accent-mode
-;;   |   :load-path "~/repos/selected-window-accent-mode"
-;;   |   :custom
-;;   |   (selected-window-accent-custom-color "goldenrod")
-;;   |   (selected-window-accent-mode-style 'default))
-;;   |
-;;   | (selected-window-accent-mode 1)
-;;   `----
-
-;;   This will accent the modeline only of the selected window with the
-;;   `goldenrod' color.
-
-
-;; 4.2 Example 2
-;; ~~~~~~~~~~~~~
-
-;;   ,----
-;;   | (setq selected-window-accent-custom-color "#4179b2")
-;;   | (setq selected-window-accent-mode-style 'tiling)
-;;   | (selected-window-accent-mode 1)
-;;   `----
-
-;;   This will accent the full outline of the window with the color #4179b2
-
-
-;; 4.3 Example 3
-;; ~~~~~~~~~~~~~
-
-;;   ,----
-;;   | (setq selected-window-accent-custom-color nil)
-;;   | (setq selected-window-accent-mode-style 'tiling)
-;;   | (selected-window-accent-mode 1)
-;;   `----
-
-;;   This will accent the full outline of the window with the `highlight'
-;;   color taken from the current theme.
-
-
-;; 5 Customization
-;; ===============
-
-;;   Can be done through the customization interface:
-
-;;   *Selected Window Accent Group group:* Customization group for the
-;;      selected-window-accent package.
-
-;;   *Selected Window Accent Custom Color*
-
-;;   Custom accent color for the selected window. Set this variable to
-;;   change the accent color.
-
-;;   - None - color will be chose from the current `highlight' face
-;;   - Custom Color - input color name or Hex
-
-;;   *Selected Window Accent Mode*
-
-;;   - Boolean: Toggle
-
-;;     Non-nil if Selected-Window-Accent mode is enabled
-
-;;   *Selected Window Accent Mode Style*
-
-;;   Current style for accenting the selected window.
-
-;;   - tiling - window border highlighting
-;;   - default - just modeline highlighting
-
-
-;; 6 Minor Mode
-;; ============
-
-;;   The `selected-window-accent-mode' is a global minor mode that you can
-;;   toggle to enable or disable the accenting of the selected window. When
-;;   enabled, it distinguishes the selected window with a special accent
-;;   color.
-
-
-;; 7 Hooks
-;; =======
-
-;;   Two hooks are used to automatically update the window accents when the
-;;   window configuration or state changes:
-
-;;   - window-configuration-change-hook
-;;   - window-state-change-hook
-
-;;   These are added when the `selected-window-accent-mode' is enabled and
-;;   removed when disabled.
-
-
-;; 8 BUGS
-;; ======
-
-;;   Fix these to get to a tagged Version 0.1
-
-;;   In order of priority
-
-;;   - *DOING* improve documentation
-;;   - *TODO* header-line not shown on window split
-;;   - *TODO* careful with removing header-line on all windows for example
-;;      magit commit window and probably some others may needs to add some
-;;      logic depending on mode
-;;   - *TODO* add to MELPA
-
-
-;; 9 roadmap
-;; =========
-
-;; 9.1 add screenshot examples
-;; ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-;; 9.2 define more custom variables:
-;; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-;;   - accent thickness
-;;   - saturation adjustment
-;;   - darken adjustment
-;;   - hue adjustment
-
-
-;; 9.3 define which theme face attribute to use as the main accent color
-;; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-;;   Currently the default is to use the `highlight' face
-
-
-;; 9.4 accent presets
-;; ~~~~~~~~~~~~~~~~~~
-
-;;   - *DONE* `default' - /bottom/ - full height modeline
-;;   - *DOING* `tiling' - /top/right/bottom/left/ - typically a squished
-;;      modeline and header line to a general accent thickness to provide a
-;;      typical tiling window manager focussed outline experience
-;;   - *TODO* `subtle' - /left/
-;;   - *TODO* `full' - /top/right/bottom/left/ - full height modeline
-
-
 ;;; Code:
 
 (require 'color)
@@ -213,10 +16,15 @@
   "Customization group for the selected-window-accent package."
   :group 'convenience)
 
+(defcustom selected-window-accent-fringe-thickness 6
+  "The thickness of the fringes in pixels."
+  :type 'integer
+  :group 'selected-window-accent-group)
+
 (defcustom selected-window-accent-custom-color nil
   "Custom accent color for the selected window. Set this variable to change the accent color."
   :type '(choice (const :tag "None" nil)
-                 (color :tag "Custom Color"))
+           (color :tag "Custom Color"))
   :group 'selected-window-accent-group)
 
 (defcustom selected-window-accent-mode nil
@@ -227,8 +35,10 @@
 (defcustom selected-window-accent-mode-style 'default
   "Current style for accenting the selected window.
 Possible values are 'tiling, 'default."
-  :type '(choice (const :tag "Default Style" default)
-                 (const :tag "Tiling Style" tiling))
+  :type '(choice
+           (const :tag "Default Style" default)
+           (const :tag "Tiling Style" tiling)
+           (const :tag "Subtle Style" subtle))
   :group 'selected-window-accent-group)
 
 (defun selected-window-accent (&optional custom-accent-colour)
@@ -260,7 +70,17 @@ Possible values are 'tiling, 'default."
                 (setq header-line-format '(""))
                 (if (eq visual-fill-column-mode t)
                   (visual-fill-column-mode t)))
-              (set-window-fringes window 6 6 t nil)
+              (set-window-fringes window selected-window-accent-fringe-thickness
+                selected-window-accent-fringe-thickness t nil)
+              )
+            ('subtle
+              (set-window-margins window 1 0)
+              (with-selected-window window
+                (setq header-line-format nil)
+                (if (eq visual-fill-column-mode t)
+                  (visual-fill-column-mode t)))
+              (set-window-fringes window selected-window-accent-fringe-thickness
+                0 t nil)
               )
             ('default
               (with-selected-window window
@@ -272,6 +92,14 @@ Possible values are 'tiling, 'default."
             )
           (pcase selected-window-accent-mode-style
             ('tiling
+              (set-window-margins window 2 0)
+              (with-selected-window window
+                (setq header-line-format nil)
+                (if (eq visual-fill-column-mode t)
+                  (visual-fill-column-mode t)))
+              (set-window-fringes window 0 0 t nil)
+              )
+            ('subtle
               (set-window-margins window 2 0)
               (with-selected-window window
                 (setq header-line-format nil)
@@ -300,21 +128,21 @@ Possible values are 'tiling, 'default."
   (set-face-attribute 'mode-line-active nil :background nil :foreground nil)
   (set-face-attribute 'header-line nil :background nil :foreground nil)
   (walk-windows
-   (lambda (window)
-     ;; Reset margins and fringes to default. Adjust as needed.
-     (set-window-margins window 0 0)
-     (set-window-fringes window 0 0 t nil))
-   nil t))
+    (lambda (window)
+      ;; Reset margins and fringes to default. Adjust as needed.
+      (set-window-margins window 0 0)
+      (set-window-fringes window 0 0 t nil))
+    nil t))
 
 (define-minor-mode selected-window-accent-mode
   "Toggle selected window accenting."
   :global t
   :lighter " SWA"
   (if selected-window-accent-mode
-      (progn
-        (add-hook 'window-configuration-change-hook 'selected-window-accent)
-        (add-hook 'window-state-change-hook 'selected-window-accent)
-        (selected-window-accent))
+    (progn
+      (add-hook 'window-configuration-change-hook 'selected-window-accent)
+      (add-hook 'window-state-change-hook 'selected-window-accent)
+      (selected-window-accent))
     (progn
       (remove-hook 'window-configuration-change-hook 'selected-window-accent)
       (remove-hook 'window-state-change-hook 'selected-window-accent)
@@ -323,7 +151,7 @@ Possible values are 'tiling, 'default."
 (defun switch-selected-window-accent-style (style)
   "Switch the selected window accent style to STYLE and apply it."
   (interactive
-   (list (intern (completing-read "Choose accent style: " '(default tiling)))))
+    (list (intern (completing-read "Choose accent style: " '(default tiling subtle)))))
   (custom-set-variables '(selected-window-accent-mode-style style))
   (selected-window-accent))
 
