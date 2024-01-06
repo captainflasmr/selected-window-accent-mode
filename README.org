@@ -21,7 +21,6 @@ Put the following into your emacs init file:
 
 #+begin_src elisp
 (use-package selected-window-accent-mode
-  :defer t
   :vc (:fetcher github :repo "captainflasmr/selected-window-accent-mode"))
 #+end_src
 
