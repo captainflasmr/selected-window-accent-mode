@@ -7,15 +7,15 @@
 
 * Summary
 
+The Selected Window Accent Mode is an Emacs package designed to visually distinguish the currently selected window by applying a unique accent color to its fringes, mode line, header line, and margins.
+
 #+attr_org: :width 300px
 #+attr_html: :width 100%
 [[file:selected-window-accent-mode-00.jpg]]
 
-The Selected Window Accent Mode is an Emacs package designed to visually distinguish the currently selected window by applying a unique accent color to its fringes, mode line, header line, and margins.
-
 * Quick Start (emacs 29)
 
-Add the following to the emacs init for a tiling window manager feel:
+Add the following to the emacs init for a tiling window manager feel (see image above):
 
 #+begin_src elisp
 (use-package selected-window-accent-mode
@@ -208,8 +208,6 @@ In order of priority
 - *WATCHING* careful with removing header-line on all windows, for example magit commit window and probably some others may need to add some logic depending on mode.
 
 * roadmap
-
-** *DOING* add screenshot examples
 
 ** add to MELPA
 
