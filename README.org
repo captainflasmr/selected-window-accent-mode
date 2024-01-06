@@ -23,11 +23,13 @@ Put the following into your emacs init file:
 
 ** use-package (MELPA)
 
-- TODO
+- TODO (see roadmap below)
 
 ** from source
 
-Download the `.el` file and place it in your Emacs `load-path`. Then either manually load it or add it to your configuration to be loaded at startup.
+Download the `.el` file and place it in your Emacs `load-path`.
+
+Then either manually load it or add it to your configuration to be loaded at startup.
 
 #+begin_src elisp
 (require 'selected-window-accent-mode)
@@ -35,7 +37,16 @@ Download the `.el` file and place it in your Emacs `load-path`. Then either manu
 
 * Usage
 
-Toggle the mode on and off interactively with =M-x selected-window-accent-mode=
+Interactively Toggle the mode on and off =M-x selected-window-accent-mode=
+
+Interactively change the current style =M-x switch-selected-window-accent-style= which will present a =completing-read= selection in the minibuffer
+
+The styles that are currently supported :
+
+- default
+- tiling
+
+see *roadmap* below for a description.
 
 * Examples
 
@@ -53,23 +64,25 @@ To enable the accent mode automatically upon starting Emacs, add the following l
 (selected-window-accent-mode 1)
 #+end_src
 
-This will accent the modeline only of the selected window with the =goldenrod= color.
+This will accent the modeline only for the selected window with the =goldenrod= color.
 
 ** Example 2
 
 #+begin_src elisp
 (setq selected-window-accent-custom-color "#4179b2")
 (setq selected-window-accent-mode-style 'tiling)
+
 (selected-window-accent-mode 1)
 #+end_src
 
-This will accent the full outline of the window with the color #4179b2
+This will accent the full outline of the window with the color #4179b2 more akin to a tiling window manager.
 
 ** Example 3
 
 #+begin_src elisp
 (setq selected-window-accent-custom-color nil)
 (setq selected-window-accent-mode-style 'tiling)
+
 (selected-window-accent-mode 1)
 #+end_src
 
@@ -86,12 +99,12 @@ Can be done through the customization interface:
 
    Custom accent color for the selected window. Set this variable to change the accent color.
 
-   - None - color will be chose from the current =highlight= face
-   - Custom Color - input color name or Hex
+   - =None= - color will be using the current =highlight= face
+   - =Custom Color= - input color name or Hex
 
 *Selected Window Accent Mode*
 
- - Boolean: Toggle
+ - =Boolean=: Toggle
 
    Non-nil if Selected-Window-Accent mode is enabled
 
@@ -99,12 +112,14 @@ Can be done through the customization interface:
 
    Current style for accenting the selected window.
 
-   - tiling - window border highlighting
-   - default - just modeline highlighting
+   - =default= - just modeline highlighting
+   - =tiling= - window border highlighting
 
 * Minor Mode
 
-The =selected-window-accent-mode= is a global minor mode that you can toggle to enable or disable the accenting of the selected window. When enabled, it distinguishes the selected window with a special accent color.
+The =selected-window-accent-mode= is a global minor mode that you can toggle to enable or disable the accenting of the selected window.
+
+When enabled, it distinguishes the selected window with a special accent color.
 
 * Hooks
 
@@ -117,18 +132,23 @@ These are added when the =selected-window-accent-mode= is enabled and removed wh
 
 * BUGS
 
-Fix these to get to a tagged Version 0.1
+The current version is pretty rough and probably definitely pre-alpha.
+
+---
+
+Fix these to get to a tagged Version 0.1.
 
 In order of priority
 
-- *DOING* improve documentation
 - *TODO* header-line not shown on window split
-- *TODO* careful with removing header-line on all windows for example magit commit window and probably some others may needs to add some logic depending on mode
-- *TODO* add to MELPA
+- *TODO* excess selected-window disruption in header-line
+- *WATCHING* careful with removing header-line on all windows, for example magit commit window and probably some others may need to add some logic depending on mode.
 
 * roadmap
 
 ** add screenshot examples
+
+** add to MELPA
 
 ** define more custom variables:
 
@@ -141,9 +161,9 @@ In order of priority
 
 Currently the default is to use the =highlight= face
 
-** accent presets
+** implement accent styles
 
 - *DONE* =default= - /bottom/ - full height modeline
 - *DOING* =tiling= - /top/right/bottom/left/ - typically a squished modeline and header line to a general accent thickness to provide a typical tiling window manager focussed outline experience
 - *TODO* =subtle= - /left/
-- *TODO* =full= - /top/right/bottom/left/ - full height modeline
+- *TODO* =full= - /top/right/bottom/left/ - full height modeline (currently implemented as =tiling= but will be moved when tiling is more "tiling")
