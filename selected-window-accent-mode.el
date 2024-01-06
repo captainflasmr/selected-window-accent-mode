@@ -7,8 +7,202 @@
 
 ;;; Commentary:
 
-;; This package provides functions to accentuate and reset the active window
-;; by changing its fringe, mode-line, and margins based on the 'highlight' face.
+;; 1 Summary
+;; =========
+
+;;   The Selected Window Accent Mode is an Emacs package designed to
+;;   visually distinguish the currently selected window by applying a
+;;   unique accent color to its fringes, mode line, header line, and
+;;   margins.
+
+
+;; 2 Installation
+;; ==============
+
+;; 2.1 use-package (emacs 29)
+;; ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+;;   Put the following into your emacs init file:
+
+;;   ,----
+;;   | (use-package selected-window-accent-mode
+;;   |   :defer t
+;;   |   :vc (:fetcher github :repo "captainflasmr/selected-window-accent-mode"))
+;;   `----
+
+
+;; 2.2 use-package (MELPA)
+;; ~~~~~~~~~~~~~~~~~~~~~~~
+
+;;   - TODO
+
+
+;; 2.3 from source
+;; ~~~~~~~~~~~~~~~
+
+;;   Download the `.el` file and place it in your Emacs `load-path`. Then
+;;   either manually load it or add it to your configuration to be loaded
+;;   at startup.
+
+;;   ,----
+;;   | (require 'selected-window-accent-mode)
+;;   `----
+
+
+;; 3 Usage
+;; =======
+
+;;   Toggle the mode on and off interactively with `M-x
+;;   selected-window-accent-mode'
+
+
+;; 4 Examples
+;; ==========
+
+;; 4.1 Example 1
+;; ~~~~~~~~~~~~~
+
+;;   To enable the accent mode automatically upon starting Emacs, add the
+;;   following line to your `.emacs` or `init.el` file:
+
+;;   ,----
+;;   | (use-package selected-window-accent-mode
+;;   |   :load-path "~/repos/selected-window-accent-mode"
+;;   |   :custom
+;;   |   (selected-window-accent-custom-color "goldenrod")
+;;   |   (selected-window-accent-mode-style 'default))
+;;   |
+;;   | (selected-window-accent-mode 1)
+;;   `----
+
+;;   This will accent the modeline only of the selected window with the
+;;   `goldenrod' color.
+
+
+;; 4.2 Example 2
+;; ~~~~~~~~~~~~~
+
+;;   ,----
+;;   | (setq selected-window-accent-custom-color "#4179b2")
+;;   | (setq selected-window-accent-mode-style 'tiling)
+;;   | (selected-window-accent-mode 1)
+;;   `----
+
+;;   This will accent the full outline of the window with the color #4179b2
+
+
+;; 4.3 Example 3
+;; ~~~~~~~~~~~~~
+
+;;   ,----
+;;   | (setq selected-window-accent-custom-color nil)
+;;   | (setq selected-window-accent-mode-style 'tiling)
+;;   | (selected-window-accent-mode 1)
+;;   `----
+
+;;   This will accent the full outline of the window with the `highlight'
+;;   color taken from the current theme.
+
+
+;; 5 Customization
+;; ===============
+
+;;   Can be done through the customization interface:
+
+;;   *Selected Window Accent Group group:* Customization group for the
+;;      selected-window-accent package.
+
+;;   *Selected Window Accent Custom Color*
+
+;;   Custom accent color for the selected window. Set this variable to
+;;   change the accent color.
+
+;;   - None - color will be chose from the current `highlight' face
+;;   - Custom Color - input color name or Hex
+
+;;   *Selected Window Accent Mode*
+
+;;   - Boolean: Toggle
+
+;;     Non-nil if Selected-Window-Accent mode is enabled
+
+;;   *Selected Window Accent Mode Style*
+
+;;   Current style for accenting the selected window.
+
+;;   - tiling - window border highlighting
+;;   - default - just modeline highlighting
+
+
+;; 6 Minor Mode
+;; ============
+
+;;   The `selected-window-accent-mode' is a global minor mode that you can
+;;   toggle to enable or disable the accenting of the selected window. When
+;;   enabled, it distinguishes the selected window with a special accent
+;;   color.
+
+
+;; 7 Hooks
+;; =======
+
+;;   Two hooks are used to automatically update the window accents when the
+;;   window configuration or state changes:
+
+;;   - window-configuration-change-hook
+;;   - window-state-change-hook
+
+;;   These are added when the `selected-window-accent-mode' is enabled and
+;;   removed when disabled.
+
+
+;; 8 BUGS
+;; ======
+
+;;   Fix these to get to a tagged Version 0.1
+
+;;   In order of priority
+
+;;   - *DOING* improve documentation
+;;   - *TODO* header-line not shown on window split
+;;   - *TODO* careful with removing header-line on all windows for example
+;;      magit commit window and probably some others may needs to add some
+;;      logic depending on mode
+;;   - *TODO* add to MELPA
+
+
+;; 9 roadmap
+;; =========
+
+;; 9.1 add screenshot examples
+;; ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+;; 9.2 define more custom variables:
+;; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+;;   - accent thickness
+;;   - saturation adjustment
+;;   - darken adjustment
+;;   - hue adjustment
+
+
+;; 9.3 define which theme face attribute to use as the main accent color
+;; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+;;   Currently the default is to use the `highlight' face
+
+
+;; 9.4 accent presets
+;; ~~~~~~~~~~~~~~~~~~
+
+;;   - *DONE* `default' - /bottom/ - full height modeline
+;;   - *DOING* `tiling' - /top/right/bottom/left/ - typically a squished
+;;      modeline and header line to a general accent thickness to provide a
+;;      typical tiling window manager focussed outline experience
+;;   - *TODO* `subtle' - /left/
+;;   - *TODO* `full' - /top/right/bottom/left/ - full height modeline
+
 
 ;;; Code:
 
