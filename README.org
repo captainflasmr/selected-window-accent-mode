@@ -88,7 +88,7 @@ To enable the accent mode automatically upon starting Emacs, add the following l
 
 #+begin_src elisp
 (use-package selected-window-accent-mode
-  :load-path "~/repos/selected-window-accent-mode"
+  :vc (:fetcher github :repo "captainflasmr/selected-window-accent-mode")
   :custom
   (selected-window-accent-custom-color "goldenrod")
   (selected-window-accent-mode-style 'default))
