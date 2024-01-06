@@ -9,7 +9,7 @@
 
 #+attr_org: :width 300px
 #+attr_html: :width 100%
-[[file:selected-window-accent-mode-01.jpg]]
+[[file:selected-window-accent-mode-00.jpg]]
 
 The Selected Window Accent Mode is an Emacs package designed to visually distinguish the currently selected window by applying a unique accent color to its fringes, mode line, header line, and margins.
 
@@ -56,6 +56,10 @@ see *roadmap* below for a description.
 
 ** Example 1
 
+#+attr_org: :width 300px
+#+attr_html: :width 100%
+[[file:selected-window-accent-mode-01.jpg]]
+
 To enable the accent mode automatically upon starting Emacs, add the following line to your `.emacs` or `init.el` file:
 
 #+begin_src elisp
@@ -72,6 +76,10 @@ This will accent the modeline only for the selected window with the =goldenrod= 
 
 ** Example 2
 
+#+attr_org: :width 300px
+#+attr_html: :width 100%
+[[file:selected-window-accent-mode-02.jpg]]
+
 #+begin_src elisp
 (setq selected-window-accent-custom-color "#4179b2")
 (setq selected-window-accent-mode-style 'tiling)
@@ -82,6 +90,10 @@ This will accent the modeline only for the selected window with the =goldenrod= 
 This will accent the full outline of the window with the color #4179b2 more akin to a tiling window manager.
 
 ** Example 3
+
+#+attr_org: :width 300px
+#+attr_html: :width 100%
+[[file:selected-window-accent-mode-03.jpg]]
 
 #+begin_src elisp
 (setq selected-window-accent-custom-color nil)
