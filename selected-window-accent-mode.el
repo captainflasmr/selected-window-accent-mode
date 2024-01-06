@@ -12,40 +12,69 @@
 
 ;;; Code:
 
+
 (defvar selected-window-accent-mode nil
   "Mode variable for `selected-window-accent-mode'.")
+
+(defvar selected-window-accent-mode-style 'default
+  "Current style for accenting the selected window. Possible values are 'tiling, 'simple, 'subtle, 'default.")
 
 (defun selected-window-accent (&optional custom-accent-colour)
   "Set accent colours for the selected window's fringes, mode line, and margins with optional CUSTOM-ACCENT-COLOUR."
   (interactive)
   (let* ((init-accent-colour (or custom-accent-colour (face-attribute 'highlight :background)))
-         (accent-offset (if (string-greaterp init-accent-colour "#888888888888") 0 0))
          (accent-bg-colour
           (color-desaturate-name
-            (color-darken-name init-accent-colour accent-offset) 0))
+           (color-darken-name init-accent-colour 0) 0))
          (accent-fg-colour (if (string-greaterp accent-bg-colour "#888888888888") "#000000" "#ffffff")))
+
+    ;; set up the colour
     (set-face-attribute 'fringe nil :background accent-bg-colour)
-    (set-face-attribute 'mode-line-active nil :background accent-bg-colour :foreground accent-fg-colour :height 20)
-    (set-face-attribute 'header-line nil :background accent-bg-colour :foreground accent-fg-colour :height 20)
+    (set-face-attribute 'mode-line-active nil :background accent-bg-colour)
+    (set-face-attribute 'header-line nil :background accent-bg-colour)
+
     (walk-windows
-     (lambda (window)
-       (if (eq window (selected-window))
-         (progn
-           (set-window-margins window 1 0)
-           (with-selected-window window
-             (setq header-line-format '(""))
-             (if (eq visual-fill-column-mode t)
-               (visual-fill-column-mode t)))
-           (set-window-fringes window 6 6 t nil))
-         (progn
-           (set-window-margins window 1 0)
-           (with-selected-window window
-             (setq header-line-format nil)
-             (if (eq visual-fill-column-mode t)
-                 (visual-fill-column-mode t)))
-           (set-window-fringes window 0 0 t nil))
-         ))
-     nil t)))
+      (lambda (window)
+        (if (eq window (selected-window))
+          (pcase selected-window-accent-mode-style
+            ('default
+              (set-window-margins window 1 0)
+              (with-selected-window window
+                (setq header-line-format '(""))
+                (if (eq visual-fill-column-mode t)
+                  (visual-fill-column-mode t)))
+              (set-window-fringes window 6 6 t nil)
+              )
+            ('simple
+              (with-selected-window window
+                (setq header-line-format nil)
+                (if (eq visual-fill-column-mode t)
+                  (visual-fill-column-mode t)))
+              (set-window-fringes window 0 0 t nil)
+              )
+            )
+          (pcase selected-window-accent-mode-style
+            ('default
+              (set-window-margins window 2 0)
+              (with-selected-window window
+                (setq header-line-format nil)
+                (if (eq visual-fill-column-mode t)
+                  (visual-fill-column-mode t)))
+              (set-window-fringes window 0 0 t nil)
+              )
+            ('simple
+              (with-selected-window window
+                (setq header-line-format nil)
+                (if (eq visual-fill-column-mode t)
+                  (visual-fill-column-mode t)))
+              (set-window-fringes window 0 0 t nil)
+              )
+            )
+          )
+        )
+      nil t)
+    )
+  )
 
 (defun reset-window-accent ()
   "Reset the accent colours for all windows to their defaults."
@@ -73,6 +102,13 @@
       (remove-hook 'window-configuration-change-hook 'selected-window-accent)
       (remove-hook 'window-state-change-hook 'selected-window-accent)
       (reset-window-accent))))
+
+(defun switch-selected-window-accent-style (style)
+  "Switch the selected window accent style to STYLE and apply it."
+  (interactive
+   (list (intern (completing-read "Choose accent style: " '(tiling simple subtle default)))))
+  (setq selected-window-accent-mode-style style)
+  (selected-window-accent))
 
 (provide 'selected-window-accent-mode)
 
