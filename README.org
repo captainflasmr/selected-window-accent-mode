@@ -1,18 +1,19 @@
 #+title: selected-window-accent-mode
+#+author: James Dyer
 #+options: toc:nil author:t title:t num:t
 #+startup: showall
-#+author: James Dyer
 
 #+TOC: headlines 2 local
 
-* intro
+* Summary
 
-This package provides functions to accentuate and reset the active window
-by changing its fringe, mode-line, and margins based on the 'highlight' face.
+The Selected Window Accent Mode is an Emacs package designed to visually distinguish the currently selected window by applying a unique accent colour to its fringes, mode line, header line, and margins.
 
-* documentation
+* Installation
 
-To use this package put the following into your emacs init file as now use-package has the :vc keyword!
+** use-package
+
+Put the following into your emacs init file as now use-package has the :vc keyword!
 
 #+begin_src elisp
 (use-package selected-window-accent-mode
@@ -20,13 +21,96 @@ To use this package put the following into your emacs init file as now use-packa
   :vc (:fetcher github :repo "captainflasmr/selected-window-accent-mode"))
 #+end_src
 
-and to activate:
+** from source
+
+Download the `.el` file and place it in your Emacs `load-path`. Then either manually load it or add it to your configuration to be loaded at startup.
 
 #+begin_src elisp
-(selected-window-accent-mode)
+(require 'selected-window-accent-mode)
 #+end_src
 
+* Usage
+
+Toggle the mode on and off with =M-x selected-window-accent-mode=
+
+* Functions
+
+** selected-window-accent
+
+This is the main function that applies the accent color to the selected window.
+
+#+begin_src elisp
+(defun selected-window-accent (&optional custom-accent-colour)
+#+end_src
+
+- *custom-accent-colour*: An optional parameter to specify a custom accent color as a string (e.g., `"#ff6699"`). If not provided, it defaults to the background color of the *highlight* face attribute.
+
+** reset-window-accent
+
+Resets all windows to their default accent colors.
+
+#+begin_src elisp
+(defun reset-window-accent ()
+#+end_src
+
+* Variables
+
+** selected-window-accent-mode
+
+A mode variable for the =selected-window-accent-mode=. Set to `nil` to disable by default.
+
+#+begin_src elisp
+(defvar selected-window-accent-mode nil
+  "Mode variable for `selected-window-accent-mode'.")
+#+end_src
+
+* Minor Mode
+
+#+begin_src elisp
+(define-minor-mode selected-window-accent-mode
+...
+)
+#+end_src
+
+The =selected-window-accent-mode= is a global minor mode that you can toggle to enable or disable the accenting of the selected window. When enabled, it distinguishes the selected window with a special accent color.
+
+* Hooks
+
+Two hooks are used to automatically update the window accents when the window configuration or state changes:
+
+- window-configuration-change-hook
+- window-state-change-hook
+
+These are added when the =selected-window-accent-mode= is enabled and removed when disabled.
+
+* Customization
+
+** Accent Color
+
+You can invoke =selected-window-accent= with a custom color if you want to temporarily set a different accent color:
+
+#+begin_src elisp
+(selected-window-accent "#ff6699")
+#+end_src
+
+You can also modify the =selected-window-accent= function to adjust the accent algorithm according to your needs.
+
+** Fringes, Mode Line, and Header Line
+
+If you want different properties for the fringes, mode line, header line, or the margins, you can directly edit the =set-face-attribute= and =set-window-margins= calls within the =selected-window-accent= and =reset-window-accent= functions respectively.
+
+* Example
+
+To enable the accent mode automatically upon starting Emacs, add the following line to your `.emacs` or `init.el` file:
+
+#+begin_src elisp
+(selected-window-accent-mode 1)
+#+end_src
+
+This will activate the selected window accenting each time Emacs starts.
+
 * BUGS
+
 Fix these to get to a tagged Version 0.1
 
 In order of priority
