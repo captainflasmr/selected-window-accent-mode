@@ -11,15 +11,19 @@ The Selected Window Accent Mode is an Emacs package designed to visually disting
 
 * Installation
 
-** use-package
+** use-package (emacs 29)
 
-Put the following into your emacs init file as now use-package has the :vc keyword!
+Put the following into your emacs init file:
 
 #+begin_src elisp
 (use-package selected-window-accent-mode
   :defer t
   :vc (:fetcher github :repo "captainflasmr/selected-window-accent-mode"))
 #+end_src
+
+** use-package (MELPA)
+
+- TODO
 
 ** from source
 
@@ -32,6 +36,32 @@ Download the `.el` file and place it in your Emacs `load-path`. Then either manu
 * Usage
 
 Toggle the mode on and off with =M-x selected-window-accent-mode=
+
+* Customization
+
+** Accent Color
+
+You can invoke =selected-window-accent= with a custom color if you want to temporarily set a different accent color:
+
+#+begin_src elisp
+(selected-window-accent "#ff6699")
+#+end_src
+
+You can also modify the =selected-window-accent= function to adjust the accent algorithm according to your needs.
+
+** Fringes, Mode Line, and Header Line
+
+If you want different properties for the fringes, mode line, header line, or the margins, you can directly edit the =set-face-attribute= and =set-window-margins= calls within the =selected-window-accent= and =reset-window-accent= functions respectively.
+
+* Minor Mode
+
+#+begin_src elisp
+(define-minor-mode selected-window-accent-mode
+...
+)
+#+end_src
+
+The =selected-window-accent-mode= is a global minor mode that you can toggle to enable or disable the accenting of the selected window. When enabled, it distinguishes the selected window with a special accent color.
 
 * Functions
 
@@ -64,16 +94,6 @@ A mode variable for the =selected-window-accent-mode=. Set to `nil` to disable b
   "Mode variable for `selected-window-accent-mode'.")
 #+end_src
 
-* Minor Mode
-
-#+begin_src elisp
-(define-minor-mode selected-window-accent-mode
-...
-)
-#+end_src
-
-The =selected-window-accent-mode= is a global minor mode that you can toggle to enable or disable the accenting of the selected window. When enabled, it distinguishes the selected window with a special accent color.
-
 * Hooks
 
 Two hooks are used to automatically update the window accents when the window configuration or state changes:
@@ -82,22 +102,6 @@ Two hooks are used to automatically update the window accents when the window co
 - window-state-change-hook
 
 These are added when the =selected-window-accent-mode= is enabled and removed when disabled.
-
-* Customization
-
-** Accent Color
-
-You can invoke =selected-window-accent= with a custom color if you want to temporarily set a different accent color:
-
-#+begin_src elisp
-(selected-window-accent "#ff6699")
-#+end_src
-
-You can also modify the =selected-window-accent= function to adjust the accent algorithm according to your needs.
-
-** Fringes, Mode Line, and Header Line
-
-If you want different properties for the fringes, mode line, header line, or the margins, you can directly edit the =set-face-attribute= and =set-window-margins= calls within the =selected-window-accent= and =reset-window-accent= functions respectively.
 
 * Example
 
@@ -115,8 +119,8 @@ Fix these to get to a tagged Version 0.1
 
 In order of priority
 
-- TODO (selected-window-accent-mode) not working in init file needs to be manually run
-- TODO improve documentation
+- TODO (selected-window-accent-mode 1) not working in init file needs to be manually run
+- DOING improve documentation
 - TODO careful with removing header-line on all windows for example magit commit window and probably some others may needs to add some logic depending on mode
 - TODO when first built and installed we get the following errors
 #+begin_src
@@ -131,11 +135,15 @@ selected-window-accent-mode.el:25:14: Warning: the function ‘color-darken-name
 selected-window-accent-mode.el:24:12: Warning: the function ‘color-desaturate-name’ is not known to be defined.
 #+end_src
 - TODO am I happy with the name of this package?
+- TODO add to MELPA
 
 * roadmap
-** TODO define custom variables for:
-- fringe width
-- fringe configuration:
+
+** TODO define custom variables:
+
+- accent thickness
+- face name colour
+- accent configuration (to set individually)
   - all
   - left
   - right
@@ -143,4 +151,17 @@ selected-window-accent-mode.el:24:12: Warning: the function ‘color-desaturate-
   - fence
 - saturation adjustment
 - darken adjustment
-** TODO enable custom-accent-colour configuration
+- hue adjustment
+
+** TODO define your own colour
+
+Currently the default is to use the =highlight= face
+
+** TODO accent presents
+
+- =tiling= - :top:right:bottom:left: - accent thickness modeline - to provide a tiling window complete outline experience
+- =simple= - :bottom: - full height modeline
+- =subtle= - :left:
+- =default= - :top:right:bottom:left: - full height modeline
+
+  by default this package when enabled is currently set effectively to =tiling= (mainly because I currently use a tiling window manager)
