@@ -12,6 +12,9 @@
 
 ;;; Code:
 
+(require 'color)
+(require 'visual-fill-column)
+
 (defgroup selected-window-accent-group nil
   "Customization group for the selected-window-accent package."
   :group 'convenience)
@@ -22,8 +25,10 @@
                  (color :tag "Custom Color"))
   :group 'selected-window-accent-group)
 
-(defvar selected-window-accent-mode nil
-  "Mode variable for `selected-window-accent-mode'.")
+(defcustom selected-window-accent-mode nil
+  "Mode variable for `selected-window-accent-mode'."
+  :type 'boolean
+  :group 'selected-window-accent-group)
 
 (defcustom selected-window-accent-mode-style 'default
   "Current style for accenting the selected window.
