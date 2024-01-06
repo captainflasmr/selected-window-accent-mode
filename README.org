@@ -52,6 +52,15 @@ The styles that are currently supported :
 
 see *roadmap* below for a description.
 
+Typically I have bound these two interactive functions to a new keymap where I keep all my emacs visual change functions.
+
+#+begin_src elisp
+(defvar my-win-keymap (make-sparse-keymap))
+(global-set-key (kbd "M-o") my-win-keymap)
+(define-key my-win-keymap (kbd "a") 'selected-window-accent-mode)
+(define-key my-win-keymap (kbd "y") 'switch-selected-window-accent-style)
+#+end_src
+
 * Examples
 
 ** Example 1 - Default / custom color
