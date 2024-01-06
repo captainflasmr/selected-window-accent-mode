@@ -57,17 +57,21 @@ This will accent the modeline only of the selected window with the =goldenrod= c
 
 ** Example 2
 
+#+begin_src elisp
 (setq selected-window-accent-custom-color "#4179b2")
 (setq selected-window-accent-mode-style 'tiling)
 (selected-window-accent-mode 1)
+#+end_src
 
 This will accent the full outline of the window with the color #4179b2
 
 ** Example 3
 
+#+begin_src elisp
 (setq selected-window-accent-custom-color nil)
 (setq selected-window-accent-mode-style 'tiling)
 (selected-window-accent-mode 1)
+#+end_src
 
 This will accent the full outline of the window with the =highlight= color taken from the current theme.
 
@@ -78,13 +82,11 @@ Can be done through the customization interface:
 *Selected Window Accent Group group:*
    Customization group for the selected-window-accent package.
 
----
-
 *Selected Window Accent Custom Color*
 
    Custom accent color for the selected window. Set this variable to change the accent color.
 
-   - None - color will be chose from the current =highlihgt= face
+   - None - color will be chose from the current =highlight= face
    - Custom Color - input color name or Hex
 
 *Selected Window Accent Mode*
@@ -126,20 +128,22 @@ In order of priority
 
 * roadmap
 
-** *TODO* define more custom variables:
+** add screenshot examples
+
+** define more custom variables:
 
 - accent thickness
 - saturation adjustment
 - darken adjustment
 - hue adjustment
 
-** *TODO* define which theme face attribute to use as the main accent color
+** define which theme face attribute to use as the main accent color
 
 Currently the default is to use the =highlight= face
 
-** *TODO* accent presets
+** accent presets
 
-- *DONE* =default= - :bottom: - full height modeline
-- *DOING* =tiling= - :top:right:bottom:left: - typically a squished modeline and header line to a general accent thickness to provide a typical tiling window manager focussed outline experience
+- *DONE* =default= - /bottom/ - full height modeline
+- *DOING* =tiling= - /top/right/bottom/left/ - typically a squished modeline and header line to a general accent thickness to provide a typical tiling window manager focussed outline experience
 - *TODO* =subtle= - :left:
 - *TODO* =full= - :top:right:bottom:left: - full height modeline
