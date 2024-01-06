@@ -108,6 +108,10 @@ This will accent the full outline of the window with the =highlight= color taken
 
 ** Example 4 - Subtle / custom fringe thickness (thick)
 
+#+attr_org: :width 300px
+#+attr_html: :width 100%
+[[file:selected-window-accent-mode-04.jpg]]
+
 #+begin_src elisp
 (setq selected-window-accent-fringe-thickness 40)
 (setq selected-window-accent-custom-color nil)
