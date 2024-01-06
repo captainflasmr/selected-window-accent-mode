@@ -122,6 +122,7 @@ In order of priority
 - TODO (selected-window-accent-mode 1) not working in init file needs to be manually run
 - DOING improve documentation
 - TODO careful with removing header-line on all windows for example magit commit window and probably some others may needs to add some logic depending on mode
+- TODO header-line not shown on window split
 - TODO when first built and installed we get the following errors
 #+begin_src
 In selected-window-accent:
