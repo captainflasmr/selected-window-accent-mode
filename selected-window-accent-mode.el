@@ -22,7 +22,7 @@
   :group 'selected-window-accent-group)
 
 (defcustom selected-window-accent-custom-color nil
-  "Custom accent color for the selected window. Set this variable to change the accent color."
+  "Custom accent color for the selected window."
   :type '(choice (const :tag "None" nil)
            (color :tag "Custom Color"))
   :group 'selected-window-accent-group)
@@ -34,7 +34,7 @@
 
 (defcustom selected-window-accent-mode-style 'default
   "Current style for accenting the selected window.
-Possible values are 'tiling, 'default."
+Possible values are tiling default."
   :type '(choice
            (const :tag "Default Style" default)
            (const :tag "Tiling Style" tiling)
@@ -42,7 +42,7 @@ Possible values are 'tiling, 'default."
   :group 'selected-window-accent-group)
 
 (defun selected-window-accent (&optional custom-accent-colour)
-  "Set accent colours for the selected window's fringes, mode line, and margins with optional CUSTOM-ACCENT-COLOUR."
+  "Set accent colours for the selected window fringes, mode line, and margins"
   (interactive "P")
 
   (when custom-accent-colour
