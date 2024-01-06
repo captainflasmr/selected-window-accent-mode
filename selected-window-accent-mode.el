@@ -12,21 +12,39 @@
 
 ;;; Code:
 
+(defgroup selected-window-accent-group nil
+  "Customization group for the selected-window-accent package."
+  :group 'convenience)
+
+(defcustom selected-window-accent-custom-color nil
+  "Custom accent color for the selected window. Set this variable to change the accent color."
+  :type '(choice (const :tag "None" nil)
+                 (color :tag "Custom Color"))
+  :group 'selected-window-accent-group)
 
 (defvar selected-window-accent-mode nil
   "Mode variable for `selected-window-accent-mode'.")
 
-(defvar selected-window-accent-mode-style 'default
-  "Current style for accenting the selected window. Possible values are 'tiling, 'simple, 'subtle, 'default.")
+(defcustom selected-window-accent-mode-style 'default
+  "Current style for accenting the selected window.
+Possible values are 'tiling, 'default."
+  :type '(choice (const :tag "Default Style" default)
+                 (const :tag "Tiling Style" tiling))
+  :group 'selected-window-accent-group)
 
 (defun selected-window-accent (&optional custom-accent-colour)
   "Set accent colours for the selected window's fringes, mode line, and margins with optional CUSTOM-ACCENT-COLOUR."
-  (interactive)
-  (let* ((init-accent-colour (or custom-accent-colour (face-attribute 'highlight :background)))
-         (accent-bg-colour
-          (color-desaturate-name
-           (color-darken-name init-accent-colour 0) 0))
-         (accent-fg-colour (if (string-greaterp accent-bg-colour "#888888888888") "#000000" "#ffffff")))
+  (interactive "P")
+
+  (when custom-accent-colour
+    (setq selected-window-accent-custom-color (read-color "Enter custom accent color: ")))
+
+  (let* ((init-accent-colour (or selected-window-accent-custom-color
+                               (face-attribute 'highlight :background)))
+          (accent-bg-colour
+            (color-desaturate-name
+              (color-darken-name init-accent-colour 10) 10)) ; Adjust desaturation and darkening as needed
+          (accent-fg-colour (if (string-greaterp accent-bg-colour "#888888888888") "#000000" "#ffffff")))
 
     ;; set up the colour
     (set-face-attribute 'fringe nil :background accent-bg-colour)
@@ -37,7 +55,7 @@
       (lambda (window)
         (if (eq window (selected-window))
           (pcase selected-window-accent-mode-style
-            ('default
+            ('tiling
               (set-window-margins window 1 0)
               (with-selected-window window
                 (setq header-line-format '(""))
@@ -45,7 +63,7 @@
                   (visual-fill-column-mode t)))
               (set-window-fringes window 6 6 t nil)
               )
-            ('simple
+            ('default
               (with-selected-window window
                 (setq header-line-format nil)
                 (if (eq visual-fill-column-mode t)
@@ -54,7 +72,7 @@
               )
             )
           (pcase selected-window-accent-mode-style
-            ('default
+            ('tiling
               (set-window-margins window 2 0)
               (with-selected-window window
                 (setq header-line-format nil)
@@ -62,7 +80,7 @@
                   (visual-fill-column-mode t)))
               (set-window-fringes window 0 0 t nil)
               )
-            ('simple
+            ('default
               (with-selected-window window
                 (setq header-line-format nil)
                 (if (eq visual-fill-column-mode t)
@@ -106,8 +124,8 @@
 (defun switch-selected-window-accent-style (style)
   "Switch the selected window accent style to STYLE and apply it."
   (interactive
-   (list (intern (completing-read "Choose accent style: " '(tiling simple subtle default)))))
-  (setq selected-window-accent-mode-style style)
+   (list (intern (completing-read "Choose accent style: " '(default tiling)))))
+  (custom-set-variables '(selected-window-accent-mode-style style))
   (selected-window-accent))
 
 (provide 'selected-window-accent-mode)
