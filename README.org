@@ -49,12 +49,13 @@ The styles that are currently supported :
 
 - default
 - tiling
+- subtle
 
 see *roadmap* below for a description.
 
 * Examples
 
-** Example 1
+** Example 1 - Default / custom color
 
 #+attr_org: :width 300px
 #+attr_html: :width 100%
@@ -74,13 +75,14 @@ To enable the accent mode automatically upon starting Emacs, add the following l
 
 This will accent the modeline only for the selected window with the =goldenrod= color.
 
-** Example 2
+** Example 2 - Tiling / custom color / custom fringe thickness
 
 #+attr_org: :width 300px
 #+attr_html: :width 100%
 [[file:selected-window-accent-mode-02.jpg]]
 
 #+begin_src elisp
+(setq selected-window-accent-fringe-thickness 6)
 (setq selected-window-accent-custom-color "#4179b2")
 (setq selected-window-accent-mode-style 'tiling)
 
@@ -89,7 +91,7 @@ This will accent the modeline only for the selected window with the =goldenrod= 
 
 This will accent the full outline of the window with the color #4179b2 more akin to a tiling window manager.
 
-** Example 3
+** Example 3 - Tiling / theme highlight color
 
 #+attr_org: :width 300px
 #+attr_html: :width 100%
@@ -104,11 +106,24 @@ This will accent the full outline of the window with the color #4179b2 more akin
 
 This will accent the full outline of the window with the =highlight= color taken from the current theme.
 
+** Example 4 - Subtle / custom fringe thickness (thick)
+
+#+begin_src elisp
+(setq selected-window-accent-fringe-thickness 40)
+(setq selected-window-accent-custom-color nil)
+(setq selected-window-accent-mode-style 'subtle)
+
+(selected-window-accent-mode 1)
+#+end_src
+
+This will accent the modeline and just the left fringe and in this case be quite a pronounced thick accent.
+
 * Customization
 
 Can be done through the customization interface:
 
 *Selected Window Accent Group group:*
+
    Customization group for the selected-window-accent package.
 
 *Selected Window Accent Custom Color*
@@ -118,9 +133,11 @@ Can be done through the customization interface:
    - =None= - color will be using the current =highlight= face
    - =Custom Color= - input color name or Hex
 
-*Selected Window Accent Mode*
+*Selected Window Accent Fringe Thickness:* Integer:
 
- - =Boolean=: Toggle
+   The thickness of the fringes in pixels.
+
+*Selected Window Accent Mode*:  =Boolean=: Toggle
 
    Non-nil if Selected-Window-Accent mode is enabled
 
@@ -128,8 +145,9 @@ Can be done through the customization interface:
 
    Current style for accenting the selected window.
 
-   - =default= - just modeline highlighting
-   - =tiling= - window border highlighting
+   - =default= - just modeline accent
+   - =tiling= - window border accent
+   - =subtle= - left and modeline accent
 
 * Minor Mode
 
@@ -156,30 +174,31 @@ Fix these to get to a tagged Version 0.1.
 
 In order of priority
 
-- *TODO* header-line not shown on window split
-- *TODO* excess selected-window disruption in header-line
+- *TODO* header-line not shown on window split.
+- *TODO* adjust the not selected-window margin to avoid little window navigation. disruption, hence translating a fringe pixel width to a number of margin characters, not quite sure how I am going to do this yet.
+- *TODO* Incorporate =mode-line-active= and =mode-line-inactive= somehow as this would make more sense especially in the 'default mode.
+- *TODO* excess selected-window disruption in header-line.
 - *WATCHING* careful with removing header-line on all windows, for example magit commit window and probably some others may need to add some logic depending on mode.
 
 * roadmap
 
-** add screenshot examples
+** *DOING* add screenshot examples
 
 ** add to MELPA
 
 ** define more custom variables:
 
-- accent thickness
-- saturation adjustment
-- darken adjustment
-- hue adjustment
+- accent color saturation adjustment
+- accent color darken adjustment
+- accent color hue adjustment
 
 ** define which theme face attribute to use as the main accent color
 
 Currently the default is to use the =highlight= face
 
-** implement accent styles
+** *DOING* implement accent styles
 
 - *DONE* =default= - /bottom/ - full height modeline
 - *DOING* =tiling= - /top/right/bottom/left/ - typically a squished modeline and header line to a general accent thickness to provide a typical tiling window manager focussed outline experience
-- *TODO* =subtle= - /left/
+- *DOING* =subtle= - /left/bottom/
 - *TODO* =full= - /top/right/bottom/left/ - full height modeline (currently implemented as =tiling= but will be moved when tiling is more "tiling")
