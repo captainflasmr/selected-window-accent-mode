@@ -49,6 +49,13 @@ Possible values are default, tiling, or subtle."
       (set-window-margins window 0 0)
       (set-window-fringes window 0 0 0 t))))
 
+(defun color-name-to-hex (color-name)
+  "Convert COLOR-NAME to its hexadecimal representation."
+  (let ((rgb (color-name-to-rgb color-name)))
+    (when rgb
+      (apply 'format "#%02x%02x%02x"
+        (mapcar (lambda (x) (round (* x 255))) rgb)))))
+
 (defun selected-window-accent (&optional custom-accent-color)
   "Set accent colors for the selected window fringes, mode line, and margins."
   (interactive "P")
@@ -57,13 +64,15 @@ Possible values are default, tiling, or subtle."
     (setq selected-window-accent-custom-color (read-color "Enter custom accent color: ")))
 
   (let* ((init-accent-color (or selected-window-accent-custom-color
-                              (face-attribute 'highlight :background)))
-          (accent-bg-color (color-desaturate-name (color-darken-name init-accent-color 30) 10))
-          (accent-fg-colour (if (string-greaterp accent-bg-color "#888888888888") "#000000" "#ffffff")))
+                              (color-name-to-hex (face-attribute 'highlight :background))))
+          (accent-bg-color (if (string-greaterp init-accent-color "#000404")
+                             (color-desaturate-name (color-darken-name init-accent-color 0) 20)
+                             (color-desaturate-name (color-lighten-name init-accent-color 0) 0)))
+          (accent-fg-color (if (string-greaterp accent-bg-color "#888888") "#000000" "#ffffff")))
 
-    (set-face-attribute 'fringe nil :background accent-bg-color :foreground accent-fg-colour)
-    (set-face-attribute 'mode-line-active nil :background accent-bg-color :foreground accent-fg-colour)
-    (set-face-attribute 'header-line nil :background accent-bg-color :foreground accent-fg-colour)
+    (set-face-attribute 'fringe nil :background accent-bg-color :foreground accent-bg-color)
+    (set-face-attribute 'mode-line-active nil :background accent-bg-color :foreground accent-fg-color)
+    (set-face-attribute 'header-line nil :background accent-bg-color :foreground accent-bg-color)
 
     (walk-windows
       (lambda (window)
