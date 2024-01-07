@@ -58,12 +58,12 @@ Possible values are default, tiling, or subtle."
 
   (let* ((init-accent-color (or selected-window-accent-custom-color
                               (face-attribute 'highlight :background)))
-          (accent-bg-color (color-desaturate-name (color-darken-name init-accent-color 10) 10))
-          (accent-fg-color (if (color-lighten-name accent-bg-color 50) "#000000" "#ffffff")))
+          (accent-bg-color (color-desaturate-name (color-darken-name init-accent-color 30) 10))
+          (accent-fg-colour (if (string-greaterp accent-bg-color "#888888888888") "#000000" "#ffffff")))
 
-    (set-face-attribute 'fringe nil :background accent-bg-color)
-    (set-face-attribute 'mode-line-active nil :background accent-bg-color)
-    (set-face-attribute 'header-line nil :background accent-bg-color)
+    (set-face-attribute 'fringe nil :background accent-bg-color :foreground accent-fg-colour)
+    (set-face-attribute 'mode-line-active nil :background accent-bg-color :foreground accent-fg-colour)
+    (set-face-attribute 'header-line nil :background accent-bg-color :foreground accent-fg-colour)
 
     (walk-windows
       (lambda (window)
