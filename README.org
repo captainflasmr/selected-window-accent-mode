@@ -90,6 +90,7 @@ To enable the accent mode automatically upon starting Emacs, add the following l
 (use-package selected-window-accent-mode
   :vc (:fetcher github :repo "captainflasmr/selected-window-accent-mode")
   :custom
+  (selected-window-accent-fringe-thickness 20)
   (selected-window-accent-custom-color "goldenrod")
   (selected-window-accent-mode-style 'default))
 
@@ -121,6 +122,7 @@ This will accent the full outline of the window with the color #4179b2 more akin
 [[file:selected-window-accent-mode-03.jpg]]
 
 #+begin_src elisp
+(setq selected-window-accent-fringe-thickness 6)
 (setq selected-window-accent-custom-color nil)
 (setq selected-window-accent-mode-style 'tiling)
 
@@ -136,7 +138,7 @@ This will accent the full outline of the window with the =highlight= color taken
 [[file:selected-window-accent-mode-04.jpg]]
 
 #+begin_src elisp
-(setq selected-window-accent-fringe-thickness 40)
+(setq selected-window-accent-fringe-thickness 20)
 (setq selected-window-accent-custom-color nil)
 (setq selected-window-accent-mode-style 'subtle)
 
@@ -206,6 +208,7 @@ In order of priority
 - *TODO* improve modeline contrast between fg and bg
 - *TODO* adjust the not selected-window margin to avoid little window navigation. disruption, hence translating a fringe pixel width to a number of margin characters, not quite sure how I am going to do this yet.
 - *TODO* Incorporate =mode-line-active= and =mode-line-inactive= somehow as this would make more sense especially in the 'default mode.
+- *TODO* possible overheads of updating visual elements for each window?
 - *TODO* excess selected-window disruption in header-line.
 - *WATCHING* careful with removing header-line on all windows, for example magit commit window and probably some others may need to add some logic depending on mode.
 
