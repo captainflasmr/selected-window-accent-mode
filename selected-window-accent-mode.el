@@ -1,34 +1,20 @@
-;; jd-start-block
+;;; selected-window-accent-mode.el --- Accent Selected Window -*- lexical-binding: t; -*-
+;;
+;; Author: James Dyer <captainflasmr@gmail.com>
+;; Version: 0.1.0
+;; Package-Requires: ((emacs "24.3"))
+;; Keywords: accent, highlight, window
+;; URL: https://github.com/captainflasmr/selected-window-accent-mode
+;;
+;; This file is not part of GNU Emacs.
+;;
+;;; Commentary:
 ;;                      _____________________________
 ;;
 ;;                       SELECTED-WINDOW-ACCENT-MODE
 ;;
 ;;                                James Dyer
 ;;                      _____________________________
-;;
-;;
-;; 1. Summary
-;; 2. Quick Start (emacs 29)
-;; 3. Installation
-;; .. 1. use-package (emacs 29)
-;; .. 2. use-package (MELPA)
-;; .. 3. from source
-;; 4. Usage
-;; 5. Examples
-;; .. 1. Example 1 - Default / custom color
-;; .. 2. Example 2 - Tiling / custom color / custom fringe thickness
-;; .. 3. Example 3 - Tiling / theme highlight color
-;; .. 4. Example 4 - Subtle / custom fringe thickness (thick)
-;; 6. Customization
-;; 7. Minor Mode
-;; 8. Hooks
-;; 9. BUGS
-;; 10. roadmap
-;; .. 1. add to MELPA
-;; .. 2. define more custom variables:
-;; .. 3. define which theme face attribute to use as the main accent color
-;; .. 4. *DOING* implement accent styles
-;;
 ;;
 ;; 1 Summary
 ;; =========
@@ -39,7 +25,6 @@
 ;;   margins.
 ;;
 ;;   <file:selected-window-accent-mode-00.jpg>
-;;
 ;;
 ;; 2 Quick Start (emacs 29)
 ;; ========================
@@ -58,7 +43,6 @@
 ;;   | (selected-window-accent-mode 1)
 ;;   `----
 ;;
-;;
 ;; 3 Installation
 ;; ==============
 ;;
@@ -72,12 +56,10 @@
 ;;   |   :vc (:fetcher github :repo "captainflasmr/selected-window-accent-mode"))
 ;;   `----
 ;;
-;;
 ;; 3.2 use-package (MELPA)
 ;; ~~~~~~~~~~~~~~~~~~~~~~~
 ;;
 ;;   - TODO (see roadmap below)
-;;
 ;;
 ;; 3.3 from source
 ;; ~~~~~~~~~~~~~~~
@@ -90,7 +72,6 @@
 ;;   ,----
 ;;   | (require 'selected-window-accent-mode)
 ;;   `----
-;;
 ;;
 ;; 4 Usage
 ;; =======
@@ -120,7 +101,6 @@
 ;;   | (define-key my-win-keymap (kbd "y") 'switch-selected-window-accent-style)
 ;;   `----
 ;;
-;;
 ;; 5 Examples
 ;; ==========
 ;;
@@ -146,7 +126,6 @@
 ;;   This will accent the modeline only for the selected window with the
 ;;   `goldenrod' color.
 ;;
-;;
 ;; 5.2 Example 2 - Tiling / custom color / custom fringe thickness
 ;; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ;;
@@ -162,7 +141,6 @@
 ;;
 ;;   This will accent the full outline of the window with the color #4179b2
 ;;   more akin to a tiling window manager.
-;;
 ;;
 ;; 5.3 Example 3 - Tiling / theme highlight color
 ;; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -180,7 +158,6 @@
 ;;   This will accent the full outline of the window with the `highlight'
 ;;   color taken from the current theme.
 ;;
-;;
 ;; 5.4 Example 4 - Subtle / custom fringe thickness (thick)
 ;; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ;;
@@ -196,7 +173,6 @@
 ;;
 ;;   This will accent the modeline and just the left fringe and in this
 ;;   case be quite a pronounced thick accent.
-;;
 ;;
 ;; 6 Customization
 ;; ===============
@@ -231,7 +207,6 @@
 ;;   - `tiling' - window border accent
 ;;   - `subtle' - left and modeline accent
 ;;
-;;
 ;; 7 Minor Mode
 ;; ============
 ;;
@@ -240,7 +215,6 @@
 ;;
 ;;   When enabled, it distinguishes the selected window with a special
 ;;   accent color.
-;;
 ;;
 ;; 8 Hooks
 ;; =======
@@ -253,7 +227,6 @@
 ;;
 ;;   These are added when the `selected-window-accent-mode' is enabled and
 ;;   removed when disabled.
-;;
 ;;
 ;; 9 BUGS
 ;; ======
@@ -283,13 +256,11 @@
 ;;      example magit commit window and probably some others may need to
 ;;      add some logic depending on mode.
 ;;
-;;
 ;; 10 roadmap
 ;; ==========
 ;;
 ;; 10.1 add to MELPA
 ;; ~~~~~~~~~~~~~~~~~
-;;
 ;;
 ;; 10.2 define more custom variables:
 ;; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -298,12 +269,10 @@
 ;;   - accent color darken adjustment
 ;;   - accent color hue adjustment
 ;;
-;;
 ;; 10.3 define which theme face attribute to use as the main accent color
 ;; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ;;
 ;;   Currently the default is to use the `highlight' face
-;;
 ;;
 ;; 10.4 *DOING* implement accent styles
 ;; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -313,7 +282,8 @@
 ;;      modeline and header line to a general accent thickness to provide a
 ;;      typical tiling window manager focussed outline experience
 ;;   - *DOING* `subtle' - /left/bottom/
-;; jd-end-block
+;;
+;; END
 
 (require 'color)
 (require 'visual-fill-column)

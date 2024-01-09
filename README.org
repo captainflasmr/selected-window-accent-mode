@@ -3,8 +3,6 @@
 #+options: toc:nil author:t title:t num:t
 #+startup: showall
 
-#+TOC: headlines 2 local
-
 * Summary
 
 The Selected Window Accent Mode is an Emacs package designed to visually distinguish the currently selected window by applying a unique accent color to its fringes, mode line, header line, and margins.
