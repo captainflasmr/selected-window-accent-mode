@@ -182,6 +182,10 @@ The =selected-window-accent-mode= is a global minor mode that you can toggle to 
 
 When enabled, it distinguishes the selected window with a special accent color.
 
+* Testing
+
+See CHANGELOG.org
+
 * Hooks
 
 Two hooks are used to automatically update the window accents when the window configuration or state changes:
@@ -199,6 +203,8 @@ These are added when the =selected-window-accent-mode= is enabled and removed wh
 
     In order of priority - possibly eventually some will be moved to a
     later version.
+
+  TODO expand emacs help / documentation
 
   TODO cope better with 0 thickness
 

@@ -187,7 +187,11 @@
 ;;   When enabled, it distinguishes the selected window with a special
 ;;   accent color.
 ;;
-;; 8 Hooks
+;; 8 Testing
+;;
+;;   See CHANGELOG.org
+;;
+;; 9 Hooks
 ;;
 ;;   Two hooks are used to automatically update the window accents when the
 ;;   window configuration or state changes:
@@ -198,7 +202,7 @@
 ;;   These are added when the `selected-window-accent-mode' is enabled and
 ;;   removed when disabled.
 ;;
-;; 9 TODOs / ROADMAP
+;; 10 TODOs / ROADMAP
 ;;
 ;;   The current version is pretty rough and probably definitely pre-alpha.
 ;;
@@ -206,6 +210,8 @@
 ;;
 ;;   In order of priority - possibly eventually some will be moved to a
 ;;   later version.
+;;
+;;   TODO expand emacs help / documentation
 ;;
 ;;   TODO cope better with 0 thickness
 ;;

@@ -9,6 +9,7 @@ The current version is pretty rough and probably definitely pre-alpha.
 
 In order of priority - possibly eventually some will be moved to a later version.
 
+** TODO expand emacs help / documentation
 ** TODO cope better with 0 thickness
 ** TODO Incorporate =mode-line-active= and =mode-line-inactive= somehow as this would make more sense especially in the 'default mode.
 ** DONE Add ChangeLog.
