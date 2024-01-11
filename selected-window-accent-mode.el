@@ -207,33 +207,29 @@
 ;;   In order of priority - possibly eventually some will be moved to a
 ;;   later version.
 ;;
-;;   DOING Add ChangeLog.
-;;
-;;   TODO header-line not shown on window split.
-;;
-;;   TODO visual-fill-column-mode not working again!
-;;
 ;;   TODO cope better with 0 thickness
 ;;
-;;   TODO improve modeline contrast between fg and bg
+;;   TODO Incorporate `mode-line-active' and `mode-line-inactive' somehow
+;;   as this would make more sense especially in the 'default mode.
+;;
+;;   ____________________ 0.2 + / roadmap ____________________
+;;
+;;   TODO header-line not shown on window split - I have a funny feeling
+;;   this could be very difficult, if not impossible!
 ;;
 ;;   TODO adjust the not selected-window margin to avoid little window
 ;;   navigation. disruption, hence translating a fringe pixel width to a
 ;;   number of margin characters, not quite sure how I am going to do this
 ;;   yet.
 ;;
-;;   TODO Incorporate `mode-line-active' and `mode-line-inactive' somehow
-;;   as this would make more sense especially in the 'default mode.
-;;
-;;   TODO possible overheads of updating visual elements for each window?
-;;
-;;   TODO excess selected-window disruption in header-line.
-;;
 ;;   WATCH careful with removing header-line on all windows, for example
 ;;   magit commit window and probably some others may need to add some
 ;;   logic depending on mode.
 ;;
-;;   ____________________ 0.2 + / roadmap ____________________
+;;   WATCH possible overheads of updating visual elements for each window?
+;;
+;;   TODO excess selected-window disruption in header-line. (not sure I can
+;;   do much about this)
 ;;
 ;;   TODO add to MELPA
 ;;
@@ -301,16 +297,22 @@ Possible values are default, tiling, or subtle."
       (set-face-attribute 'header-line nil :height (* 6 selected-window-accent-fringe-thickness))
       (set-face-attribute 'mode-line-active nil :height (* 8 selected-window-accent-fringe-thickness))
       (set-window-margins window (if is-selected 1 2) 0)
+      (with-selected-window window
+        (when (eq visual-fill-column-mode t) (visual-fill-column-mode t)))
       (set-window-fringes window
         selected-window-accent-fringe-thickness
         selected-window-accent-fringe-thickness 0 t))
     ('subtle
       (setq header-line-format 'nil)
       (set-window-margins window (if is-selected 1 2) 0)
+      (with-selected-window window
+        (when (eq visual-fill-column-mode t) (visual-fill-column-mode t)))
       (set-window-fringes window
         selected-window-accent-fringe-thickness 0 0 t))
     ('default
       (set-window-margins window 0 0)
+      (with-selected-window window
+        (when (eq visual-fill-column-mode t) (visual-fill-column-mode t)))
       (set-window-fringes window 0 0 0 t))))
 
 (defun color-name-to-hex (color-name)
@@ -342,15 +344,16 @@ Possible values are default, tiling, or subtle."
       (lambda (window)
         (let ((is-selected (eq window (selected-window))))
           (window-update window is-selected)
-
-          (when (not is-selected)
-            (with-selected-window window
+          (with-selected-window window
+            (when (not is-selected)
               (setq header-line-format 'nil)
-              (set-window-fringes window 0 0 0 t)
-              (when visual-fill-column-mode (visual-fill-column-mode t))))
+              (set-window-fringes window 0 0 0 t))
+            )
           )
-        )
-      nil t)))
+        nil t)
+      )
+    )
+  )
 
 (defun reset-window-accent ()
   "Reset the accent colors for all windows to their defaults."

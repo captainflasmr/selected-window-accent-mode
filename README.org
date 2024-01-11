@@ -200,27 +200,21 @@ These are added when the =selected-window-accent-mode= is enabled and removed wh
     In order of priority - possibly eventually some will be moved to a
     later version.
 
-  DOING Add ChangeLog.
-
-  TODO header-line not shown on window split.
-
-  TODO visual-fill-column-mode not working again!
-
   TODO cope better with 0 thickness
-
-  TODO improve modeline contrast between fg and bg
-
-  TODO adjust the not selected-window margin to avoid little window navigation. disruption, hence translating a fringe pixel width to a number of margin characters, not quite sure how I am going to do this yet.
 
   TODO Incorporate `mode-line-active' and `mode-line-inactive' somehow as this would make more sense especially in the 'default mode.
 
-  TODO possible overheads of updating visual elements for each window?
+  ____________________ 0.2 + / roadmap ____________________
 
-  TODO excess selected-window disruption in header-line.
+  TODO header-line not shown on window split - I have a funny feeling this could be very difficult, if not impossible!
+
+  TODO adjust the not selected-window margin to avoid little window navigation. disruption, hence translating a fringe pixel width to a number of margin characters, not quite sure how I am going to do this yet.
 
   WATCH careful with removing header-line on all windows, for example magit commit window and probably some others may need to add some logic depending on mode.
 
-  ____________________ 0.2 + / roadmap ____________________
+  WATCH possible overheads of updating visual elements for each window?
+
+  TODO excess selected-window disruption in header-line. (not sure I can do much about this)
 
   TODO add to MELPA
 
