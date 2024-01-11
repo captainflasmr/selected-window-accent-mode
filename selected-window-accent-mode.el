@@ -9,6 +9,7 @@
 ;; This file is not part of GNU Emacs.
 ;;
 ;;; Commentary:
+
 ;;                      _____________________________
 ;;
 ;;                       SELECTED-WINDOW-ACCENT-MODE
@@ -17,7 +18,6 @@
 ;;                      _____________________________
 ;;
 ;; 1 Summary
-;; =========
 ;;
 ;;   The Selected Window Accent Mode is an Emacs package designed to
 ;;   visually distinguish the currently selected window by applying a
@@ -27,12 +27,10 @@
 ;;   <file:selected-window-accent-mode-00.jpg>
 ;;
 ;; 2 Quick Start (emacs 29)
-;; ========================
 ;;
 ;;   Add the following to the emacs init for a tiling window manager feel
 ;;   (see image above):
 ;;
-;;   ,----
 ;;   | (use-package selected-window-accent-mode
 ;;   |   :vc (:fetcher github :repo "captainflasmr/selected-window-accent-mode")
 ;;   |   :custom
@@ -41,40 +39,30 @@
 ;;   |   (selected-window-accent-mode-style 'tiling))
 ;;   |
 ;;   | (selected-window-accent-mode 1)
-;;   `----
 ;;
 ;; 3 Installation
-;; ==============
 ;;
 ;; 3.1 use-package (emacs 29)
-;; ~~~~~~~~~~~~~~~~~~~~~~~~~~
 ;;
 ;;   Put the following into your emacs init file:
 ;;
-;;   ,----
 ;;   | (use-package selected-window-accent-mode
 ;;   |   :vc (:fetcher github :repo "captainflasmr/selected-window-accent-mode"))
-;;   `----
 ;;
 ;; 3.2 use-package (MELPA)
-;; ~~~~~~~~~~~~~~~~~~~~~~~
 ;;
 ;;   - TODO (see roadmap below)
 ;;
 ;; 3.3 from source
-;; ~~~~~~~~~~~~~~~
 ;;
 ;;   Download the `.el` file and place it in your Emacs `load-path`.
 ;;
 ;;   Then either manually load it or add it to your configuration to be
 ;;   loaded at startup.
 ;;
-;;   ,----
 ;;   | (require 'selected-window-accent-mode)
-;;   `----
 ;;
 ;; 4 Usage
-;; =======
 ;;
 ;;   Interactively Toggle the mode on and off `M-x
 ;;   selected-window-accent-mode'
@@ -94,25 +82,20 @@
 ;;   Typically I have bound these two interactive functions to a new keymap
 ;;   where I keep all my emacs visual change functions.
 ;;
-;;   ,----
 ;;   | (defvar my-win-keymap (make-sparse-keymap))
 ;;   | (global-set-key (kbd "M-o") my-win-keymap)
 ;;   | (define-key my-win-keymap (kbd "a") 'selected-window-accent-mode)
 ;;   | (define-key my-win-keymap (kbd "y") 'switch-selected-window-accent-style)
-;;   `----
 ;;
 ;; 5 Examples
-;; ==========
 ;;
 ;; 5.1 Example 1 - Default / custom color
-;; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ;;
 ;;   <file:selected-window-accent-mode-01.jpg>
 ;;
 ;;   To enable the accent mode automatically upon starting Emacs, add the
 ;;   following line to your `.emacs` or `init.el` file:
 ;;
-;;   ,----
 ;;   | (use-package selected-window-accent-mode
 ;;   |   :vc (:fetcher github :repo "captainflasmr/selected-window-accent-mode")
 ;;   |   :custom
@@ -121,61 +104,50 @@
 ;;   |   (selected-window-accent-mode-style 'default))
 ;;   |
 ;;   | (selected-window-accent-mode 1)
-;;   `----
 ;;
 ;;   This will accent the modeline only for the selected window with the
 ;;   `goldenrod' color.
 ;;
 ;; 5.2 Example 2 - Tiling / custom color / custom fringe thickness
-;; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ;;
 ;;   <file:selected-window-accent-mode-02.jpg>
 ;;
-;;   ,----
 ;;   | (setq selected-window-accent-fringe-thickness 6)
 ;;   | (setq selected-window-accent-custom-color "#4179b2")
 ;;   | (setq selected-window-accent-mode-style 'tiling)
 ;;   |
 ;;   | (selected-window-accent-mode 1)
-;;   `----
 ;;
 ;;   This will accent the full outline of the window with the color #4179b2
 ;;   more akin to a tiling window manager.
 ;;
 ;; 5.3 Example 3 - Tiling / theme highlight color
-;; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ;;
 ;;   <file:selected-window-accent-mode-03.jpg>
 ;;
-;;   ,----
 ;;   | (setq selected-window-accent-fringe-thickness 6)
 ;;   | (setq selected-window-accent-custom-color nil)
 ;;   | (setq selected-window-accent-mode-style 'tiling)
 ;;   |
 ;;   | (selected-window-accent-mode 1)
-;;   `----
 ;;
 ;;   This will accent the full outline of the window with the `highlight'
 ;;   color taken from the current theme.
 ;;
 ;; 5.4 Example 4 - Subtle / custom fringe thickness (thick)
-;; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ;;
 ;;   <file:selected-window-accent-mode-04.jpg>
 ;;
-;;   ,----
 ;;   | (setq selected-window-accent-fringe-thickness 20)
 ;;   | (setq selected-window-accent-custom-color nil)
 ;;   | (setq selected-window-accent-mode-style 'subtle)
 ;;   |
 ;;   | (selected-window-accent-mode 1)
-;;   `----
 ;;
 ;;   This will accent the modeline and just the left fringe and in this
 ;;   case be quite a pronounced thick accent.
 ;;
 ;; 6 Customization
-;; ===============
 ;;
 ;;   Can be done through the customization interface:
 ;;
@@ -208,7 +180,6 @@
 ;;   - `subtle' - left and modeline accent
 ;;
 ;; 7 Minor Mode
-;; ============
 ;;
 ;;   The `selected-window-accent-mode' is a global minor mode that you can
 ;;   toggle to enable or disable the accenting of the selected window.
@@ -217,7 +188,6 @@
 ;;   accent color.
 ;;
 ;; 8 Hooks
-;; =======
 ;;
 ;;   Two hooks are used to automatically update the window accents when the
 ;;   window configuration or state changes:
@@ -228,8 +198,7 @@
 ;;   These are added when the `selected-window-accent-mode' is enabled and
 ;;   removed when disabled.
 ;;
-;; 9 BUGS
-;; ======
+;; 9 TODOs / ROADMAP
 ;;
 ;;   The current version is pretty rough and probably definitely pre-alpha.
 ;;
@@ -239,50 +208,56 @@
 ;;
 ;;   In order of priority
 ;;
-;;   - *TODO* header-line not shown on window split.
-;;   - *TODO* cope better with 0 thickness
-;;   - *TODO* improve modeline contrast between fg and bg
-;;   - *TODO* adjust the not selected-window margin to avoid little window
-;;      navigation. disruption, hence translating a fringe pixel width to a
-;;      number of margin characters, not quite sure how I am going to do
-;;      this yet.
-;;   - *TODO* Incorporate `mode-line-active' and `mode-line-inactive'
-;;      somehow as this would make more sense especially in the 'default
-;;      mode.
-;;   - *TODO* possible overheads of updating visual elements for each
-;;      window?
-;;   - *TODO* excess selected-window disruption in header-line.
-;;   - *WATCHING* careful with removing header-line on all windows, for
-;;      example magit commit window and probably some others may need to
-;;      add some logic depending on mode.
+;;   TODO header-line not shown on window split.
 ;;
-;; 10 roadmap
-;; ==========
+;;   TODO cope better with 0 thickness
 ;;
-;; 10.1 add to MELPA
-;; ~~~~~~~~~~~~~~~~~
+;;   TODO improve modeline contrast between fg and bg
 ;;
-;; 10.2 define more custom variables:
-;; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+;;   TODO adjust the not selected-window margin to avoid little window
+;;   navigation. disruption, hence translating a fringe pixel width to a
+;;   number of margin characters, not quite sure how I am going to do this
+;;   yet.
+;;
+;;   TODO Incorporate `mode-line-active' and `mode-line-inactive' somehow
+;;   as this would make more sense especially in the 'default mode.
+;;
+;;   TODO possible overheads of updating visual elements for each window?
+;;
+;;   TODO excess selected-window disruption in header-line.
+;;
+;;   WATCH careful with removing header-line on all windows, for example
+;;   magit commit window and probably some others may need to add some
+;;   logic depending on mode.
+;;
+;;   ---
+;;
+;;   <<<< roadmap >>>>
+;;
+;;   add to MELPA
+;;
+;;   define more custom variables:
 ;;
 ;;   - accent color saturation adjustment
 ;;   - accent color darken adjustment
 ;;   - accent color hue adjustment
 ;;
-;; 10.3 define which theme face attribute to use as the main accent color
-;; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+;;   define which theme face attribute to use as the main accent color
 ;;
 ;;   Currently the default is to use the `highlight' face
 ;;
-;; 10.4 *DOING* implement accent styles
-;; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+;;   DOING implement accent styles
 ;;
-;;   - *DONE* `default' - /bottom/ - full height modeline
-;;   - *DOING* `tiling' - /top/right/bottom/left/ - typically a squished
-;;      modeline and header line to a general accent thickness to provide a
-;;      typical tiling window manager focussed outline experience
-;;   - *DOING* `subtle' - /left/bottom/
+;;   DOING `tiling' - /top/right/bottom/left/ - typically a squished
+;;   modeline and header line to a general accent thickness to provide a
+;;   typical tiling window manager focussed outline experience
 ;;
+;;   DOING `subtle' - /left/bottom/
+;;
+;;   :TODO_END
+;;
+
+
 ;; END
 
 (require 'color)
