@@ -1,7 +1,7 @@
 ;;; selected-window-accent-mode.el --- Accent Selected Window -*- lexical-binding: t; -*-
 ;;
 ;; Author: James Dyer <captainflasmr@gmail.com>
-;; Version: 0.1.0
+;; Version: 0.0.1
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: accent, highlight, window
 ;; URL: https://github.com/captainflasmr/selected-window-accent-mode
@@ -202,13 +202,16 @@
 ;;
 ;;   The current version is pretty rough and probably definitely pre-alpha.
 ;;
-;;   ---
+;;   ____________________ for 0.1 (alpha) ____________________
 ;;
-;;   Fix these to get to a tagged Version 0.1.
+;;   In order of priority - possibly eventually some will be moved to a
+;;   later version.
 ;;
-;;   In order of priority
+;;   DOING Add ChangeLog.
 ;;
 ;;   TODO header-line not shown on window split.
+;;
+;;   TODO visual-fill-column-mode not working again!
 ;;
 ;;   TODO cope better with 0 thickness
 ;;
@@ -230,19 +233,18 @@
 ;;   magit commit window and probably some others may need to add some
 ;;   logic depending on mode.
 ;;
-;;   ---
+;;   ____________________ 0.2 + / roadmap ____________________
 ;;
-;;   <<<< roadmap >>>>
+;;   TODO add to MELPA
 ;;
-;;   add to MELPA
-;;
-;;   define more custom variables:
+;;   TODO define more custom variables:
 ;;
 ;;   - accent color saturation adjustment
 ;;   - accent color darken adjustment
 ;;   - accent color hue adjustment
+;;   - compensating margin
 ;;
-;;   define which theme face attribute to use as the main accent color
+;;   TODO define which theme face attribute to use as the main accent color
 ;;
 ;;   Currently the default is to use the `highlight' face
 ;;

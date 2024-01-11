@@ -1,0 +1,30 @@
+#+title: Change log of selected-window-accent-mode
+#+author: James Dyer
+#+email: captainflasmr@gmail.com
+#+language: en
+#+options: ':t toc:nil author:t email:t num:t
+#+startup: content
+
+This document contains the release notes for each tagged commit on the
+project's main git repository: [[https://github.com/captainflasmr/selected-window-accent-mode]].
+
+The newest release is at the top.
+
+See README.org :: TODOs / ROADMAP for future development
+
+* Version 1.?.? on <future TBD>
+
+TBD Stable release
+
+* Version 0.2.? on <date TBD>
+
+TBD This is considered beta.
+
+- List of BUG fixes
+- List of enhancements
+
+* Version 0.1.0 on <date TBD>
+
+TBD This is considered alpha.
+
+This is the initial version and as thus fixes will not be listed.
