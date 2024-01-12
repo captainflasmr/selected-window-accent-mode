@@ -12,22 +12,24 @@ The newest release is at the top.
 
 See README.org :: TODOs / ROADMAP for future development
 
-* Version 1.?.? on <future TBD>
+* Version 0.1.0 on <2024-01-12>
 
-TBD Stable release
+This is considered beta.
 
-* Version 0.2.? on <date TBD>
+READY <2024-01-12>
 
-TBD This is considered beta.
-
-- List of BUG fixes
-- List of enhancements
-
-* Version 0.1.0 on <date TBD>
-
-TBD This is considered alpha.
-
-This is the initial version and as thus fixes will not be listed.
+** DONE expand emacs help / documentation
+CLOSED: [2024-01-12 Fri 12:49]
+** DONE add GNU header
+CLOSED: [2024-01-12 Fri 07:46]
+** DONE cope better with 0 thickness
+CLOSED: [2024-01-12 Fri 07:33]
+** DONE Add ChangeLog.
+CLOSED: [2024-01-11 Thu 16:16]
+** DONE visual-fill-column-mode not working again!
+CLOSED: [2024-01-11 Thu 17:17] DEADLINE: <2024-01-31 Wed>
+** DONE improve modeline contrast between fg and bg
+CLOSED: [2024-01-11 Thu 16:19]
 
 ** testing
 

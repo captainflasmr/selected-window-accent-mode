@@ -3,24 +3,12 @@
 #+options: toc:nil author:nil title:nil num:nil tasks:todo
 #+startup: showall
 
-The current version is pretty rough and probably definitely pre-alpha.
-
-* ____________________ for 0.1 (alpha) ____________________
-
-In order of priority - possibly eventually some will be moved to a later version.
-
-** TODO expand emacs help / documentation
-** TODO cope better with 0 thickness
-** TODO Incorporate =mode-line-active= and =mode-line-inactive= somehow as this would make more sense especially in the 'default mode.
-** DONE Add ChangeLog.
-CLOSED: [2024-01-11 Thu 16:16]
-** DONE visual-fill-column-mode not working again!
-CLOSED: [2024-01-11 Thu 17:17] DEADLINE: <2024-01-31 Wed>
-** DONE improve modeline contrast between fg and bg
-CLOSED: [2024-01-11 Thu 16:19]
 * ____________________ 0.2 + / roadmap ____________________
 
+** TODO Incorporate =mode-line-active= and =mode-line-inactive= somehow as this would make more sense especially in the 'default mode.
 ** TODO header-line not shown on window split - I have a funny feeling this could be very difficult, if not impossible!
+** TODO Customization syncing with my README documentation - at some stage I shall push-block these to the elisp file itsself to ensure consistency but for the moment I could need to source START END refactor my existing routin.
+** TODO restore modeline height when switching between modes
 ** TODO adjust the not selected-window margin to avoid little window navigation. disruption, hence translating a fringe pixel width to a number of margin characters, not quite sure how I am going to do this yet.
 ** WATCH careful with removing header-line on all windows, for example magit commit window and probably some others may need to add some logic depending on mode.
 ** WATCH possible overheads of updating visual elements for each window?
@@ -37,4 +25,4 @@ Currently the default is to use the =highlight= face
 *** DONE =default= - /bottom/ - full height modeline
 CLOSED: [2024-01-07 Sun 21:36]
 *** DOING =tiling= - /top/right/bottom/left/ - typically a squished modeline and header line to a general accent thickness to provide a typical tiling window manager focussed outline experience
-*** DOING =subtle= - /left/bottom/
+*** DOING =subtle= - /left/botto/
