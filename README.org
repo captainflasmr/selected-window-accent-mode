@@ -232,7 +232,7 @@ These are added when the =selected-window-accent-mode= is enabled and removed wh
   
   DOING `tiling' - /top/right/bottom/left/ - typically a squished modeline and header line to a general accent thickness to provide a typical tiling window manager focussed outline experience
   
-  DOING `subtle' - /left/botto/
+  DOING `subtle' - /left/bottom/
   
 * Testing
 
