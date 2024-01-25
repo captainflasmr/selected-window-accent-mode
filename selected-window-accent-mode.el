@@ -114,7 +114,7 @@ IS-SELECTED defines if the current window is being processed"
           (when (eq visual-fill-column-mode t) (visual-fill-column-mode t))))
       (set-window-fringes window 0 0 0 t))))
 
-(defun color-name-to-hex (color-name)
+(defun selected-window-accent--color-name-to-hex (color-name)
   "Convert COLOR-NAME to its hexadecimal representation."
   (let ((rgb (color-name-to-rgb color-name)))
     (when rgb
