@@ -2,8 +2,8 @@
 ;;
 ;; Author: James Dyer <captainflasmr@gmail.com>
 ;; Version: 0.1.0
-;; Package-Requires: ((emacs "24.3"))
-;; Keywords: accent, highlight, window
+;; Package-Requires: ((emacs "25.1") (visual-fill-column "0"))
+;; Keywords: convenience
 ;; URL: https://github.com/captainflasmr/selected-window-accent-mode
 ;;
 ;; This file is not part of GNU Emacs.
@@ -84,7 +84,7 @@
                  (const :tag "Subtle Style" subtle))
   :group 'selected-window-accent-group)
 
-(defun window-update (window is-selected)
+(defun selected-window-accent--window-update (window is-selected)
   "Update fringes and margins for the given WINDOW.
 IS-SELECTED defines if the current window is being processed"
   (pcase selected-window-accent-mode-style
@@ -93,29 +93,32 @@ IS-SELECTED defines if the current window is being processed"
       (set-face-attribute 'header-line nil :height (* 6 selected-window-accent-fringe-thickness))
       (set-face-attribute 'mode-line-active nil :height (* 8 selected-window-accent-fringe-thickness))
       (set-window-margins window (if is-selected 1 2) 0)
-      (with-selected-window window
-        (when (eq visual-fill-column-mode t) (visual-fill-column-mode t)))
+      (when (featurep 'visual-fill-column)
+        (with-selected-window window
+          (when (eq visual-fill-column-mode t) (visual-fill-column-mode t))))
       (set-window-fringes window
         selected-window-accent-fringe-thickness
         selected-window-accent-fringe-thickness 0 t))
     ('subtle
       (setq header-line-format 'nil)
       (set-window-margins window (if is-selected 1 2) 0)
-      (with-selected-window window
-        (when (eq visual-fill-column-mode t) (visual-fill-column-mode t)))
+      (when (featurep 'visual-fill-column)
+        (with-selected-window window
+          (when (eq visual-fill-column-mode t) (visual-fill-column-mode t))))
       (set-window-fringes window
         selected-window-accent-fringe-thickness 0 0 t))
     ('default
       (set-window-margins window 0 0)
-      (with-selected-window window
-        (when (eq visual-fill-column-mode t) (visual-fill-column-mode t)))
+      (when (featurep 'visual-fill-column)
+        (with-selected-window window
+          (when (eq visual-fill-column-mode t) (visual-fill-column-mode t))))
       (set-window-fringes window 0 0 0 t))))
 
 (defun color-name-to-hex (color-name)
   "Convert COLOR-NAME to its hexadecimal representation."
   (let ((rgb (color-name-to-rgb color-name)))
     (when rgb
-      (apply 'format "#%02x%02x%02x"
+      (apply #'format "#%02x%02x%02x"
         (mapcar (lambda (x) (round (* x 255))) rgb)))))
 
 (defun selected-window-accent (&optional custom-accent-color)
@@ -127,7 +130,7 @@ With optional CUSTOM-ACCENT-COLOR, explicitly defined color"
     (setq selected-window-accent-custom-color (read-color "Enter custom accent color: ")))
 
   (let* ((init-accent-color (or selected-window-accent-custom-color
-                              (color-name-to-hex (face-attribute 'highlight :background))))
+                              (selected-window-accent--color-name-to-hex (face-attribute 'highlight :background))))
           (accent-bg-color (if (string-greaterp init-accent-color "#000404")
                              (color-desaturate-name (color-darken-name init-accent-color 0) 20)
                              (color-desaturate-name (color-lighten-name init-accent-color 0) 0)))
@@ -140,14 +143,14 @@ With optional CUSTOM-ACCENT-COLOR, explicitly defined color"
     (walk-windows
       (lambda (window)
         (let ((is-selected (eq window (selected-window))))
-          (window-update window is-selected)
+          (selected-window-accent--window-update window is-selected)
           (with-selected-window window
             (when (not is-selected)
               (setq header-line-format 'nil)
               (set-window-fringes window 0 0 0 t))))
         nil t))))
 
-(defun reset-window-accent ()
+(defun selected-window-accent--reset-window-accent ()
   "Reset the accent colors for all windows to their defaults."
   (interactive)
   (set-face-attribute 'fringe nil :background nil)
@@ -159,21 +162,22 @@ With optional CUSTOM-ACCENT-COLOR, explicitly defined color"
       (set-window-fringes window 0 0 0 t))
     nil t))
 
+;;;###autoload
 (define-minor-mode selected-window-accent-mode
   "Toggle selected window accenting."
   :global t
   :lighter " SWA"
   (if selected-window-accent-mode
     (progn
-      (add-hook 'window-configuration-change-hook 'selected-window-accent)
-      (add-hook 'window-state-change-hook 'selected-window-accent)
+      (add-hook 'window-configuration-change-hook #'selected-window-accent)
+      (add-hook 'window-state-change-hook #'selected-window-accent)
       (selected-window-accent))
     (progn
-      (remove-hook 'window-configuration-change-hook 'selected-window-accent)
-      (remove-hook 'window-state-change-hook 'selected-window-accent)
-      (reset-window-accent))))
+      (remove-hook 'window-configuration-change-hook #'selected-window-accent)
+      (remove-hook 'window-state-change-hook #'selected-window-accent)
+      (selected-window-accent--reset-window-accent))))
 
-(defun switch-selected-window-accent-style (style)
+(defun selected-window-accent--switch-selected-window-accent-style (style)
   "Switch the selected window accent style to STYLE and apply it."
   (interactive
     (list (intern (completing-read "Choose accent style: " '(default tiling subtle)))))
