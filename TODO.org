@@ -3,17 +3,15 @@
 #+options: toc:nil author:nil title:nil num:nil tasks:todo
 #+startup: showall
 
-* ____________________ 0.2 + / roadmap ____________________
+* ____________________ roadmap ____________________
 
+** DOING add to MELPA
 ** TODO Incorporate =mode-line-active= and =mode-line-inactive= somehow as this would make more sense especially in the 'default mode.
+** TODO highlight selected tab with same accent color?
 ** TODO header-line not shown on window split - I have a funny feeling this could be very difficult, if not impossible!
-** TODO Customization syncing with my README documentation - at some stage I shall push-block these to the elisp file itsself to ensure consistency but for the moment I could need to source START END refactor my existing routin.
 ** TODO restore modeline height when switching between modes
 ** TODO adjust the not selected-window margin to avoid little window navigation. disruption, hence translating a fringe pixel width to a number of margin characters, not quite sure how I am going to do this yet.
-** WATCH careful with removing header-line on all windows, for example magit commit window and probably some others may need to add some logic depending on mode.
-** WATCH possible overheads of updating visual elements for each window?
 ** TODO excess selected-window disruption in header-line. (not sure I can do much about this)
-** TODO add to MELPA
 ** TODO define more custom variables:
 - accent color saturation adjustment
 - accent color darken adjustment
@@ -21,8 +19,5 @@
 - compensating margin
 ** TODO define which theme face attribute to use as the main accent color
 Currently the default is to use the =highlight= face
-** DOING implement accent styles
-*** DONE =default= - /bottom/ - full height modeline
-CLOSED: [2024-01-07 Sun 21:36]
-*** DOING =tiling= - /top/right/bottom/left/ - typically a squished modeline and header line to a general accent thickness to provide a typical tiling window manager focussed outline experience
-*** DOING =subtle= - /left/bottom/
+** WATCH possible overheads of updating visual elements for each window?
+** WATCH careful with removing header-line on all windows, for example magit commit window and probably some others may need to add some logic depending on mode.

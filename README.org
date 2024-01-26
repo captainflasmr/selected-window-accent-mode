@@ -153,7 +153,7 @@ These are the entries in the emacs help / documentation, at some stage I shall p
 
 The thickness of the fringes in pixels.
 
-This thickness is used when the selected-window-accent-mode-style is either tiling or subtle.
+This thickness is used when the `selected-window-accent-mode-style' is either tiling or subtle.
 
 ** selected-window-accent-custom-color
 
@@ -171,13 +171,13 @@ When non-nil, the `selected-window-accent-mode` is active, accenting the selecte
 
 Current style for accenting the selected window.
 
-The style determines how the selected window is visually distinguished from unselected ones.
+ The style determines how the selected window is visually distinguished from unselected ones.
 
-- 'default: No special styling, uses the default Emacs appearance.
+ - `default': No special styling, uses the default Emacs appearance.
 
-- 'tiling: Accentuates the fringes and mode line of the selected window with a thicker appearance, based on `selected-window-accent-fringe-thickness`.
+ - `tiling': Accentuates the fringes and mode line of the selected window with a thicker appearance, based on `selected-window-accent-fringe-thickness`.
 
-- 'subtle: Adds a subtle accent to the selected window with minimal visual change.
+ - `subtle': Adds a subtle accent to the selected window with minimal visual change.
 
 * Minor Mode
 
@@ -195,7 +195,36 @@ Two hooks are used to automatically update the window accents when the window co
 These are added when the =selected-window-accent-mode= is enabled and removed when disabled.
 
 * TODOs / ROADMAP
+  ____________________ roadmap ____________________
 
+  DOING add to MELPA
+
+  TODO Incorporate `mode-line-active' and `mode-line-inactive' somehow as this would make more sense especially in the 'default mode.
+
+  TODO highlight selected tab with same accent color?
+
+  TODO header-line not shown on window split - I have a funny feeling this could be very difficult, if not impossible!
+
+  TODO restore modeline height when switching between modes
+
+  TODO adjust the not selected-window margin to avoid little window navigation. disruption, hence translating a fringe pixel width to a number of margin characters, not quite sure how I am going to do this yet.
+
+  TODO excess selected-window disruption in header-line. (not sure I can do much about this)
+
+  TODO define more custom variables:
+
+    - accent color saturation adjustment
+    - accent color darken adjustment
+    - accent color hue adjustment
+    - compensating margin
+
+  TODO define which theme face attribute to use as the main accent color
+
+    Currently the default is to use the `highlight' face
+
+  WATCH possible overheads of updating visual elements for each window?
+
+  WATCH careful with removing header-line on all windows, for example magit commit window and probably some others may need to add some logic depending on mode.
 * Testing
 
 See CHANGELOG.org

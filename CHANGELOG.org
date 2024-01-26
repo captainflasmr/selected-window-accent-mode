@@ -12,11 +12,26 @@ The newest release is at the top.
 
 See README.org :: TODOs / ROADMAP for future development
 
+* Version 0.3.0 on <2024-01-25>
+
+** DONE rename color-name-to-hex to selected-window-accent--color-name-to-hex
+CLOSED: [2024-01-25 Thu 11:38]
+
+* Version 0.2.0 on <2024-01-25>
+
+** DONE Fixing issues to be able to submit to MELPA
+CLOSED: [2024-01-25 Fri 10:38]
+- byte-compile / flycheck
+- checkdoc
+- package-lint
+- other
+
+** DONE images to img directory and referenced from README
+CLOSED: [2024-01-25 Fri 09:05]
+
 * Version 0.1.0 on <2024-01-12>
 
 This is considered beta.
-
-READY <2024-01-12>
 
 ** DONE expand emacs help / documentation
 CLOSED: [2024-01-12 Fri 12:49]
@@ -27,7 +42,7 @@ CLOSED: [2024-01-12 Fri 07:33]
 ** DONE Add ChangeLog.
 CLOSED: [2024-01-11 Thu 16:16]
 ** DONE visual-fill-column-mode not working again!
-CLOSED: [2024-01-11 Thu 17:17] DEADLINE: <2024-01-31 Wed>
+CLOSED: [2024-01-11 Thu 17:17]
 ** DONE improve modeline contrast between fg and bg
 CLOSED: [2024-01-11 Thu 16:19]
 
