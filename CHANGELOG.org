@@ -12,6 +12,13 @@ The newest release is at the top.
 
 See README.org :: TODOs / ROADMAP for future development
 
+* Version 0.4.0 on <2024-01-29>
+
+** DONE pacified package-lint with visual-fill-column 0.0
+CLOSED: [2024-01-29 Mon 21:11]
+** DONE Added similar package comparisons as suggested
+CLOSED: [2024-01-29 Mon 21:11]
+
 * Version 0.3.0 on <2024-01-25>
 
 ** DONE rename color-name-to-hex to selected-window-accent--color-name-to-hex
