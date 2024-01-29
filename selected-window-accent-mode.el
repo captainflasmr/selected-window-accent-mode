@@ -1,7 +1,7 @@
 ;;; selected-window-accent-mode.el --- Accent Selected Window -*- lexical-binding: t; -*-
 ;;
 ;; Author: James Dyer <captainflasmr@gmail.com>
-;; Version: 0.4.0
+;; Version: 0.5.0
 ;; Package-Requires: ((emacs "25.1") (visual-fill-column "0.0"))
 ;; Keywords: convenience
 ;; URL: https://github.com/captainflasmr/selected-window-accent-mode
@@ -59,7 +59,7 @@
 ;;   dimmer but is less subtle in its highlighting mechanism and hasn't
 ;;   been updated in excess of 10 years.
 ;;
-;;   color-theme-buffer-local
+;; 1.3 color-theme-buffer-local
 ;;
 ;;   "This package lets you set a color-theme on a per-buffer basis."
 ;;
@@ -67,7 +67,7 @@
 ;;   selected window but more of defining different themes for different
 ;;   windows to distinguish them.
 ;;
-;; 1.3 solaire-mode
+;; 1.4 solaire-mode
 ;;
 ;;   "This package is designed to visually distinguish "real" buffers
 ;;   (i.e. file-visiting code buffers where you do most of your work) from

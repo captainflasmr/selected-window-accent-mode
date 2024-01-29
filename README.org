@@ -31,7 +31,7 @@ dimmer can be used in conjunction and will complement selected-window-accent to 
 
 It uses overlays to highlight non active windows, so is similar to dimmer but is less subtle in its highlighting mechanism and hasn't been updated in excess of 10 years.
 
-color-theme-buffer-local
+*** color-theme-buffer-local
 
 "This package lets you set a color-theme on a per-buffer basis."
 
