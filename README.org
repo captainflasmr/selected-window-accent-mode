@@ -7,6 +7,10 @@
 
 The Selected Window Accent Mode is an Emacs package designed to visually distinguish the currently selected window by applying a unique accent color to its fringes, mode line, header line, and margins.
 
+#+attr_org: :width 300px
+#+attr_html: :width 100%
+[[file:img/selected-window-accent-mode-00.jpg]]
+
 ** Alternative window highlighting packages
 
 There exist a few emacs packages that perform window highlighting but that don't quite provide the feature set of selected-window-accent.
@@ -38,11 +42,6 @@ Unlike dimmer and hiwin this package isn't related to the concept of a selected 
 "This package is designed to visually distinguish "real" buffers (i.e. file-visiting code buffers where you do most of your work) from "unreal" buffers (like popups, sidebars, log buffers, terminals, etc) by giving the latter a slightly different -- often darker -- background"
 
 Unlike dimmer and hiwin this package isn't related to the concept of a selected window but more of distinguishing between collections of IDE like elements within emacs.
-
-  #+attr_org: :width 300px
-#+attr_html: :width 100%
-[[file:img/selected-window-accent-mode-00.jpg]]
-
 
 * Quick Start (emacs 29)
 
@@ -258,3 +257,6 @@ These are added when the =selected-window-accent-mode= is enabled and removed wh
   WATCH possible overheads of updating visual elements for each window?
 
   WATCH careful with removing header-line on all windows, for example magit commit window and probably some others may need to add some logic depending on mode.
+* Testing
+
+See CHANGELOG.org
