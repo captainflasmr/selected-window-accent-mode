@@ -178,6 +178,12 @@ Accenting the selected selected tab in the tab-bar"
   :type 'boolean
   :group 'selected-window-accent-group)
 
+(defcustom selected-window-accent-smart-borders nil
+  "When non-nil, the `selected-window-accent-smart-borders` is active.
+Doesn't accent when a frame contains only a single window"
+  :type 'boolean
+  :group 'selected-window-accent-group)
+
 (defun selected-window-accent--window-update (window is-selected)
   "Update fringes and margins for the given WINDOW.
 IS-SELECTED defines if the current window is being processed"
@@ -215,6 +221,10 @@ IS-SELECTED defines if the current window is being processed"
       (apply #'format "#%02x%02x%02x"
         (mapcar (lambda (x) (round (* x 255))) rgb)))))
 
+(defun selected-window-accent--more-than-one-window-p ()
+  "Return t if the current frame has more than one window."
+  (> (length (window-list)) 1))
+
 (defun selected-window-accent (&optional custom-accent-color)
   "Set accent colors for the selected window fringes, mode line, and margins.
 With optional CUSTOM-ACCENT-COLOR, explicitly defined color"
@@ -223,7 +233,9 @@ With optional CUSTOM-ACCENT-COLOR, explicitly defined color"
     (setq selected-window-accent-custom-color (read-color "Enter custom accent color: ")))
 
   (let* ((accent-bg-color)
-          (accent-fg-color))
+          (accent-fg-color)
+          (smart-borders-active (and selected-window-accent-smart-borders
+                                  (not (selected-window-accent--more-than-one-window-p)))))
     (if (not selected-window-accent-custom-color)
       (progn
         (setq accent-bg-color
@@ -239,7 +251,11 @@ With optional CUSTOM-ACCENT-COLOR, explicitly defined color"
     (setq accent-fg-color (if (string-greaterp accent-bg-color "#888888") "#000000" "#ffffff"))
 
     (set-face-attribute 'fringe nil :background accent-bg-color :foreground accent-bg-color)
-    (set-face-attribute 'mode-line-active nil :background accent-bg-color :foreground accent-fg-color)
+
+    (if smart-borders-active
+      (set-face-attribute 'mode-line-active nil :background 'unspecified :foreground 'unspecified)
+      (set-face-attribute 'mode-line-active nil :background accent-bg-color :foreground accent-fg-color))
+
     (set-face-attribute 'header-line nil :background accent-bg-color :foreground accent-bg-color)
     (if selected-window-accent-tab-accent
       (set-face-attribute 'tab-bar-tab nil :background accent-bg-color :foreground accent-fg-color)
@@ -247,7 +263,7 @@ With optional CUSTOM-ACCENT-COLOR, explicitly defined color"
 
     (walk-windows
       (lambda (window)
-        (let ((is-selected (eq window (selected-window))))
+        (let* ((is-selected (and (not smart-borders-active) (eq window (selected-window)))))
           (selected-window-accent--window-update window is-selected)
           (with-selected-window window
             (when (not is-selected)
