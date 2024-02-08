@@ -17,20 +17,22 @@ To use left and bottom accent based on the themes highlight colour:
 
 #+begin_src elisp
 (use-package selected-window-accent-mode
- :custom
- (selected-window-accent-fringe-thickness 10)
- (selected-window-accent-custom-color nil)
- (selected-window-accent-mode-style 'subtle))
+  :config (selected-window-accent-mode 1)
+  :custom
+  (selected-window-accent-fringe-thickness 10)
+  (selected-window-accent-custom-color nil)
+  (selected-window-accent-mode-style 'subtle))
 #+end_src
 
 OR define your own colour:
 
 #+begin_src elisp
 (use-package selected-window-accent-mode
- :custom
- (selected-window-accent-fringe-thickness 10)
- (selected-window-accent-custom-color "#427900")
- (selected-window-accent-mode-style 'subtle))
+  :config (selected-window-accent-mode 1)
+  :custom
+  (selected-window-accent-fringe-thickness 10)
+  (selected-window-accent-custom-color "#427900")
+  (selected-window-accent-mode-style 'subtle))
 #+end_src
 
 ** Alternative window highlighting packages
@@ -70,7 +72,8 @@ Unlike dimmer and hiwin this package isn't related to the concept of a selected 
 ** use-package (MELPA)
 
 #+begin_src elisp
-(use-package selected-window-accent-mode)
+(use-package selected-window-accent-mode
+  :config (selected-window-accent-mode 1))
 #+end_src
 
 ** use-package (emacs 29)
@@ -79,7 +82,8 @@ Put the following into your emacs init file:
 
 #+begin_src elisp
 (use-package selected-window-accent-mode
-  :vc (:fetcher github :repo "captainflasmr/selected-window-accent-mode"))
+  :vc (:fetcher github :repo "captainflasmr/selected-window-accent-mode")
+  :config (selected-window-accent-mode 1))
 #+end_src
 
 ** from source
@@ -90,13 +94,14 @@ Then either manually load it or add it to your configuration to be loaded at sta
 
 #+begin_src elisp
 (require 'selected-window-accent-mode)
+(selected-window-accent-mode 1)
 #+end_src
 
 * Usage
 
 Interactively Toggle the mode on and off =M-x selected-window-accent-mode=
 
-Interactively change the current style =M-x selected-window-accent-style= which will present a =completing-read= selection in the minibuffer
+Interactively change the current style =M-x selected-window-accent--switch-selected-window-accent-style= which will present a =completing-read= selection in the minibuffer
 
 The styles that are currently supported :
 
@@ -127,6 +132,7 @@ To enable the accent mode automatically upon starting Emacs, add the following l
 
 #+begin_src elisp
 (use-package selected-window-accent-mode
+  :config (selected-window-accent-mode 1)
   :custom
   (selected-window-accent-fringe-thickness 20)
   (selected-window-accent-custom-color "goldenrod")
@@ -143,6 +149,7 @@ This will accent the modeline only for the selected window with the =goldenrod= 
 
 #+begin_src elisp
 (use-package selected-window-accent-mode
+  :config (selected-window-accent-mode 1)
   :custom
   (selected-window-accent-fringe-thickness 6)
   (selected-window-accent-custom-color "#4179b2")
@@ -159,6 +166,7 @@ This will accent the full outline of the window with the color #4179b2 more akin
 
 #+begin_src elisp
 (use-package selected-window-accent-mode
+  :config (selected-window-accent-mode 1)
   :custom
   (selected-window-accent-fringe-thickness 6)
   (selected-window-accent-custom-color nil)
@@ -175,6 +183,7 @@ This will accent the full outline of the window with the =highlight= color taken
 
 #+begin_src elisp
 (use-package selected-window-accent-mode
+  :config (selected-window-accent-mode 1)
   :custom
   (selected-window-accent-fringe-thickness 20)
   (selected-window-accent-custom-color nil)
