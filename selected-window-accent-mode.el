@@ -155,6 +155,24 @@ from unselected ones.
                  (const :tag "Subtle Style" subtle))
   :group 'selected-window-accent-group)
 
+(defcustom selected-window-accent-percentage-darken 20
+  "The percentage the highlight accent is darkened.
+
+This percentage of darkening used when the
+`selected-window-accent-custom-color' is set to nil and hence the color
+is chosen from the current theme."
+  :type 'integer
+  :group 'selected-window-accent-group)
+
+(defcustom selected-window-accent-percentage-desaturate 20
+  "The percentage the highlight accent is saturated.
+
+This percentage of desaturation used when the
+`selected-window-accent-custom-color' is set to nil and hence the color
+is chosen from the current theme."
+  :type 'integer
+  :group 'selected-window-accent-group)
+
 (defcustom selected-window-accent-tab-accent nil
   "When non-nil, the `selected-window-accent-tab-accent` is active,
 accenting the selected selected tab in the tab-bar"
@@ -205,12 +223,22 @@ With optional CUSTOM-ACCENT-COLOR, explicitly defined color"
   (when custom-accent-color
     (setq selected-window-accent-custom-color (read-color "Enter custom accent color: ")))
 
-  (let* ((init-accent-color (or selected-window-accent-custom-color
-                              (selected-window-accent--color-name-to-hex (face-attribute 'highlight :background))))
-          (accent-bg-color (if (string-greaterp init-accent-color "#000404")
-                             (color-desaturate-name (color-darken-name init-accent-color 0) 20)
-                             (color-desaturate-name (color-lighten-name init-accent-color 0) 0)))
-          (accent-fg-color (if (string-greaterp accent-bg-color "#888888") "#000000" "#ffffff")))
+  (let* ((accent-bg-color)
+          (accent-fg-color))
+    (if (not selected-window-accent-custom-color)
+      (progn
+        (setq accent-bg-color
+          (selected-window-accent--color-name-to-hex (face-attribute 'highlight :background)))
+        (if (> selected-window-accent-percentage-darken 0)
+          (setq accent-bg-color (color-darken-name accent-bg-color selected-window-accent-percentage-darken))
+          (setq accent-bg-color (color-lighten-name accent-bg-color (abs selected-window-accent-percentage-darken))))
+        (if (> selected-window-accent-percentage-desaturate 0)
+          (setq accent-bg-color (color-desaturate-name accent-bg-color selected-window-accent-percentage-desaturate))
+          (setq accent-bg-color (color-saturate-name accent-bg-color (abs selected-window-accent-percentage-desaturate))))
+        )
+      (setq accent-bg-color selected-window-accent-custom-color))
+
+    (setq accent-fg-color (if (string-greaterp accent-bg-color "#888888") "#000000" "#ffffff"))
 
     (set-face-attribute 'fringe nil :background accent-bg-color :foreground accent-bg-color)
     (set-face-attribute 'mode-line-active nil :background accent-bg-color :foreground accent-fg-color)

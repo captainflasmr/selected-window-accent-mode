@@ -217,6 +217,18 @@ Current style for accenting the selected window.
 
  - `subtle': Adds a subtle accent to the selected window with minimal visual change.
 
+** selected-window-accent-percentage-darken
+
+The percentage the highlight accent is darkened.
+
+This percentage of darkening used when the `selected-window-accent-custom-color' is set to nil and hence the color is chosen from the current theme.
+
+** selected-window-accent-percentage-desaturate
+
+The percentage the highlight accent is saturated.
+
+This percentage of desaturation used when the `selected-window-accent-custom-color' is set to nil and hence the color is chosen from the current theme.
+
 ** selected-window-accent-tab-accent
 
 When non-nil, the `selected-window-accent-tab-accent` is active, accenting the selected selected tab in the tab-bar

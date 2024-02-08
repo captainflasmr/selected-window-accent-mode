@@ -31,6 +31,10 @@ Currently the default is to use the =highlight= face
 
 * Latest TBD
 
+** DONE define accent color saturation adjustment
+CLOSED: [2024-02-08 Thu 12:13]
+** DONE define accent color darken adjustment
+CLOSED: [2024-02-08 Thu 12:13]
 ** DONE highlight selected tab with same accent color
 CLOSED: [2024-02-08 Thu 11:17]
 ** DONE add to MELPA
