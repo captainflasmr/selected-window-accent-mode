@@ -2,7 +2,7 @@
 #+author: James Dyer
 #+email: captainflasmr@gmail.com
 #+language: en
-#+options: ':t toc:nil author:nil email:nil num:nil title:nil
+#+options: ':t toc:t author:nil email:nil num:t title:t
 #+startup: showall
 
 This document contains the release notes for each tagged commit on the
