@@ -27,29 +27,28 @@
 ;; distinguish the currently selected window by applying a unique accent
 ;; color to its fringes, mode line, header line, and margins.
 ;;
-;; Quick Start:
 ;;
-;; To use left and bottom accent based on the themes highlight colour:
+;; 1 Quick Start
 ;;
-;; (use-package selected-window-accent-mode
-;;  :custom
-;;  (selected-window-accent-fringe-thickness 10)
-;;  (selected-window-accent-custom-color nil)
-;;  (selected-window-accent-mode-style 'subtle))
+;;   To use left and bottom accent based on the themes highlight colour:
 ;;
-;; OR define your own colour:
+;;   | (use-package selected-window-accent-mode
+;;   |  :custom
+;;   |  (selected-window-accent-fringe-thickness 10)
+;;   |  (selected-window-accent-custom-color nil)
+;;   |  (selected-window-accent-mode-style 'subtle))
 ;;
-;; (use-package selected-window-accent-mode
-;;  :custom
-;;  (selected-window-accent-fringe-thickness 10)
-;;  (selected-window-accent-custom-color "#427900")
-;;  (selected-window-accent-mode-style 'subtle))
+;;   OR define your own colour:
 ;;
-;; ======================================================================
+;;   | (use-package selected-window-accent-mode
+;;   |  :custom
+;;   |  (selected-window-accent-fringe-thickness 10)
+;;   |  (selected-window-accent-custom-color "#427900")
+;;   |  (selected-window-accent-mode-style 'subtle))
 ;;
-;; 1 Alternative window highlighting packages
+;; 2 Alternative window highlighting packages
 ;;
-;;   There exist a few emacs packages that perform window highlighting but
+;;   There exist a few Emacs packages that perform window highlighting but
 ;;   that don't quite provide the feature set of selected-window-accent.
 ;;
 ;;   selected-window-accent focusses more on clearly but non-intrusively
@@ -57,7 +56,7 @@
 ;;   aspects of the window border without having to modify the appearance
 ;;   of non-selected windows, hence more akin to a tiling window manager.
 ;;
-;; 1.1 dimmer
+;; 2.1 dimmer
 ;;
 ;;   "This package provides a minor mode that indicates which buffer is
 ;;   currently active by dimming the faces in the other buffers."
@@ -70,7 +69,7 @@
 ;;   selected-window-accent to further enhance the emphasizing of the
 ;;   selected window.
 ;;
-;; 1.2 hiwin
+;; 2.2 hiwin
 ;;
 ;;   "This package provides a minor-mode to change the background colour of
 ;;   the non active window."
@@ -79,7 +78,7 @@
 ;;   dimmer but is less subtle in its highlighting mechanism and hasn't
 ;;   been updated in excess of 10 years.
 ;;
-;; 1.3 color-theme-buffer-local
+;; 2.3 color-theme-buffer-local
 ;;
 ;;   "This package lets you set a color-theme on a per-buffer basis."
 ;;
@@ -87,7 +86,7 @@
 ;;   selected window but more of defining different themes for different
 ;;   windows to distinguish them.
 ;;
-;; 1.4 solaire-mode
+;; 2.4 solaire-mode
 ;;
 ;;   "This package is designed to visually distinguish "real" buffers
 ;;   (i.e. file-visiting code buffers where you do most of your work) from
@@ -97,7 +96,7 @@
 ;;
 ;;   Unlike dimmer and hiwin this package isn't related to the concept of a
 ;;   selected window but more of distinguishing between collections of IDE
-;;   like elements within emacs.
+;;   like elements within Emacs.
 ;;
 (require 'color)
 (require 'visual-fill-column)
@@ -174,8 +173,8 @@ is chosen from the current theme."
   :group 'selected-window-accent-group)
 
 (defcustom selected-window-accent-tab-accent nil
-  "When non-nil, the `selected-window-accent-tab-accent` is active,
-accenting the selected selected tab in the tab-bar"
+  "When non-nil, the `selected-window-accent-tab-accent` is active.
+Accenting the selected selected tab in the tab-bar"
   :type 'boolean
   :group 'selected-window-accent-group)
 
@@ -234,8 +233,7 @@ With optional CUSTOM-ACCENT-COLOR, explicitly defined color"
           (setq accent-bg-color (color-lighten-name accent-bg-color (abs selected-window-accent-percentage-darken))))
         (if (> selected-window-accent-percentage-desaturate 0)
           (setq accent-bg-color (color-desaturate-name accent-bg-color selected-window-accent-percentage-desaturate))
-          (setq accent-bg-color (color-saturate-name accent-bg-color (abs selected-window-accent-percentage-desaturate))))
-        )
+          (setq accent-bg-color (color-saturate-name accent-bg-color (abs selected-window-accent-percentage-desaturate)))))
       (setq accent-bg-color selected-window-accent-custom-color))
 
     (setq accent-fg-color (if (string-greaterp accent-bg-color "#888888") "#000000" "#ffffff"))
@@ -245,7 +243,7 @@ With optional CUSTOM-ACCENT-COLOR, explicitly defined color"
     (set-face-attribute 'header-line nil :background accent-bg-color :foreground accent-bg-color)
     (if selected-window-accent-tab-accent
       (set-face-attribute 'tab-bar-tab nil :background accent-bg-color :foreground accent-fg-color)
-      (set-face-attribute 'tab-bar-tab nil :background nil :foreground nil))
+      (set-face-attribute 'tab-bar-tab nil :background 'unspecified :foreground 'unspecified))
 
     (walk-windows
       (lambda (window)
@@ -263,7 +261,7 @@ With optional CUSTOM-ACCENT-COLOR, explicitly defined color"
   (set-face-attribute 'fringe nil :background nil :foreground nil)
   (set-face-attribute 'mode-line-active nil :background nil :foreground nil)
   (set-face-attribute 'header-line nil :background nil :foreground nil)
-  (set-face-attribute 'tab-bar-tab nil :background nil :foreground nil)
+  (set-face-attribute 'tab-bar-tab nil :background 'unspecified :foreground 'unspecified)
   (walk-windows
     (lambda (window)
       (set-window-margins window 0 0)

@@ -11,9 +11,31 @@ The Selected Window Accent Mode is an Emacs package designed to visually disting
 #+attr_html: :width 100%
 [[file:img/selected-window-accent-mode-00.jpg]]
 
+** Quick Start
+
+To use left and bottom accent based on the themes highlight colour:
+
+#+begin_src elisp
+(use-package selected-window-accent-mode
+ :custom
+ (selected-window-accent-fringe-thickness 10)
+ (selected-window-accent-custom-color nil)
+ (selected-window-accent-mode-style 'subtle))
+#+end_src
+
+OR define your own colour:
+
+#+begin_src elisp
+(use-package selected-window-accent-mode
+ :custom
+ (selected-window-accent-fringe-thickness 10)
+ (selected-window-accent-custom-color "#427900")
+ (selected-window-accent-mode-style 'subtle))
+#+end_src
+
 ** Alternative window highlighting packages
 
-There exist a few emacs packages that perform window highlighting but that don't quite provide the feature set of selected-window-accent.
+There exist a few Emacs packages that perform window highlighting but that don't quite provide the feature set of selected-window-accent.
 
 selected-window-accent focusses more on clearly but non-intrusively highlighting the currently selected/focussed window by highlighting aspects of the window border without having to modify the appearance of non-selected windows, hence more akin to a tiling window manager.
 
@@ -41,29 +63,7 @@ Unlike dimmer and hiwin this package isn't related to the concept of a selected 
 
 "This package is designed to visually distinguish "real" buffers (i.e. file-visiting code buffers where you do most of your work) from "unreal" buffers (like popups, sidebars, log buffers, terminals, etc) by giving the latter a slightly different -- often darker -- background"
 
-Unlike dimmer and hiwin this package isn't related to the concept of a selected window but more of distinguishing between collections of IDE like elements within emacs.
-
-* Quick Start
-
-To use left and bottom accent based on the themes highlight colour:
-
-#+begin_src elisp
-(use-package selected-window-accent-mode
- :custom
- (selected-window-accent-fringe-thickness 10)
- (selected-window-accent-custom-color nil)
- (selected-window-accent-mode-style 'subtle))
-#+end_src
-
-OR define your own colour:
-
-#+begin_src elisp
-(use-package selected-window-accent-mode
- :custom
- (selected-window-accent-fringe-thickness 10)
- (selected-window-accent-custom-color "#427900")
- (selected-window-accent-mode-style 'subtle))
-#+end_src
+Unlike dimmer and hiwin this package isn't related to the concept of a selected window but more of distinguishing between collections of IDE like elements within Emacs.
 
 * Installation
 
@@ -231,7 +231,7 @@ This percentage of desaturation used when the `selected-window-accent-custom-col
 
 ** selected-window-accent-tab-accent
 
-When non-nil, the `selected-window-accent-tab-accent` is active, accenting the selected selected tab in the tab-bar
+When non-nil, the `selected-window-accent-tab-accent` is active.  Accenting the selected selected tab in the tab-bar
 
 * Minor Mode
 
