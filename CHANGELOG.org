@@ -12,8 +12,6 @@ With a roadmap and issues also supplied
 
 * ISSUES
 
-** TODO Do not apply highlighting when frame only contains 1 window
-
 * ROADMAP
 
 ** TODO add darken desaturated and tab highlight examples to README
@@ -31,6 +29,8 @@ Currently the default is to use the =highlight= face
 
 * Latest TBD
 
+** DONE ISSUE #1 Do not apply highlighting when frame only contains 1 window
+CLOSED: [2024-02-08 Thu 16:00]
 ** DONE define accent color saturation adjustment
 CLOSED: [2024-02-08 Thu 12:13]
 ** DONE define accent color darken adjustment

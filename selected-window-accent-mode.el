@@ -174,13 +174,13 @@ is chosen from the current theme."
 
 (defcustom selected-window-accent-tab-accent nil
   "When non-nil, the `selected-window-accent-tab-accent` is active.
-Accenting the selected selected tab in the tab-bar"
+Accenting the selected selected tab in the tab-bar."
   :type 'boolean
   :group 'selected-window-accent-group)
 
 (defcustom selected-window-accent-smart-borders nil
   "When non-nil, the `selected-window-accent-smart-borders` is active.
-Doesn't accent when a frame contains only a single window"
+Doesn't accent when a frame contains only a single window."
   :type 'boolean
   :group 'selected-window-accent-group)
 

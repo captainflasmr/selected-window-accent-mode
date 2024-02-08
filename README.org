@@ -231,7 +231,11 @@ This percentage of desaturation used when the `selected-window-accent-custom-col
 
 ** selected-window-accent-tab-accent
 
-When non-nil, the `selected-window-accent-tab-accent` is active.  Accenting the selected selected tab in the tab-bar
+When non-nil, the `selected-window-accent-tab-accent` is active.  Accenting the selected selected tab in the tab-bar.
+
+** selected-window-accent-smart-borders
+
+When non-nil, the `selected-window-accent-smart-borders` is active.  Doesn't accent when a frame contains only a single window.
 
 * Minor Mode
 
