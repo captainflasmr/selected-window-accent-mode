@@ -155,6 +155,12 @@ from unselected ones.
                  (const :tag "Subtle Style" subtle))
   :group 'selected-window-accent-group)
 
+(defcustom selected-window-accent-tab-accent nil
+  "When non-nil, the `selected-window-accent-tab-accent` is active,
+accenting the selected selected tab in the tab-bar"
+  :type 'boolean
+  :group 'selected-window-accent-group)
+
 (defun selected-window-accent--window-update (window is-selected)
   "Update fringes and margins for the given WINDOW.
 IS-SELECTED defines if the current window is being processed"
@@ -196,7 +202,6 @@ IS-SELECTED defines if the current window is being processed"
   "Set accent colors for the selected window fringes, mode line, and margins.
 With optional CUSTOM-ACCENT-COLOR, explicitly defined color"
   (interactive "P")
-
   (when custom-accent-color
     (setq selected-window-accent-custom-color (read-color "Enter custom accent color: ")))
 
@@ -210,6 +215,9 @@ With optional CUSTOM-ACCENT-COLOR, explicitly defined color"
     (set-face-attribute 'fringe nil :background accent-bg-color :foreground accent-bg-color)
     (set-face-attribute 'mode-line-active nil :background accent-bg-color :foreground accent-fg-color)
     (set-face-attribute 'header-line nil :background accent-bg-color :foreground accent-bg-color)
+    (if selected-window-accent-tab-accent
+      (set-face-attribute 'tab-bar-tab nil :background accent-bg-color :foreground accent-fg-color)
+      (set-face-attribute 'tab-bar-tab nil :background nil :foreground nil))
 
     (walk-windows
       (lambda (window)
@@ -224,9 +232,10 @@ With optional CUSTOM-ACCENT-COLOR, explicitly defined color"
 (defun selected-window-accent--reset-window-accent ()
   "Reset the accent colors for all windows to their defaults."
   (interactive)
-  (set-face-attribute 'fringe nil :background nil)
-  (set-face-attribute 'mode-line-active nil :background nil)
-  (set-face-attribute 'header-line nil :background nil)
+  (set-face-attribute 'fringe nil :background nil :foreground nil)
+  (set-face-attribute 'mode-line-active nil :background nil :foreground nil)
+  (set-face-attribute 'header-line nil :background nil :foreground nil)
+  (set-face-attribute 'tab-bar-tab nil :background nil :foreground nil)
   (walk-windows
     (lambda (window)
       (set-window-margins window 0 0)

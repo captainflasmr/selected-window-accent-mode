@@ -217,6 +217,10 @@ Current style for accenting the selected window.
 
  - `subtle': Adds a subtle accent to the selected window with minimal visual change.
 
+** selected-window-accent-tab-accent
+
+When non-nil, the `selected-window-accent-tab-accent` is active, accenting the selected selected tab in the tab-bar
+
 * Minor Mode
 
 The =selected-window-accent-mode= is a global minor mode that you can toggle to enable or disable the accenting of the selected window.
@@ -232,12 +236,16 @@ Two hooks are used to automatically update the window accents when the window co
 
 These are added when the =selected-window-accent-mode= is enabled and removed when disabled.
 
+* ISSUES
+  TODO Do not apply highlighting when frame only contains 1 window
 * TODOs / ROADMAP
-  ____________________ roadmap ____________________
+  TODO add darken desaturated and tab highlight examples to README
+
+  TODO define accent color hue adjustment
+
+  TODO define compensating margin
 
   TODO Incorporate `mode-line-active' and `mode-line-inactive' somehow as this would make more sense especially in the 'default mode.
-
-  TODO highlight selected tab with same accent color?
 
   TODO header-line not shown on window split - I have a funny feeling this could be very difficult, if not impossible!
 
@@ -247,13 +255,6 @@ These are added when the =selected-window-accent-mode= is enabled and removed wh
 
   TODO excess selected-window disruption in header-line. (not sure I can do much about this)
 
-  TODO define more custom variables:
-
-    - accent color saturation adjustment
-    - accent color darken adjustment
-    - accent color hue adjustment
-    - compensating margin
-
   TODO define which theme face attribute to use as the main accent color
 
     Currently the default is to use the `highlight' face
@@ -261,7 +262,6 @@ These are added when the =selected-window-accent-mode= is enabled and removed wh
   WATCH possible overheads of updating visual elements for each window?
 
   WATCH careful with removing header-line on all windows, for example magit commit window and probably some others may need to add some logic depending on mode.
-
 * Testing
 
 See CHANGELOG.org

@@ -2,15 +2,44 @@
 #+author: James Dyer
 #+email: captainflasmr@gmail.com
 #+language: en
-#+options: ':t toc:nil author:t email:t num:nil
+#+options: ':t toc:nil author:nil email:nil num:nil title:nil
 #+startup: showall
 
 This document contains the release notes for each tagged commit on the
 project's main git repository: [[https://github.com/captainflasmr/selected-window-accent-mode]].
 
-The newest release is at the top.
+With a roadmap and issues also supplied
 
-See README.org :: TODOs / ROADMAP for future development
+* ISSUES
+
+** TODO Do not apply highlighting when frame only contains 1 window
+
+* ROADMAP
+
+** TODO add darken desaturated and tab highlight examples to README
+** TODO define accent color hue adjustment
+** TODO define compensating margin
+** TODO Incorporate =mode-line-active= and =mode-line-inactive= somehow as this would make more sense especially in the 'default mode.
+** TODO header-line not shown on window split - I have a funny feeling this could be very difficult, if not impossible!
+** TODO restore modeline height when switching between modes
+** TODO adjust the not selected-window margin to avoid little window navigation. disruption, hence translating a fringe pixel width to a number of margin characters, not quite sure how I am going to do this yet.
+** TODO excess selected-window disruption in header-line. (not sure I can do much about this)
+** TODO define which theme face attribute to use as the main accent color
+Currently the default is to use the =highlight= face
+** WATCH possible overheads of updating visual elements for each window?
+** WATCH careful with removing header-line on all windows, for example magit commit window and probably some others may need to add some logic depending on mode.
+
+* Latest TBD
+
+** DONE highlight selected tab with same accent color
+CLOSED: [2024-02-08 Thu 11:17]
+** DONE add to MELPA
+CLOSED: [2024-02-04 Sun 11:17]
+
+* Version 0.5.0 on <2024-01-29 Mon>
+
+** DONE minor change to properly format color-theme-buffer-local
+CLOSED: [2024-01-29 Mon 16:46]
 
 * Version 0.4.0 on <2024-01-29>
 
@@ -53,7 +82,7 @@ CLOSED: [2024-01-11 Thu 17:17]
 ** DONE improve modeline contrast between fg and bg
 CLOSED: [2024-01-11 Thu 16:19]
 
-** testing
+* Testing
 
 developing locally using:
 #+begin_src elisp
