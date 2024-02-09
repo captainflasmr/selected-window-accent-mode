@@ -2,7 +2,7 @@
 #+author: James Dyer
 #+email: captainflasmr@gmail.com
 #+language: en
-#+options: ':t toc:t author:nil email:nil num:t title:t
+#+options: ':t toc:nil author:nil email:nil num:nil title:nil
 #+startup: showall
 
 This document contains the release notes for each tagged commit on the
@@ -10,7 +10,22 @@ project's main git repository: [[https://github.com/captainflasmr/selected-windo
 
 With a roadmap and issues also supplied
 
+* Whats New
+
+** DONE ISSUE #1 Do not apply highlighting when frame only contains 1 window
+CLOSED: [2024-02-08 Thu 16:00]
+** DONE define accent color saturation adjustment
+CLOSED: [2024-02-08 Thu 12:13]
+** DONE define accent color darken adjustment
+CLOSED: [2024-02-08 Thu 12:13]
+** DONE highlight selected tab with same accent color
+CLOSED: [2024-02-08 Thu 11:17]
+** DONE add to MELPA
+CLOSED: [2024-02-04 Sun 11:17]
+
 * ISSUES
+
+NONE
 
 * ROADMAP
 
@@ -27,63 +42,52 @@ Currently the default is to use the =highlight= face
 ** WATCH possible overheads of updating visual elements for each window?
 ** WATCH careful with removing header-line on all windows, for example magit commit window and probably some others may need to add some logic depending on mode.
 
-* Latest TBD
+* Versions
 
-** DONE ISSUE #1 Do not apply highlighting when frame only contains 1 window
-CLOSED: [2024-02-08 Thu 16:00]
-** DONE define accent color saturation adjustment
-CLOSED: [2024-02-08 Thu 12:13]
-** DONE define accent color darken adjustment
-CLOSED: [2024-02-08 Thu 12:13]
-** DONE highlight selected tab with same accent color
-CLOSED: [2024-02-08 Thu 11:17]
-** DONE add to MELPA
-CLOSED: [2024-02-04 Sun 11:17]
+** 0.5.0 on <2024-01-29 Mon>
 
-* Version 0.5.0 on <2024-01-29 Mon>
-
-** DONE minor change to properly format color-theme-buffer-local
+*** DONE minor change to properly format color-theme-buffer-local
 CLOSED: [2024-01-29 Mon 16:46]
 
-* Version 0.4.0 on <2024-01-29>
+** 0.4.0 on <2024-01-29>
 
-** DONE pacified package-lint with visual-fill-column 0.0
+*** DONE pacified package-lint with visual-fill-column 0.0
 CLOSED: [2024-01-29 Mon 21:11]
-** DONE Added similar package comparisons as suggested
+*** DONE Added similar package comparisons as suggested
 CLOSED: [2024-01-29 Mon 21:11]
 
-* Version 0.3.0 on <2024-01-25>
+** 0.3.0 on <2024-01-25>
 
-** DONE rename color-name-to-hex to selected-window-accent--color-name-to-hex
+*** DONE rename color-name-to-hex to selected-window-accent--color-name-to-hex
 CLOSED: [2024-01-25 Thu 11:38]
 
-* Version 0.2.0 on <2024-01-25>
+** 0.2.0 on <2024-01-25>
 
-** DONE Fixing issues to be able to submit to MELPA
+*** DONE Fixing issues to be able to submit to MELPA
 CLOSED: [2024-01-25 Fri 10:38]
 - byte-compile / flycheck
 - checkdoc
 - package-lint
 - other
 
-** DONE images to img directory and referenced from README
+*** DONE images to img directory and referenced from README
 CLOSED: [2024-01-25 Fri 09:05]
 
-* Version 0.1.0 on <2024-01-12>
+** 0.1.0 on <2024-01-12>
 
 This is considered beta.
 
-** DONE expand emacs help / documentation
+*** DONE expand emacs help / documentation
 CLOSED: [2024-01-12 Fri 12:49]
-** DONE add GNU header
+*** DONE add GNU header
 CLOSED: [2024-01-12 Fri 07:46]
-** DONE cope better with 0 thickness
+*** DONE cope better with 0 thickness
 CLOSED: [2024-01-12 Fri 07:33]
-** DONE Add ChangeLog.
+*** DONE Add ChangeLog.
 CLOSED: [2024-01-11 Thu 16:16]
-** DONE visual-fill-column-mode not working again!
+*** DONE visual-fill-column-mode not working again!
 CLOSED: [2024-01-11 Thu 17:17]
-** DONE improve modeline contrast between fg and bg
+*** DONE improve modeline contrast between fg and bg
 CLOSED: [2024-01-11 Thu 16:19]
 
 * Testing

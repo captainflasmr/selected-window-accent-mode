@@ -1,11 +1,23 @@
 #+title: selected-window-accent-mode
 #+author: James Dyer
-#+options: toc:nil author:nil title:nil num:t
+#+options: toc:nil author:nil title:nil num:nil
 #+startup: showall
 
 * Summary
 
 The Selected Window Accent Mode is an Emacs package designed to visually distinguish the currently selected window by applying a unique accent color to its fringes, mode line, header line, and margins.
+
+** Whats New
+  DONE ISSUE #1 Do not apply highlighting when frame only contains 1 window
+
+  DONE define accent color saturation adjustment
+
+  DONE define accent color darken adjustment
+
+  DONE highlight selected tab with same accent color
+
+  DONE add to MELPA
+** Screenshot
 
 #+attr_org: :width 300px
 #+attr_html: :width 100%
@@ -262,7 +274,7 @@ Two hooks are used to automatically update the window accents when the window co
 These are added when the =selected-window-accent-mode= is enabled and removed when disabled.
 
 * ISSUES
-  TODO Do not apply highlighting when frame only contains 1 window
+  NONE
 * TODOs / ROADMAP
   TODO add darken desaturated and tab highlight examples to README
 
