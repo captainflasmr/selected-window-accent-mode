@@ -5,6 +5,8 @@ With a roadmap and issues also supplied
 
 # Whats New
 
+Version 0.6.0
+
 
 ## DONE ISSUE #1 Do not apply highlighting when frame only contains 1 window
 
@@ -65,6 +67,24 @@ Currently the default is to use the `highlight` face
 
 
 # Versions
+
+
+## 0.6.0 on <span class="timestamp-wrapper"><span class="timestamp">&lt;2024-02-09 Fri&gt;</span></span>
+
+
+### DONE ISSUE #1 Do not apply highlighting when frame only contains 1 window
+
+
+### DONE define accent color saturation adjustment
+
+
+### DONE define accent color darken adjustment
+
+
+### DONE highlight selected tab with same accent color
+
+
+### DONE add to MELPA
 
 
 ## 0.5.0 on <span class="timestamp-wrapper"><span class="timestamp">&lt;2024-01-29 Mon&gt;</span></span>

@@ -12,6 +12,8 @@ With a roadmap and issues also supplied
 
 * Whats New
 
+Version 0.6.0
+
 ** DONE ISSUE #1 Do not apply highlighting when frame only contains 1 window
 CLOSED: [2024-02-08 Thu 16:00]
 ** DONE define accent color saturation adjustment
@@ -43,6 +45,21 @@ Currently the default is to use the =highlight= face
 ** WATCH careful with removing header-line on all windows, for example magit commit window and probably some others may need to add some logic depending on mode.
 
 * Versions
+
+** 0.6.0 on <2024-02-09 Fri>
+
+*** DONE ISSUE #1 Do not apply highlighting when frame only contains 1 window
+CLOSED: [2024-02-08 Thu 16:00]
+*** DONE define accent color saturation adjustment
+CLOSED: [2024-02-08 Thu 12:13]
+*** DONE define accent color darken adjustment
+CLOSED: [2024-02-08 Thu 12:13]
+*** DONE highlight selected tab with same accent color
+CLOSED: [2024-02-08 Thu 11:17]
+*** DONE add to MELPA
+CLOSED: [2024-02-04 Sun 11:17]
+
+
 
 ** 0.5.0 on <2024-01-29 Mon>
 
