@@ -201,6 +201,7 @@ IS-SELECTED defines if the current window is being processed"
         selected-window-accent-fringe-thickness
         selected-window-accent-fringe-thickness 0 t))
     ('subtle
+      (set-face-attribute 'mode-line-active nil :height 'unspecified)
       (setq header-line-format 'nil)
       (set-window-margins window (if is-selected 1 2) 0)
       (when (featurep 'visual-fill-column)
@@ -209,11 +210,12 @@ IS-SELECTED defines if the current window is being processed"
       (set-window-fringes window
         selected-window-accent-fringe-thickness 0 0 t))
     ('default
+      (set-face-attribute 'mode-line-active nil :height 'unspecified)
       (set-window-margins window 0 0)
       (when (featurep 'visual-fill-column)
         (with-selected-window window
           (when (eq visual-fill-column-mode t) (visual-fill-column-mode t))))
-      (set-window-fringes window 0 0 0 t))))
+      )))
 
 (defun selected-window-accent--color-name-to-hex (color-name)
   "Convert COLOR-NAME to its hexadecimal representation."
@@ -233,7 +235,8 @@ With optional CUSTOM-ACCENT-COLOR, explicitly defined color"
   (when custom-accent-color
     (setq selected-window-accent-custom-color (read-color "Enter custom accent color: ")))
 
-  (let* ((accent-bg-color)
+  (let* ((background-color (selected-window-accent--color-name-to-hex (face-attribute 'default :background)))
+          (accent-bg-color)
           (accent-fg-color)
           (smart-borders-active (and selected-window-accent-smart-borders
                                   (not (selected-window-accent--more-than-one-window-p)))))
@@ -251,7 +254,9 @@ With optional CUSTOM-ACCENT-COLOR, explicitly defined color"
 
     (setq accent-fg-color (if (string-greaterp accent-bg-color "#888888") "#000000" "#ffffff"))
 
-    (set-face-attribute 'fringe nil :background accent-bg-color :foreground accent-bg-color)
+    (if (eq selected-window-accent-mode-style 'default)
+      (set-face-attribute 'fringe nil :background background-color :foreground background-color)
+      (set-face-attribute 'fringe nil :background accent-bg-color :foreground accent-bg-color))
 
     (if smart-borders-active
       (set-face-attribute 'mode-line-active nil :background 'unspecified :foreground 'unspecified)
@@ -269,15 +274,17 @@ With optional CUSTOM-ACCENT-COLOR, explicitly defined color"
           (with-selected-window window
             (when (not is-selected)
               (setq header-line-format 'nil)
-              (set-window-fringes window 0 0 0 t))))
+              (when (not (eq selected-window-accent-mode-style 'default))
+                (set-window-fringes window 0 0 0 t))
+              )))
         nil t))))
 
 (defun selected-window-accent--reset-window-accent ()
   "Reset the accent colors for all windows to their defaults."
   (interactive)
-  (set-face-attribute 'fringe nil :background nil :foreground nil)
-  (set-face-attribute 'mode-line-active nil :background nil :foreground nil)
-  (set-face-attribute 'header-line nil :background nil :foreground nil)
+  (set-face-attribute 'fringe nil :background 'unspecified :foreground 'unspecified)
+  (set-face-attribute 'mode-line-active nil :background 'unspecified :foreground 'unspecified)
+  (set-face-attribute 'header-line nil :background 'unspecified :foreground 'unspecified)
   (set-face-attribute 'tab-bar-tab nil :background 'unspecified :foreground 'unspecified)
   (walk-windows
     (lambda (window)

@@ -8,17 +8,11 @@
 The Selected Window Accent Mode is an Emacs package designed to visually distinguish the currently selected window by applying a unique accent color to its fringes, mode line, header line, and margins.
 
 ** Whats New
-  Version 0.6.0
+  Version 0.6.0+
 
-  DONE ISSUE #1 Do not apply highlighting when frame only contains 1 window
+  DONE ISSUE #3 Package breaks fringes
 
-  DONE define accent color saturation adjustment
-
-  DONE define accent color darken adjustment
-
-  DONE highlight selected tab with same accent color
-
-  DONE add to MELPA
+  DONE restore modeline height when switching between modes
 ** Screenshot
 
 #+attr_org: :width 300px
@@ -287,8 +281,6 @@ These are added when the =selected-window-accent-mode= is enabled and removed wh
   TODO Incorporate `mode-line-active' and `mode-line-inactive' somehow as this would make more sense especially in the 'default mode.
 
   TODO header-line not shown on window split - I have a funny feeling this could be very difficult, if not impossible!
-
-  TODO restore modeline height when switching between modes
 
   TODO adjust the not selected-window margin to avoid little window navigation. disruption, hence translating a fringe pixel width to a number of margin characters, not quite sure how I am going to do this yet.
 

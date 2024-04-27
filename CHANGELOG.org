@@ -12,18 +12,11 @@ With a roadmap and issues also supplied
 
 * Whats New
 
-Version 0.6.0
+Version 0.6.0+
 
-** DONE ISSUE #1 Do not apply highlighting when frame only contains 1 window
-CLOSED: [2024-02-08 Thu 16:00]
-** DONE define accent color saturation adjustment
-CLOSED: [2024-02-08 Thu 12:13]
-** DONE define accent color darken adjustment
-CLOSED: [2024-02-08 Thu 12:13]
-** DONE highlight selected tab with same accent color
-CLOSED: [2024-02-08 Thu 11:17]
-** DONE add to MELPA
-CLOSED: [2024-02-04 Sun 11:17]
+** DONE ISSUE #3 Package breaks fringes
+
+** DONE restore modeline height when switching between modes
 
 * ISSUES
 
@@ -36,7 +29,6 @@ NONE
 ** TODO define compensating margin
 ** TODO Incorporate =mode-line-active= and =mode-line-inactive= somehow as this would make more sense especially in the 'default mode.
 ** TODO header-line not shown on window split - I have a funny feeling this could be very difficult, if not impossible!
-** TODO restore modeline height when switching between modes
 ** TODO adjust the not selected-window margin to avoid little window navigation. disruption, hence translating a fringe pixel width to a number of margin characters, not quite sure how I am going to do this yet.
 ** TODO excess selected-window disruption in header-line. (not sure I can do much about this)
 ** TODO define which theme face attribute to use as the main accent color
@@ -58,8 +50,6 @@ CLOSED: [2024-02-08 Thu 12:13]
 CLOSED: [2024-02-08 Thu 11:17]
 *** DONE add to MELPA
 CLOSED: [2024-02-04 Sun 11:17]
-
-
 
 ** 0.5.0 on <2024-01-29 Mon>
 
