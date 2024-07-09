@@ -62,38 +62,6 @@ OR define your own colour:
   (selected-window-accent-mode-style 'subtle))
 #+end_src
 
-** Alternative window highlighting packages
-
-There exist a few Emacs packages that perform window highlighting but that don't quite provide the feature set of selected-window-accent.
-
-selected-window-accent focusses more on clearly but non-intrusively highlighting the currently selected/focussed window by highlighting aspects of the window border without having to modify the appearance of non-selected windows, hence more akin to a tiling window manager.
-
-*** dimmer
-
-"This package provides a minor mode that indicates which buffer is currently active by dimming the faces in the other buffers."
-
-This is the closest in functionality to selected-window-accent, the difference being that dimmer dims non selected windows rather than accent the selected window.
-
-dimmer can be used in conjunction and will complement selected-window-accent to further enhance the emphasizing of the selected window.
-
-*** hiwin
-
-"This package provides a minor-mode to change the background colour of the non active window."
-
-It uses overlays to highlight non active windows, so is similar to dimmer but is less subtle in its highlighting mechanism and hasn't been updated in excess of 10 years.
-
-*** color-theme-buffer-local
-
-"This package lets you set a color-theme on a per-buffer basis."
-
-Unlike dimmer and hiwin this package isn't related to the concept of a selected window but more of defining different themes for different windows to distinguish them.
-
-*** solaire-mode
-
-"This package is designed to visually distinguish "real" buffers (i.e. file-visiting code buffers where you do most of your work) from "unreal" buffers (like popups, sidebars, log buffers, terminals, etc) by giving the latter a slightly different -- often darker -- background"
-
-Unlike dimmer and hiwin this package isn't related to the concept of a selected window but more of distinguishing between collections of IDE like elements within Emacs.
-
 * Installation
 
 ** use-package (MELPA)
@@ -266,6 +234,77 @@ The takes the default highlight colour from the theme as before but applies ligh
   (selected-window-accent-mode-style 'subtle))
 #+end_src
 
+* Design / Algorithm / Limitations
+
+Just as a note, the overall design of this package is a little, lets just say clunky, something that has been somewhat shoehorned into the Emacs functional architecture, therefore there will be a few little quirks.  In this section I look to explain my general design ideas regarding how I achieved some kind of window highlighting / accenting and the associated limitations.
+
+This section is mainly for me, as the maintainer of this package, but may be informative to others.  This section is to try and fully understand how I have designed this thing for when I come back and have another rethink on improvements.
+
+Firstly it is important to define the scope of window based visual highlighting in Emacs, which hopefully will help to explain some of the limitations of this package.
+
+It works well enough I think at the moment and I especially I tend to favour the 'subtle accent mode which inherently has the fewest issues along with providing a satisfying visually distinguishing highlighting mechanism, more bang for the buck if you will.
+
+** Emacs repurposed elements
+
+*** fringe
+
+position: left, right
+face-attribute: 'fringe : all-windows
+size: (set-window-fringes left right) : per-window
+
+*** header-line
+
+position: top
+value: header-line-format : per-window
+face-attribute: 'header-line : all-windows
+size: face-attribute :height : all-windows
+
+*** mode-line
+
+position: bottom
+value: mode-line-format : selected-window
+face-attribute: 'mode-line-active : selected-window
+size: face-attribute :height : all-windows
+
+*** tab-bar
+
+face-attribute: 'tab-bar-tab
+
+** Pseudo-code
+
+#+begin_src
+calculate accent colours
+update global face-attributes
+
+walk-windows
+  for each window
+    update window with accent or default appearance
+    if window is not selected
+      reset header-line to nil
+      reset fringes to 0
+#+end_src
+
+** Limitations
+
+As a header-line can only have a single global colour it does mean that the header-line-format for each window needs to be made blank in order to preserve accent consistency, this means that modes which change the header-line, such as some modes of magit and org-sticky-header will possibly have to be sacrificed for this selected-window-accent-mode to function coherently.
+
+There is a possibility that I could add in some extra logic depending on the mode that is set, but that might be for a future version, and at this moment I'm just not sure the effort is worth it.
+
+The accent is now always alongside an Emacs default margin so as not to overlap with existing packages that utilize the window margin settings, this would make the accent facility look a little less visually appealing then applying a little margin for the selected window along with a compensating margin for non selected windows, but this will have to be sacrificed for not disrupting other Emacs package functionality.
+
+All non selected windows have been fringe zeroed to preserve fringe accent consistency as the fringe colour can only be set globally meaning that any Emacs packages that implement fringe functionality, which I have found to be uncommon, would show varying levels of window accents.
+
+When a buffer is split into multiple windows in tiling mode the header line is shared, thus leading to an accented header line across all splits, this is an inherent limitation of Emacs and how it processes windows / buffers.
+
+Phew!, that might be it, this can get quite complicated!
+
+** What about overlays?
+
+At the moment this package works well enough for my needs and I will think about overlays again at some point to see if I can somehow re-purpose them to fit my needs, currently it is the buffer / window scrolling that I think would always tend to look pretty clunky if implemented.
+
+** The Future
+
+I of course shall keep an eye on Emacs development to see if at some time in the future a more flexible per window visual facility becomes available.
 
 * Customization
 
@@ -459,3 +498,35 @@ Currently the default is to use the =highlight= face
 * Testing
 
 See CHANGELOG.org
+
+* Alternative window highlighting packages
+
+There exist a few Emacs packages that perform window highlighting but that don't quite provide the feature set of selected-window-accent.
+
+selected-window-accent focusses more on clearly but non-intrusively highlighting the currently selected/focussed window by highlighting aspects of the window border without having to modify the appearance of non-selected windows, hence more akin to a tiling window manager.
+
+** dimmer
+
+"This package provides a minor mode that indicates which buffer is currently active by dimming the faces in the other buffers."
+
+This is the closest in functionality to selected-window-accent, the difference being that dimmer dims non selected windows rather than accent the selected window.
+
+dimmer can be used in conjunction and will complement selected-window-accent to further enhance the emphasizing of the selected window.
+
+** hiwin
+
+"This package provides a minor-mode to change the background colour of the non active window."
+
+It uses overlays to highlight non active windows, so is similar to dimmer but is less subtle in its highlighting mechanism and hasn't been updated in excess of 10 years.
+
+** color-theme-buffer-local
+
+"This package lets you set a color-theme on a per-buffer basis."
+
+Unlike dimmer and hiwin this package isn't related to the concept of a selected window but more of defining different themes for different windows to distinguish them.
+
+** solaire-mode
+
+"This package is designed to visually distinguish "real" buffers (i.e. file-visiting code buffers where you do most of your work) from "unreal" buffers (like popups, sidebars, log buffers, terminals, etc) by giving the latter a slightly different -- often darker -- background"
+
+Unlike dimmer and hiwin this package isn't related to the concept of a selected window but more of distinguishing between collections of IDE like elements within Emacs.
