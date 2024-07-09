@@ -14,6 +14,7 @@ The Selected Window Accent Mode is an Emacs package designed to visually disting
 
 *** v0.6.0+
 
+**** DOING ISSUE #4 Doesn't work well with other packages
 **** DONE ISSUE #3 Package breaks fringes
 CLOSED: [2024-05-16 Thu 17:02]
 **** DONE restore modeline height when switching between modes
@@ -335,21 +336,6 @@ Two hooks are used to automatically update the window accents when the window co
 
 These are added when the =selected-window-accent-mode= is enabled and removed when disabled.
 
-* kanban (ROADMAP)
-
-#+begin: kanban :layout ("..." . 100) :scope nil :range ("TODO" . "DOING") :sort "O" :depth 3 :match "ROADMAP" :compressed t
-| TODO                                                                                  | DOING |
-|---------------------------------------------------------------------------------------+-------|
-| [[file:README.org::*add darken desaturated and tab highlight examples to README][add darken desaturated and tab highlight examples to README]]                           |       |
-| [[file:README.org::*define accent color hue adjustment][define accent color hue adjustment]]                                                    |       |
-| [[file:README.org::*define compensating margin][define compensating margin]]                                                            |       |
-| [[file:README.org::*Incorporate mode-line-active and mode-line-inactive somehow][Incorporate mode-line-active and mode-line-inactive somehow]]                           |       |
-| [[file:README.org::*header-line not shown on window split][header-line not shown on window split]]                                                 |       |
-| [[file:README.org::*adjust the not selected-window margin to avoid little window navigation. disruption][adjust the not selected-window margin to avoid little window navigation. disruption]]   |       |
-| [[file:README.org::*excess selected-window disruption in header-line. (not sure I can do much about this)][excess selected-window disruption in header-line. (not sure I can do much about this)]] |       |
-| [[file:README.org::*define which theme face attribute to use as the main accent color][define which theme face attribute to use as the main accent color]]                     |       |
-#+end:
-
 * kanban (ISSUES)
 
 #+begin: kanban :layout ("..." . 50) :scope nil :range ("WATCH" . "DONE") :sort "O" :depth 3 :match "ISSUES" :compressed t
@@ -376,10 +362,37 @@ These are added when the =selected-window-accent-mode= is enabled and removed wh
 |                                                    |                                 |                                          | [[file:README.org::*improve modeline contrast between fg and bg][improve modeline contrast between fg and bg]]        |
 #+end:
 
+* kanban (ROADMAP)
+
+#+begin: kanban :layout ("..." . 100) :scope nil :range ("TODO" . "DOING") :sort "O" :depth 3 :match "ROADMAP" :compressed t
+| TODO                                                                                  | DOING |
+|---------------------------------------------------------------------------------------+-------|
+| [[file:README.org::*add darken desaturated and tab highlight examples to README][add darken desaturated and tab highlight examples to README]]                           |       |
+| [[file:README.org::*define accent color hue adjustment][define accent color hue adjustment]]                                                    |       |
+| [[file:README.org::*define compensating margin][define compensating margin]]                                                            |       |
+| [[file:README.org::*Incorporate mode-line-active and mode-line-inactive somehow][Incorporate mode-line-active and mode-line-inactive somehow]]                           |       |
+| [[file:README.org::*header-line not shown on window split][header-line not shown on window split]]                                                 |       |
+| [[file:README.org::*adjust the not selected-window margin to avoid little window navigation. disruption][adjust the not selected-window margin to avoid little window navigation. disruption]]   |       |
+| [[file:README.org::*excess selected-window disruption in header-line. (not sure I can do much about this)][excess selected-window disruption in header-line. (not sure I can do much about this)]] |       |
+| [[file:README.org::*define which theme face attribute to use as the main accent color][define which theme face attribute to use as the main accent color]]                     |       |
+#+end:
+
 * ISSUES (github)                                                    :ISSUES:
 
 ** DOING #4 Doesn't work well with other packages
-olivetti & org-sticky-header broken with selected-window-accent-mode
+
+*olivetti & org-sticky-header broken with selected-window-accent-mode*
+
+I have decided to disable the setting of windows margins as part of this package as this is often used for padding in other packages.  This means I can now let packages such as olivetti-mode and visual-fill-column do their own thing without any margin interference.  Therefore this package will mainly achieve its functionality via fringe modification rather than fringe/margins.
+
+The disadvantage of this is that on window transition there will be more of a text in buffer offset shift as the select-window-accent-mode fringe is applied to the select window without a default compensatory margin / fringe shift.  This didn't really work anyway and there was always a little shift depending on the width of the native emacs margin character vs fringe pixel size.
+
+This means I don't have to depend on package checks and maybe packages I am unaware of that depend on window buffer margin changes will work better in the future.
+
+Maybe I can just define a non selected window compensatory margin in the future, for now I will leave as is and see how it goes!
+
+However this currently doesn't cover any mode that modifies a window header, like for example org-sticky-header.
+
 ** DONE #3 Package breaks fringes
 ** DONE #1 Do not apply highlighting when frame only contains 1 window
 
@@ -439,6 +452,7 @@ I have a funny feeling this could be very difficult, if not impossible!
 ** TODO adjust the not selected-window margin to avoid little window navigation. disruption
 hence translating a fringe pixel width to a number of margin characters, not quite sure how I am going to do this yet.
 ** TODO excess selected-window disruption in header-line. (not sure I can do much about this)
+** TODO add some form of unit test
 ** TODO define which theme face attribute to use as the main accent color
 Currently the default is to use the =highlight= face
 

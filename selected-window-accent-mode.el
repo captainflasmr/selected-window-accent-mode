@@ -101,6 +101,7 @@
 ;;;
 (require 'color)
 (require 'visual-fill-column)
+(require 'olivetti)
 
 ;;; Code:
 
@@ -193,29 +194,40 @@ IS-SELECTED defines if the current window is being processed"
       (setq header-line-format '(""))
       (set-face-attribute 'header-line nil :height (* 6 selected-window-accent-fringe-thickness))
       (set-face-attribute 'mode-line-active nil :height (* 8 selected-window-accent-fringe-thickness))
-      (set-window-margins window (if is-selected 1 2) 0)
-      (when (featurep 'visual-fill-column)
-        (with-selected-window window
-          (when (eq visual-fill-column-mode t) (visual-fill-column-mode t))))
+      ;; (set-window-margins window (if is-selected 1 2) 0)
+      ;; (when (featurep 'visual-fill-column)
+      ;;   (with-selected-window window
+      ;;     (when (eq visual-fill-column-mode t) (visual-fill-column-mode t))))
+      ;; (when (featurep 'olivetti)
+      ;;   (with-selected-window window
+      ;;     (when (eq olivetti-mode t) (olivetti-mode t))))
       (set-window-fringes window
         selected-window-accent-fringe-thickness
         selected-window-accent-fringe-thickness 0 t))
     ('subtle
       (set-face-attribute 'mode-line-active nil :height 'unspecified)
       (setq header-line-format 'nil)
-      (set-window-margins window (if is-selected 1 2) 0)
-      (when (featurep 'visual-fill-column)
-        (with-selected-window window
-          (when (eq visual-fill-column-mode t) (visual-fill-column-mode t))))
+      ;; (set-window-margins window (if is-selected 1 2) 0)
+      ;; (when (featurep 'visual-fill-column)
+      ;;   (with-selected-window window
+      ;;     (when (eq visual-fill-column-mode t) (visual-fill-column-mode t))))
+      ;; (when (featurep 'olivetti)
+      ;;   (with-selected-window window
+      ;;     (when (eq olivetti-mode t) (olivetti-mode t))))
       (set-window-fringes window
         selected-window-accent-fringe-thickness 0 0 t))
     ('default
       (set-face-attribute 'mode-line-active nil :height 'unspecified)
-      (set-window-margins window 0 0)
-      (when (featurep 'visual-fill-column)
-        (with-selected-window window
-          (when (eq visual-fill-column-mode t) (visual-fill-column-mode t))))
-      )))
+      ;; (set-window-margins window 0 0)
+      ;; (when (featurep 'visual-fill-column)
+      ;;   (with-selected-window window
+      ;;     (when (eq visual-fill-column-mode t) (visual-fill-column-mode t))))
+      ;; (when (featurep 'olivetti)
+      ;;   (with-selected-window window
+      ;;     (when (eq olivetti-mode t) (olivetti-mode t))))
+      )
+    )
+  )
 
 (defun selected-window-accent--color-name-to-hex (color-name)
   "Convert COLOR-NAME to its hexadecimal representation."
