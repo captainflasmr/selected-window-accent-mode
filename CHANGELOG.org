@@ -3,42 +3,23 @@
 #+email: captainflasmr@gmail.com
 #+language: en
 #+options: ':t toc:nil author:nil email:nil num:nil title:nil
+#+todo: TODO DOING | DONE
 #+startup: showall
 
 This document contains the release notes for each tagged commit on the
 project's main git repository: [[https://github.com/captainflasmr/selected-window-accent-mode]].
 
-With a roadmap and issues also supplied
-
-* Whats New
-
-Version 0.6.0+
-
-** DONE ISSUE #3 Package breaks fringes
-
-** DONE restore modeline height when switching between modes
-
-* ISSUES
-
-NONE
-
-* ROADMAP
-
-** TODO add darken desaturated and tab highlight examples to README
-** TODO define accent color hue adjustment
-** TODO define compensating margin
-** TODO Incorporate =mode-line-active= and =mode-line-inactive= somehow as this would make more sense especially in the 'default mode.
-** TODO header-line not shown on window split - I have a funny feeling this could be very difficult, if not impossible!
-** TODO adjust the not selected-window margin to avoid little window navigation. disruption, hence translating a fringe pixel width to a number of margin characters, not quite sure how I am going to do this yet.
-** TODO excess selected-window disruption in header-line. (not sure I can do much about this)
-** TODO define which theme face attribute to use as the main accent color
-Currently the default is to use the =highlight= face
-** WATCH possible overheads of updating visual elements for each window?
-** WATCH careful with removing header-line on all windows, for example magit commit window and probably some others may need to add some logic depending on mode.
-
 * Versions
 
-** 0.6.0 on <2024-02-09 Fri>
+** v0.6.0+
+
+*** DONE ISSUE #3 Package breaks fringes
+CLOSED: [2024-05-16 Thu 17:02]
+*** DONE restore modeline height when switching between modes
+
+
+
+** v0.6.0 <2024-02-09 Fri>
 
 *** DONE ISSUE #1 Do not apply highlighting when frame only contains 1 window
 CLOSED: [2024-02-08 Thu 16:00]
@@ -51,24 +32,24 @@ CLOSED: [2024-02-08 Thu 11:17]
 *** DONE add to MELPA
 CLOSED: [2024-02-04 Sun 11:17]
 
-** 0.5.0 on <2024-01-29 Mon>
+** v0.5.0 <2024-01-29 Mon>
 
 *** DONE minor change to properly format color-theme-buffer-local
 CLOSED: [2024-01-29 Mon 16:46]
 
-** 0.4.0 on <2024-01-29>
+** v0.4.0 <2024-01-29>
 
 *** DONE pacified package-lint with visual-fill-column 0.0
 CLOSED: [2024-01-29 Mon 21:11]
 *** DONE Added similar package comparisons as suggested
 CLOSED: [2024-01-29 Mon 21:11]
 
-** 0.3.0 on <2024-01-25>
+** v0.3.0 <2024-01-25>
 
 *** DONE rename color-name-to-hex to selected-window-accent--color-name-to-hex
 CLOSED: [2024-01-25 Thu 11:38]
 
-** 0.2.0 on <2024-01-25>
+** v0.2.0 <2024-01-25>
 
 *** DONE Fixing issues to be able to submit to MELPA
 CLOSED: [2024-01-25 Fri 10:38]
@@ -80,7 +61,7 @@ CLOSED: [2024-01-25 Fri 10:38]
 *** DONE images to img directory and referenced from README
 CLOSED: [2024-01-25 Fri 09:05]
 
-** 0.1.0 on <2024-01-12>
+** v0.1.0 <2024-01-12>
 
 This is considered beta.
 

@@ -1,6 +1,9 @@
 #+title: selected-window-accent-mode
 #+author: James Dyer
-#+options: toc:nil author:nil title:nil num:nil
+#+email: captainflasmr@gmail.com
+#+language: en
+#+options: ':t toc:nil author:nil email:nil num:nil title:nil
+#+todo: WATCH TODO DOING | DONE
 #+startup: showall
 
 * Summary
@@ -8,11 +11,26 @@
 The Selected Window Accent Mode is an Emacs package designed to visually distinguish the currently selected window by applying a unique accent color to its fringes, mode line, header line, and margins.
 
 ** Whats New
-  Version 0.6.0+
 
-  DONE ISSUE #3 Package breaks fringes
+*** v0.6.0+
 
-  DONE restore modeline height when switching between modes
+**** DONE ISSUE #3 Package breaks fringes
+CLOSED: [2024-05-16 Thu 17:02]
+**** DONE restore modeline height when switching between modes
+
+*** v0.6.0 <2024-02-09 Fri>
+
+**** DONE ISSUE #1 Do not apply highlighting when frame only contains 1 window
+CLOSED: [2024-02-08 Thu 16:00]
+**** DONE define accent color saturation adjustment
+CLOSED: [2024-02-08 Thu 12:13]
+**** DONE define accent color darken adjustment
+CLOSED: [2024-02-08 Thu 12:13]
+**** DONE highlight selected tab with same accent color
+CLOSED: [2024-02-08 Thu 11:17]
+**** DONE add to MELPA
+CLOSED: [2024-02-04 Sun 11:17]
+
 ** Screenshot
 
 #+attr_org: :width 300px
@@ -269,30 +287,113 @@ Two hooks are used to automatically update the window accents when the window co
 
 These are added when the =selected-window-accent-mode= is enabled and removed when disabled.
 
-* ISSUES
-  NONE
-* TODOs / ROADMAP
-  TODO add darken desaturated and tab highlight examples to README
+* kanban (ROADMAP)
 
-  TODO define accent color hue adjustment
+#+begin: kanban :layout ("..." . 50) :scope nil :range ("TODO" . "DOING") :sort "O" :depth 3 :match "ROADMAP" :compressed t
+| TODO                                               | DOING |
+|----------------------------------------------------+-------|
+| [[file:README.org::*add darken desaturated and tab highlight examples to README][add darken desaturated and tab highlight exampl...]] |       |
+| [[file:README.org::*define accent color hue adjustment][define accent color hue adjustment]]                 |       |
+| [[file:README.org::*define compensating margin][define compensating margin]]                         |       |
+| [[file:README.org::*Incorporate mode-line-active and mode-line-inactive somehow][Incorporate mode-line-active and mode-line-inac...]] |       |
+| [[file:README.org::*header-line not shown on window split][header-line not shown on window split]]              |       |
+| [[file:README.org::*adjust the not selected-window margin to avoid little window navigation. disruption][adjust the not selected-window margin to avoid ...]] |       |
+| [[file:README.org::*excess selected-window disruption in header-line. (not sure I can do much about this)][excess selected-window disruption in header-lin...]] |       |
+| [[file:README.org::*define which theme face attribute to use as the main accent color][define which theme face attribute to use as the...]] |       |
+#+end:
 
-  TODO define compensating margin
+* kanban (ISSUES)
 
-  TODO Incorporate `mode-line-active' and `mode-line-inactive' somehow as this would make more sense especially in the 'default mode.
+#+begin: kanban :layout ("..." . 50) :scope nil :range ("WATCH" . "DONE") :sort "O" :depth 3 :match "ISSUES" :compressed t
+| WATCH                                              | TODO                            | DOING                                    | DONE                                               |
+|----------------------------------------------------+---------------------------------+------------------------------------------+----------------------------------------------------|
+| [[file:README.org::*possible overheads of updating visual elements for each window?][possible overheads of updating visual elements ...]] | [[file:README.org::*Limiting magit-log when enabled][Limiting magit-log when enabled]] | [[file:README.org::*#4 Doesn't work well with other packages][#4 Doesn't work well with other packages]] | [[file:README.org::*#3 Package breaks fringes][#3 Package breaks fringes]]                          |
+| [[file:README.org::*careful with removing header-line on all windows][careful with removing header-line on all windows]]   |                                 |                                          | [[file:README.org::*#1 Do not apply highlighting when frame only contains 1 window][#1 Do not apply highlighting when frame only co...]] |
+|                                                    |                                 |                                          | [[file:README.org::*restore modeline height when switching between modes][restore modeline height when switching between ...]] |
+|                                                    |                                 |                                          | [[file:README.org::*define accent color saturation adjustment][define accent color saturation adjustment]]          |
+|                                                    |                                 |                                          | [[file:README.org::*define accent color darken adjustment][define accent color darken adjustment]]              |
+|                                                    |                                 |                                          | [[file:README.org::*highlight selected tab with same accent color][highlight selected tab with same accent color]]      |
+|                                                    |                                 |                                          | [[file:README.org::*add to MELPA][add to MELPA]]                                       |
+|                                                    |                                 |                                          | [[file:README.org::*minor change to properly format color-theme-buffer-local][minor change to properly format color-theme-buf...]] |
+|                                                    |                                 |                                          | [[file:README.org::*pacified package-lint with visual-fill-column 0.0][pacified package-lint with visual-fill-column 0.0]]  |
+|                                                    |                                 |                                          | [[file:README.org::*Added similar package comparisons as suggested][Added similar package comparisons as suggested]]     |
+|                                                    |                                 |                                          | [[file:README.org::*rename color-name-to-hex to selected-window-accent--color-name-to-hex][rename color-name-to-hex to selected-window-acc...]] |
+|                                                    |                                 |                                          | [[file:README.org::*Fixing issues to be able to submit to MELPA][Fixing issues to be able to submit to MELPA]]        |
+|                                                    |                                 |                                          | [[file:README.org::*images to img directory and referenced from README][images to img directory and referenced from README]] |
+|                                                    |                                 |                                          | [[file:README.org::*expand emacs help / documentation][expand emacs help / documentation]]                  |
+|                                                    |                                 |                                          | [[file:README.org::*add GNU header][add GNU header]]                                     |
+|                                                    |                                 |                                          | [[file:README.org::*cope better with 0 thickness][cope better with 0 thickness]]                       |
+|                                                    |                                 |                                          | [[file:README.org::*Add ChangeLog.][Add ChangeLog.]]                                     |
+|                                                    |                                 |                                          | [[file:README.org::*visual-fill-column-mode not working again!][visual-fill-column-mode not working again!]]         |
+|                                                    |                                 |                                          | [[file:README.org::*improve modeline contrast between fg and bg][improve modeline contrast between fg and bg]]        |
+#+end:
 
-  TODO header-line not shown on window split - I have a funny feeling this could be very difficult, if not impossible!
+* ISSUES (github)                                                    :ISSUES:
 
-  TODO adjust the not selected-window margin to avoid little window navigation. disruption, hence translating a fringe pixel width to a number of margin characters, not quite sure how I am going to do this yet.
+** DOING #4 Doesn't work well with other packages
+olivetti & org-sticky-header broken with selected-window-accent-mode
+** DONE #3 Package breaks fringes
+** DONE #1 Do not apply highlighting when frame only contains 1 window
 
-  TODO excess selected-window disruption in header-line. (not sure I can do much about this)
+* ISSUES (other)                                                     :ISSUES:
 
-  TODO define which theme face attribute to use as the main accent color
+** TODO Limiting magit-log when enabled
+** WATCH possible overheads of updating visual elements for each window?
+** WATCH careful with removing header-line on all windows
+for example magit commit window and probably some others may need to add some logic depending on mode.
+** DONE restore modeline height when switching between modes
+** DONE define accent color saturation adjustment
+CLOSED: [2024-02-08 Thu 12:13]
+** DONE define accent color darken adjustment
+CLOSED: [2024-02-08 Thu 12:13]
+** DONE highlight selected tab with same accent color
+CLOSED: [2024-02-08 Thu 11:17]
+** DONE add to MELPA
+CLOSED: [2024-02-04 Sun 11:17]
+** DONE minor change to properly format color-theme-buffer-local
+CLOSED: [2024-01-29 Mon 16:46]
+** DONE pacified package-lint with visual-fill-column 0.0
+CLOSED: [2024-01-29 Mon 21:11]
+** DONE Added similar package comparisons as suggested
+CLOSED: [2024-01-29 Mon 21:11]
+** DONE rename color-name-to-hex to selected-window-accent--color-name-to-hex
+CLOSED: [2024-01-25 Thu 11:38]
+** DONE Fixing issues to be able to submit to MELPA
+CLOSED: [2024-01-25 Fri 10:38]
+- byte-compile / flycheck
+- checkdoc
+- package-lint
+- other
+** DONE images to img directory and referenced from README
+CLOSED: [2024-01-25 Fri 09:05]
+** DONE expand emacs help / documentation
+CLOSED: [2024-01-12 Fri 12:49]
+** DONE add GNU header
+CLOSED: [2024-01-12 Fri 07:46]
+** DONE cope better with 0 thickness
+CLOSED: [2024-01-12 Fri 07:33]
+** DONE Add ChangeLog.
+CLOSED: [2024-01-11 Thu 16:16]
+** DONE visual-fill-column-mode not working again!
+CLOSED: [2024-01-11 Thu 17:17]
+** DONE improve modeline contrast between fg and bg
+CLOSED: [2024-01-11 Thu 16:19]
 
-    Currently the default is to use the `highlight' face
+* ROADMAP                                                           :ROADMAP:
 
-  WATCH possible overheads of updating visual elements for each window?
+** TODO add darken desaturated and tab highlight examples to README
+** TODO define accent color hue adjustment
+** TODO define compensating margin
+** TODO Incorporate mode-line-active and mode-line-inactive somehow
+this would make more sense especially in the 'default mode.
+** TODO header-line not shown on window split
+I have a funny feeling this could be very difficult, if not impossible!
+** TODO adjust the not selected-window margin to avoid little window navigation. disruption
+hence translating a fringe pixel width to a number of margin characters, not quite sure how I am going to do this yet.
+** TODO excess selected-window disruption in header-line. (not sure I can do much about this)
+** TODO define which theme face attribute to use as the main accent color
+Currently the default is to use the =highlight= face
 
-  WATCH careful with removing header-line on all windows, for example magit commit window and probably some others may need to add some logic depending on mode.
 * Testing
 
 See CHANGELOG.org
