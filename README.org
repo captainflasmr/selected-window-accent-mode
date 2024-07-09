@@ -186,6 +186,8 @@ This will accent the full outline of the window with the color #4179b2 more akin
 
 ** Example 3 - Tiling / theme highlight color
 
+Example is using the theme doom-one
+
 #+attr_org: :width 300px
 #+attr_html: :width 100%
 [[file:img/selected-window-accent-mode-03.jpg]]
@@ -194,7 +196,7 @@ This will accent the full outline of the window with the color #4179b2 more akin
 (use-package selected-window-accent-mode
   :config (selected-window-accent-mode 1)
   :custom
-  (selected-window-accent-fringe-thickness 6)
+  (selected-window-accent-fringe-thickness 10)
   (selected-window-accent-custom-color nil)
   (selected-window-accent-mode-style 'tiling))
 #+end_src
@@ -202,6 +204,8 @@ This will accent the full outline of the window with the color #4179b2 more akin
 This will accent the full outline of the window with the =highlight= color taken from the current theme.
 
 ** Example 4 - Subtle / custom fringe thickness (thick)
+
+Example is using the theme doom-one
 
 #+attr_org: :width 300px
 #+attr_html: :width 100%
@@ -217,6 +221,50 @@ This will accent the full outline of the window with the =highlight= color taken
 #+end_src
 
 This will accent the modeline and just the left fringe and in this case be quite a pronounced thick accent.
+
+** Example 5 - Subtle / theme accent colour with darkening and desaturation
+
+Example is using the theme doom-one
+
+The takes the default highlight colour from the theme as before but applies darkening and desaturation.
+
+#+attr_org: :width 300px
+#+attr_html: :width 100%
+[[file:img/selected-window-accent-mode-05.jpg]]
+
+#+begin_src elisp
+(use-package selected-window-accent-mode
+  :config (selected-window-accent-mode 1)
+  :custom
+  (selected-window-accent-fringe-thickness 20)
+  (selected-window-accent-percentage-darken 10)
+  (selected-window-accent-percentage-desaturate 100)
+  (selected-window-accent-custom-color nil)
+  (selected-window-accent-mode-style 'subtle))
+#+end_src
+
+** Example 6 - Subtle / theme accent colour with lightening and saturation and tab accent
+
+Example is using the theme doom-one
+
+The takes the default highlight colour from the theme as before but applies lightening and saturation along with the same colour tab accent.
+
+#+attr_org: :width 300px
+#+attr_html: :width 100%
+[[file:img/selected-window-accent-mode-06.jpg]]
+
+#+begin_src elisp
+(use-package selected-window-accent-mode
+  :config (selected-window-accent-mode 1)
+  :custom
+  (selected-window-accent-fringe-thickness 20)
+  (selected-window-accent-percentage-darken -10)
+  (selected-window-accent-percentage-desaturate -100)
+  (selected-window-accent-tab-accent t)
+  (selected-window-accent-custom-color nil)
+  (selected-window-accent-mode-style 'subtle))
+#+end_src
+
 
 * Customization
 
@@ -289,17 +337,17 @@ These are added when the =selected-window-accent-mode= is enabled and removed wh
 
 * kanban (ROADMAP)
 
-#+begin: kanban :layout ("..." . 50) :scope nil :range ("TODO" . "DOING") :sort "O" :depth 3 :match "ROADMAP" :compressed t
-| TODO                                               | DOING |
-|----------------------------------------------------+-------|
-| [[file:README.org::*add darken desaturated and tab highlight examples to README][add darken desaturated and tab highlight exampl...]] |       |
-| [[file:README.org::*define accent color hue adjustment][define accent color hue adjustment]]                 |       |
-| [[file:README.org::*define compensating margin][define compensating margin]]                         |       |
-| [[file:README.org::*Incorporate mode-line-active and mode-line-inactive somehow][Incorporate mode-line-active and mode-line-inac...]] |       |
-| [[file:README.org::*header-line not shown on window split][header-line not shown on window split]]              |       |
-| [[file:README.org::*adjust the not selected-window margin to avoid little window navigation. disruption][adjust the not selected-window margin to avoid ...]] |       |
-| [[file:README.org::*excess selected-window disruption in header-line. (not sure I can do much about this)][excess selected-window disruption in header-lin...]] |       |
-| [[file:README.org::*define which theme face attribute to use as the main accent color][define which theme face attribute to use as the...]] |       |
+#+begin: kanban :layout ("..." . 100) :scope nil :range ("TODO" . "DOING") :sort "O" :depth 3 :match "ROADMAP" :compressed t
+| TODO                                                                                  | DOING |
+|---------------------------------------------------------------------------------------+-------|
+| [[file:README.org::*add darken desaturated and tab highlight examples to README][add darken desaturated and tab highlight examples to README]]                           |       |
+| [[file:README.org::*define accent color hue adjustment][define accent color hue adjustment]]                                                    |       |
+| [[file:README.org::*define compensating margin][define compensating margin]]                                                            |       |
+| [[file:README.org::*Incorporate mode-line-active and mode-line-inactive somehow][Incorporate mode-line-active and mode-line-inactive somehow]]                           |       |
+| [[file:README.org::*header-line not shown on window split][header-line not shown on window split]]                                                 |       |
+| [[file:README.org::*adjust the not selected-window margin to avoid little window navigation. disruption][adjust the not selected-window margin to avoid little window navigation. disruption]]   |       |
+| [[file:README.org::*excess selected-window disruption in header-line. (not sure I can do much about this)][excess selected-window disruption in header-line. (not sure I can do much about this)]] |       |
+| [[file:README.org::*define which theme face attribute to use as the main accent color][define which theme face attribute to use as the main accent color]]                     |       |
 #+end:
 
 * kanban (ISSUES)
