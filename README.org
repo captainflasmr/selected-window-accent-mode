@@ -12,25 +12,41 @@ The Selected Window Accent Mode is an Emacs package designed to visually disting
 
 ** Whats New
 
-*** v0.6.0+
+feat: Add transient menu, enhance foreground customization
 
-**** DOING ISSUE #4 Doesn't work well with other packages
-**** DONE ISSUE #3 Package breaks fringes
-CLOSED: [2024-05-16 Thu 17:02]
-**** DONE restore modeline height when switching between modes
+*** v0.8.0 <2024-07-15 Mon>
+
+- Added transient menu for interactive adjustments (see README usage)
+- Upgraded emacs dependency to 28.1.
+- Added `selected-window-accent-fg-color` for custom foreground accent color.
+- Introduced various `defcustom` options for finer control over foreground accent:
+  - `selected-window-accent-foreground-adjust-factor`
+  - `selected-window-accent--use-complementary-color`
+  - `selected-window-accent--foreground-invert-state`
+  - `selected-window-accent--foreground-offset`
+- Implemented functions for adjusting foreground brightness:
+  - `selected-window-accent-flip-foreground-color`
+  - `selected-window-accent-increment-foreground-color`
+  - `selected-window-accent-decrement-foreground-color`
+  - `selected-window-accent-toggle-complementary-color`
+  - `selected-window-accent-toggle-tab-accent`
+  - `selected-window-accent-toggle-smart-borders`
+- Provided a function to output current settings for copy and paste to emacs init file: `selected-window-accent-output-selected-window-accent-settings`
+- Miscellaneous improvements and refactoring.
+
+*** v0.7.0 <2024-07-09 Tue>
+
+ - ISSUE #4 Doesn't work well with other packages
+ - ISSUE #3 Package breaks fringes
+ - restore modeline height when switching between modes
 
 *** v0.6.0 <2024-02-09 Fri>
 
-**** DONE ISSUE #1 Do not apply highlighting when frame only contains 1 window
-CLOSED: [2024-02-08 Thu 16:00]
-**** DONE define accent color saturation adjustment
-CLOSED: [2024-02-08 Thu 12:13]
-**** DONE define accent color darken adjustment
-CLOSED: [2024-02-08 Thu 12:13]
-**** DONE highlight selected tab with same accent color
-CLOSED: [2024-02-08 Thu 11:17]
-**** DONE add to MELPA
-CLOSED: [2024-02-04 Sun 11:17]
+- ISSUE #1 Do not apply highlighting when frame only contains 1 window
+- define accent color saturation adjustment
+- define accent color darken adjustment
+- highlight selected tab with same accent color
+- add to MELPA
 
 ** Screenshot
 
@@ -96,7 +112,17 @@ Then either manually load it or add it to your configuration to be loaded at sta
 
 Interactively Toggle the mode on and off =M-x selected-window-accent-mode=
 
-Interactively change the current style =M-x selected-window-accent--switch-selected-window-accent-style= which will present a =completing-read= selection in the minibuffer
+A transient map is available (Emacs 28.1+):
+
+#+begin_src elisp
+(global-set-key (kbd "C-c w") 'selected-window-accent-transient)
+#+end_src
+
+which will bring up the following transient menu:
+
+#+attr_org: :width 300px
+#+attr_html: :width 100%
+[[file:img/selected-window-accent-mode-transient-menu.jpg]]
 
 The styles that are currently supported :
 
@@ -105,15 +131,6 @@ The styles that are currently supported :
 - subtle
 
 see *roadmap* below for a description.
-
-Typically I have bound these two interactive functions to a new keymap where I keep all my emacs visual change functions.
-
-#+begin_src elisp
-(defvar my-win-keymap (make-sparse-keymap))
-(global-set-key (kbd "M-o") my-win-keymap)
-(define-key my-win-keymap (kbd "a") 'selected-window-accent-mode)
-(define-key my-win-keymap (kbd "y") 'selected-window-accent--switch-selected-window-accent-style)
-#+end_src
 
 * Examples
 
