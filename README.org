@@ -251,6 +251,88 @@ The takes the default highlight colour from the theme as before but applies ligh
   (selected-window-accent-mode-style 'subtle))
 #+end_src
 
+* Customization
+
+** selected-window-accent-fringe-thickness
+
+The thickness of the fringes in pixels.
+
+This thickness is used when the ‘selected-window-accent-mode-style’ is
+either tiling or subtle.
+
+** selected-window-accent-custom-color
+
+Custom accent color for the selected window.
+
+When set to a color, this color will override the default highlight face background color as the accent color for the selected window.  Setting this to nil disables the custom color, reverting to the default behavior.
+
+** selected-window-accent-mode
+
+Non-nil if Selected-Window-Accent mode is enabled.  See the ‘selected-window-accent-mode’ command for a description of this minor mode.  Setting this variable directly does not take effect; either customize it (see the info node ‘Easy Customization’) or call the function ‘selected-window-accent-mode’.
+
+** selected-window-accent-mode-style
+
+Current style for accenting the selected window.
+
+The style determines how the selected window is visually distinguished from unselected ones.
+
+- ‘default’: No special styling, uses the default Emacs appearance.
+
+- ‘tiling’: Accentuates the fringes and mode line of the selected window with a thicker appearance, based on ‘selected-window-accent-fringe-thickness‘.
+
+- ‘subtle’: Adds a subtle accent to the selected window with minimal visual change.
+
+** selected-window-accent-percentage-darken
+
+The percentage the highlight accent is darkened.
+
+This percentage of darkening used when the ‘selected-window-accent-custom-color’ is set to nil and hence the color is chosen from the current theme.
+
+** selected-window-accent-percentage-desaturate
+
+The percentage the highlight accent is saturated.
+
+This percentage of desaturation used when the ‘selected-window-accent-custom-color’ is set to nil and hence the color is chosen from the current theme.
+
+** selected-window-accent-tab-accent
+
+When non-nil, the ‘selected-window-accent-tab-accent‘ is active.  Accenting the selected selected tab in the tab-bar.
+
+** selected-window-accent-smart-borders
+
+When non-nil, the ‘selected-window-accent-smart-borders‘ is active.  Doesn’t accent when a frame contains only a single window.
+
+** selected-window-accent-foreground-adjust-factor
+
+Adjustment factor for incrementing or decrementing foreground color brightness.
+
+** selected-window-accent--use-complementary-color
+
+Toggle complementary color for foreground based on background color.
+
+** selected-window-accent--foreground-invert-state
+
+Toggle inverted color for foreground based on current foreground color.
+
+** selected-window-accent--foreground-offset
+
+The percentage the foreground is modified.
+
+* Minor Mode
+
+The =selected-window-accent-mode= is a global minor mode that you can toggle to enable or disable the accenting of the selected window.
+
+When enabled, it distinguishes the selected window with a special accent color.
+
+* Hooks
+
+Two hooks are used to automatically update the window accents when the window configuration or state changes:
+
+- window-configuration-change-hook
+- window-state-change-hook
+
+These are added when the =selected-window-accent-mode= is enabled and removed when disabled.
+
 * Design / Algorithm / Limitations
 
 Just as a note, the overall design of this package is a little, lets just say clunky, something that has been somewhat shoehorned into the Emacs functional architecture, therefore there will be a few little quirks.  In this section I look to explain my general design ideas regarding how I achieved some kind of window highlighting / accenting and the associated limitations.
@@ -323,75 +405,6 @@ At the moment this package works well enough for my needs and I will think about
 
 I of course shall keep an eye on Emacs development to see if at some time in the future a more flexible per window visual facility becomes available.
 
-* Customization
-
-These are the entries in the emacs help / documentation, at some stage I shall push-block these to the elisp file itsself to ensure consistency but for the moment I could need to source START END refactor my existing routine.
-
-** selected-window-accent-fringe-thickness
-
-The thickness of the fringes in pixels.
-
-This thickness is used when the `selected-window-accent-mode-style' is either tiling or subtle.
-
-** selected-window-accent-custom-color
-
-Custom accent color for the selected window.
-
-When set to a color, this color will override the default highlight face background color as the accent color for the selected window.  Setting this to nil disables the custom color, reverting to the default behavior.
-
-** selected-window-accent-mode
-
-Mode variable for `selected-window-accent-mode'.
-
-When non-nil, the `selected-window-accent-mode` is active, accenting the selected window according to the style defined in `selected-window-accent-mode-style`.
-
-** selected-window-accent-mode-style
-
-Current style for accenting the selected window.
-
- The style determines how the selected window is visually distinguished from unselected ones.
-
- - `default': No special styling, uses the default Emacs appearance.
-
- - `tiling': Accentuates the fringes and mode line of the selected window with a thicker appearance, based on `selected-window-accent-fringe-thickness`.
-
- - `subtle': Adds a subtle accent to the selected window with minimal visual change.
-
-** selected-window-accent-percentage-darken
-
-The percentage the highlight accent is darkened.
-
-This percentage of darkening used when the `selected-window-accent-custom-color' is set to nil and hence the color is chosen from the current theme.
-
-** selected-window-accent-percentage-desaturate
-
-The percentage the highlight accent is saturated.
-
-This percentage of desaturation used when the `selected-window-accent-custom-color' is set to nil and hence the color is chosen from the current theme.
-
-** selected-window-accent-tab-accent
-
-When non-nil, the `selected-window-accent-tab-accent` is active.  Accenting the selected selected tab in the tab-bar.
-
-** selected-window-accent-smart-borders
-
-When non-nil, the `selected-window-accent-smart-borders` is active.  Doesn't accent when a frame contains only a single window.
-
-* Minor Mode
-
-The =selected-window-accent-mode= is a global minor mode that you can toggle to enable or disable the accenting of the selected window.
-
-When enabled, it distinguishes the selected window with a special accent color.
-
-* Hooks
-
-Two hooks are used to automatically update the window accents when the window configuration or state changes:
-
-- window-configuration-change-hook
-- window-state-change-hook
-
-These are added when the =selected-window-accent-mode= is enabled and removed when disabled.
-
 * kanban (ISSUES)
 
 #+begin: kanban :layout ("..." . 50) :scope nil :range ("WATCH" . "DONE") :sort "O" :depth 3 :match "ISSUES" :compressed t
@@ -449,8 +462,8 @@ Maybe I can just define a non selected window compensatory margin in the future,
 
 However this currently doesn't cover any mode that modifies a window header, like for example org-sticky-header.
 
-** DONE #3 Package breaks fringes
 ** DONE #1 Do not apply highlighting when frame only contains 1 window
+** DONE #3 Package breaks fringes
 
 * ISSUES (other)                                                     :ISSUES:
 
@@ -460,41 +473,25 @@ However this currently doesn't cover any mode that modifies a window header, lik
 for example magit commit window and probably some others may need to add some logic depending on mode.
 ** DONE restore modeline height when switching between modes
 ** DONE define accent color saturation adjustment
-CLOSED: [2024-02-08 Thu 12:13]
 ** DONE define accent color darken adjustment
-CLOSED: [2024-02-08 Thu 12:13]
 ** DONE highlight selected tab with same accent color
-CLOSED: [2024-02-08 Thu 11:17]
 ** DONE add to MELPA
-CLOSED: [2024-02-04 Sun 11:17]
 ** DONE minor change to properly format color-theme-buffer-local
-CLOSED: [2024-01-29 Mon 16:46]
 ** DONE pacified package-lint with visual-fill-column 0.0
-CLOSED: [2024-01-29 Mon 21:11]
 ** DONE Added similar package comparisons as suggested
-CLOSED: [2024-01-29 Mon 21:11]
 ** DONE rename color-name-to-hex to selected-window-accent--color-name-to-hex
-CLOSED: [2024-01-25 Thu 11:38]
 ** DONE Fixing issues to be able to submit to MELPA
-CLOSED: [2024-01-25 Fri 10:38]
 - byte-compile / flycheck
 - checkdoc
 - package-lint
 - other
 ** DONE images to img directory and referenced from README
-CLOSED: [2024-01-25 Fri 09:05]
 ** DONE expand emacs help / documentation
-CLOSED: [2024-01-12 Fri 12:49]
 ** DONE add GNU header
-CLOSED: [2024-01-12 Fri 07:46]
 ** DONE cope better with 0 thickness
-CLOSED: [2024-01-12 Fri 07:33]
 ** DONE Add ChangeLog.
-CLOSED: [2024-01-11 Thu 16:16]
 ** DONE visual-fill-column-mode not working again!
-CLOSED: [2024-01-11 Thu 17:17]
 ** DONE improve modeline contrast between fg and bg
-CLOSED: [2024-01-11 Thu 16:19]
 
 * ROADMAP                                                           :ROADMAP:
 
