@@ -1,8 +1,8 @@
 ;;; selected-window-accent-mode.el --- Accent Selected Window -*- lexical-binding: t; -*-
 ;;
 ;; Author: James Dyer <captainflasmr@gmail.com>
-;; Version: 0.8.0
-;; Package-Requires: ((emacs "28.1"))
+;; Version: 0.8.1
+;; Package-Requires: ((emacs "28.1")(transient "0.1.0"))
 ;; Keywords: convenience
 ;; URL: https://github.com/captainflasmr/selected-window-accent-mode
 ;;
@@ -105,7 +105,7 @@ background color as the accent color for the selected window.  Setting
 this to nil disables the custom color, reverting to the default
 behavior."
   :type '(choice (const :tag "None" nil)
-                 (color :tag "Custom Color"))
+           (color :tag "Custom Color"))
   :group 'selected-window-accent-group)
 
 (defvar selected-window-accent-fg-color "#ffffff"
@@ -135,8 +135,8 @@ from unselected ones.
 - `subtle': Adds a subtle accent to the selected window with minimal
   visual change."
   :type '(choice (const :tag "Default Style" default)
-                 (const :tag "Tiling Style" tiling)
-                 (const :tag "Subtle Style" subtle))
+           (const :tag "Tiling Style" tiling)
+           (const :tag "Subtle Style" subtle))
   :group 'selected-window-accent-group)
 
 (defcustom selected-window-accent-percentage-darken 20
@@ -222,23 +222,23 @@ IS-SELECTED defines if the current window is being processed"
 (defun selected-window-accent--increment-color-brightness (hex-color factor)
   "Increment the brightness of HEX-COLOR by FACTOR."
   (let* ((rgb (color-name-to-rgb hex-color))
-         (new-rgb (mapcar (lambda (x) (min 1.0 (+ x factor))) rgb)))
+          (new-rgb (mapcar (lambda (x) (min 1.0 (+ x factor))) rgb)))
     (apply #'format "#%02x%02x%02x"
-           (mapcar (lambda (x) (round (* x 255))) new-rgb))))
+      (mapcar (lambda (x) (round (* x 255))) new-rgb))))
 
 (defun selected-window-accent--decrement-color-brightness (hex-color factor)
   "Decrement the brightness of HEX-COLOR by FACTOR."
   (let* ((rgb (color-name-to-rgb hex-color))
-         (new-rgb (mapcar (lambda (x) (max 0.0 (- x factor))) rgb)))
+          (new-rgb (mapcar (lambda (x) (max 0.0 (- x factor))) rgb)))
     (apply #'format "#%02x%02x%02x"
-           (mapcar (lambda (x) (round (* x 255))) new-rgb))))
+      (mapcar (lambda (x) (round (* x 255))) new-rgb))))
 
 (defun selected-window-accent--invert-color (hex-color)
   "Invert HEX-COLOR to its opposite value."
   (let* ((rgb (color-name-to-rgb hex-color))
-         (inverted-rgb (mapcar (lambda (x) (- 1 x)) rgb)))
+          (inverted-rgb (mapcar (lambda (x) (- 1 x)) rgb)))
     (apply #'format "#%02x%02x%02x"
-           (mapcar (lambda (x) (round (* x 255))) inverted-rgb))))
+      (mapcar (lambda (x) (round (* x 255))) inverted-rgb))))
 
 (defun selected-window-accent-flip-foreground-color ()
   "Flip the current foreground color to its opposite value."
@@ -253,8 +253,8 @@ IS-SELECTED defines if the current window is being processed"
   (let ((repeat-map (make-sparse-keymap)))
     (setq selected-window-accent--foreground-offset
       (max 0.0 (min 1.0
-                    (+ selected-window-accent--foreground-offset
-                       selected-window-accent-foreground-adjust-factor))))
+                 (+ selected-window-accent--foreground-offset
+                   selected-window-accent-foreground-adjust-factor))))
     (selected-window-accent)
     (message "Foreground color incremented to %s" selected-window-accent--foreground-offset)
     (define-key repeat-map (kbd "+") 'selected-window-accent-increment-foreground-color)
@@ -267,8 +267,8 @@ IS-SELECTED defines if the current window is being processed"
   (let ((repeat-map (make-sparse-keymap)))
     (setq selected-window-accent--foreground-offset
       (max 0.0 (min 1.0
-                    (- selected-window-accent--foreground-offset
-                       selected-window-accent-foreground-adjust-factor))))
+                 (- selected-window-accent--foreground-offset
+                   selected-window-accent-foreground-adjust-factor))))
     (selected-window-accent)
     (message "Foreground color decremented to %s" selected-window-accent--foreground-offset)
     (define-key repeat-map (kbd "+") 'selected-window-accent-increment-foreground-color)
@@ -317,34 +317,34 @@ IS-SELECTED defines if the current window is being processed"
     (with-current-buffer (get-buffer-create "*selected-window-accent-mode-settings*")
       (erase-buffer)
       (insert (format use-package-string
-                      selected-window-accent-fringe-thickness
-                      selected-window-accent-percentage-darken
-                      selected-window-accent-percentage-desaturate
-                      (if selected-window-accent-smart-borders "t" "nil")
-                      (if selected-window-accent-tab-accent "t" "nil")
-                      (or selected-window-accent-custom-color "nil")
-                      selected-window-accent-mode-style
-                      selected-window-accent-foreground-adjust-factor
-                      (if selected-window-accent--use-complementary-color "t" "nil")
-                      (if selected-window-accent--foreground-invert-state "t" "nil")
-                      selected-window-accent--foreground-offset))
+                selected-window-accent-fringe-thickness
+                selected-window-accent-percentage-darken
+                selected-window-accent-percentage-desaturate
+                (if selected-window-accent-smart-borders "t" "nil")
+                (if selected-window-accent-tab-accent "t" "nil")
+                (or selected-window-accent-custom-color "nil")
+                selected-window-accent-mode-style
+                selected-window-accent-foreground-adjust-factor
+                (if selected-window-accent--use-complementary-color "t" "nil")
+                (if selected-window-accent--foreground-invert-state "t" "nil")
+                selected-window-accent--foreground-offset))
       (pop-to-buffer (current-buffer)))))
 
 (defun selected-window-accent--set-foreground-color (bg-color)
   "Determine the foreground color based on BG-COLOR, toggle value, and store it."
   (let ((new-fg-color))
-          (if selected-window-accent--use-complementary-color
-            (setq new-fg-color (color-complement-hex bg-color))
-            (progn
-              (if (string-greaterp bg-color "#888888")
-                (setq new-fg-color "#000000")
-                (setq new-fg-color "#ffffff"))
-              (when selected-window-accent--foreground-invert-state
-                (setq new-fg-color (selected-window-accent--invert-color new-fg-color)))
-              (setq new-fg-color
-                (selected-window-accent--increment-color-brightness
-                  new-fg-color selected-window-accent--foreground-offset))))
-            (selected-window-accent--color-name-to-hex new-fg-color)))
+    (if selected-window-accent--use-complementary-color
+      (setq new-fg-color (color-complement-hex bg-color))
+      (progn
+        (if (string-greaterp bg-color "#888888")
+          (setq new-fg-color "#000000")
+          (setq new-fg-color "#ffffff"))
+        (when selected-window-accent--foreground-invert-state
+          (setq new-fg-color (selected-window-accent--invert-color new-fg-color)))
+        (setq new-fg-color
+          (selected-window-accent--increment-color-brightness
+            new-fg-color selected-window-accent--foreground-offset))))
+    (selected-window-accent--color-name-to-hex new-fg-color)))
 
 (defun selected-window-accent (&optional custom-accent-color)
   "Set accent colors for the selected window fringes, mode line, and margins.
@@ -434,24 +434,23 @@ With optional CUSTOM-ACCENT-COLOR, explicitly defined color"
   (customize-set-variable 'selected-window-accent-mode-style style)
   (selected-window-accent))
 
-(when (and (version<= "28.0" emacs-version) (require 'transient nil 'noerror))
-  ;; Define the transient command and its bindings
-  (transient-define-prefix selected-window-accent-transient ()
-    "Transient for selected window accent."
-    ["Selected Window Accent"
-     ["Main"
+;; Define the transient command and its bindings
+(transient-define-prefix selected-window-accent-transient ()
+  "Transient for selected window accent."
+  ["Selected Window Accent"
+    ["Main"
       ("s" "Switch Style" selected-window-accent-switch-selected-window-accent-style)
       ("c" "Switch Color" (lambda () (interactive) (selected-window-accent t)))
       ("o" "Output Settings" selected-window-accent-output-selected-window-accent-settings)
       ("q" "Quit" transient-quit-one)]
-     ["Toggle"
+    ["Toggle"
       ("m" "Smart Borders" selected-window-accent-toggle-smart-borders)
       ("t" "Tab" selected-window-accent-toggle-tab-accent)]
-     ["Foreground"
+    ["Foreground"
       ("f" "Flip Value" selected-window-accent-flip-foreground-color)
       ("l" "Complementary" selected-window-accent-toggle-complementary-color)
       ("+" "Increment Value" selected-window-accent-increment-foreground-color)
-      ("-" "Decrement Value" selected-window-accent-decrement-foreground-color)]]))
+      ("-" "Decrement Value" selected-window-accent-decrement-foreground-color)]])
 
 (provide 'selected-window-accent-mode)
 

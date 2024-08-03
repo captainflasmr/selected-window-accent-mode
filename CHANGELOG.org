@@ -11,6 +11,17 @@ project's main git repository: [[https://github.com/captainflasmr/selected-windo
 
 * Versions
 
+** v0.8.1 <2024-08-03>
+
+feat: Add transient dependency and fix indentation
+
+- Added 'transient' package requirement to `Package-Requires` in the header.
+- Fixed indentation inconsistencies across the file for better code readability.
+
+Details:
+- Added `transient` package dependency:
+  - Updated the header to include `(transient "0.1.0")` in `Package-Requires`.
+
 ** v0.8.0 <2024-07-15 Mon>
 
 feat: Add transient menu, enhance foreground customization

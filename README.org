@@ -10,11 +10,23 @@
 
 The Selected Window Accent Mode is an Emacs package designed to visually distinguish the currently selected window by applying a unique accent color to its fringes, mode line, header line, and margins.
 
-** Whats New
+* Whats New
 
 feat: Add transient menu, enhance foreground customization
 
-*** v0.8.0 <2024-07-15 Mon>
+** v0.8.1 <2024-08-03>
+
+feat: Add transient dependency and fix indentation
+
+- Added 'transient' package requirement to `Package-Requires` in the header.
+- Fixed indentation inconsistencies across the file for better code readability.
+
+Details:
+- Added `transient` package dependency:
+  - Updated the header to include `(transient "0.1.0")` in `Package-Requires`.
+
+
+** v0.8.0 <2024-07-15 Mon>
 
 - Added transient menu for interactive adjustments (see README usage)
 - Upgraded emacs dependency to 28.1.
@@ -34,13 +46,13 @@ feat: Add transient menu, enhance foreground customization
 - Provided a function to output current settings for copy and paste to emacs init file: `selected-window-accent-output-selected-window-accent-settings`
 - Miscellaneous improvements and refactoring.
 
-*** v0.7.0 <2024-07-09 Tue>
+** v0.7.0 <2024-07-09 Tue>
 
  - ISSUE #4 Doesn't work well with other packages
  - ISSUE #3 Package breaks fringes
  - restore modeline height when switching between modes
 
-*** v0.6.0 <2024-02-09 Fri>
+** v0.6.0 <2024-02-09 Fri>
 
 - ISSUE #1 Do not apply highlighting when frame only contains 1 window
 - define accent color saturation adjustment
@@ -54,7 +66,7 @@ feat: Add transient menu, enhance foreground customization
 #+attr_html: :width 100%
 [[file:img/selected-window-accent-mode-00.jpg]]
 
-** Quick Start
+* Quick Start
 
 To use left and bottom accent based on the themes highlight colour:
 
@@ -115,7 +127,9 @@ Interactively Toggle the mode on and off =M-x selected-window-accent-mode=
 A transient map is available (Emacs 28.1+):
 
 #+begin_src elisp
-(global-set-key (kbd "C-c w") 'selected-window-accent-transient)
+(eval-after-load 'selected-window-accent-mode
+  '(progn
+     (define-key global-map (kbd "C-c w") 'selected-window-accent-transient)))
 #+end_src
 
 which will bring up the following transient menu:
