@@ -1,7 +1,7 @@
 ;;; selected-window-accent-mode.el --- Accent Selected Window -*- lexical-binding: t; -*-
 ;;
 ;; Author: James Dyer <captainflasmr@gmail.com>
-;; Version: 0.8.1
+;; Version: 0.9.0
 ;; Package-Requires: ((emacs "28.1")(transient "0.1.0"))
 ;; Keywords: convenience
 ;; URL: https://github.com/captainflasmr/selected-window-accent-mode
@@ -83,6 +83,7 @@
 ;; - tiling
 ;; - subtle
 ;;;
+(require 'json)
 (require 'color)
 
 ;;; Code:
@@ -189,6 +190,11 @@ Doesn't accent when a frame contains only a single window."
 (defcustom selected-window-accent--foreground-offset 0
   "The percentage the foreground is modified."
   :type 'integer
+  :group 'selected-window-accent-group)
+
+(defcustom selected-window-accent-use-pywal nil
+  "When non-nil, use a color from Pywal generated palette."
+  :type 'boolean
   :group 'selected-window-accent-group)
 
 (defun selected-window-accent--window-update (window)
@@ -313,6 +319,7 @@ IS-SELECTED defines if the current window is being processed"
   (selected-window-accent-custom-color \"%s\")
   (selected-window-accent-mode-style '%s)
   (selected-window-accent-foreground-adjust-factor %.1f)
+  (selected-window-accent-use-pywal %s)
   (selected-window-accent--use-complementary-color %s)
   (selected-window-accent--foreground-invert-state %s)
   (selected-window-accent--foreground-offset %d))"))
@@ -327,6 +334,7 @@ IS-SELECTED defines if the current window is being processed"
                 (or selected-window-accent-custom-color "nil")
                 selected-window-accent-mode-style
                 selected-window-accent-foreground-adjust-factor
+                (if selected-window-accent-use-pywal "t" "nil")
                 (if selected-window-accent--use-complementary-color "t" "nil")
                 (if selected-window-accent--foreground-invert-state "t" "nil")
                 selected-window-accent--foreground-offset))
@@ -348,6 +356,19 @@ IS-SELECTED defines if the current window is being processed"
             new-fg-color selected-window-accent--foreground-offset))))
     (selected-window-accent--color-name-to-hex new-fg-color)))
 
+(defun selected-window-accent--get-pywal-color ()
+  "Get the first color from Pywal palette."
+  (let* ((wal-colors-file (expand-file-name "~/.cache/wal/colors.json"))
+          (colors-data (when (file-exists-p wal-colors-file)
+                         (with-temp-buffer
+                           (insert-file-contents wal-colors-file)
+                           (goto-char (point-min))
+                           (json-parse-buffer :object-type 'hash-table)))))
+    (when colors-data
+      (let ((colors (gethash "colors" colors-data)))
+        (when colors
+          (gethash "color1" colors))))))
+
 (defun selected-window-accent (&optional custom-accent-color)
   "Set accent colors for the selected window fringes, mode line, and margins.
 With optional CUSTOM-ACCENT-COLOR, explicitly defined color"
@@ -361,17 +382,20 @@ With optional CUSTOM-ACCENT-COLOR, explicitly defined color"
           (accent-fg-color)
           (smart-borders-active (and selected-window-accent-smart-borders
                                   (not (selected-window-accent--more-than-one-window-p)))))
-    (if (not selected-window-accent-custom-color)
-      (progn
-        (setq accent-bg-color
-          (selected-window-accent--color-name-to-hex (face-attribute 'highlight :background)))
-        (if (> selected-window-accent-percentage-darken 0)
-          (setq accent-bg-color (color-darken-name accent-bg-color selected-window-accent-percentage-darken))
-          (setq accent-bg-color (color-lighten-name accent-bg-color (abs selected-window-accent-percentage-darken))))
-        (if (> selected-window-accent-percentage-desaturate 0)
-          (setq accent-bg-color (color-desaturate-name accent-bg-color selected-window-accent-percentage-desaturate))
-          (setq accent-bg-color (color-saturate-name accent-bg-color (abs selected-window-accent-percentage-desaturate)))))
-      (setq accent-bg-color selected-window-accent-custom-color))
+
+    (if (and selected-window-accent-use-pywal (file-exists-p "~/.cache/wal/colors.json"))
+      (setq accent-bg-color (selected-window-accent--get-pywal-color))
+      (if (not selected-window-accent-custom-color)
+        (progn
+          (setq accent-bg-color
+            (selected-window-accent--color-name-to-hex (face-attribute 'highlight :background)))
+          (if (> selected-window-accent-percentage-darken 0)
+            (setq accent-bg-color (color-darken-name accent-bg-color selected-window-accent-percentage-darken))
+            (setq accent-bg-color (color-lighten-name accent-bg-color (abs selected-window-accent-percentage-darken))))
+          (if (> selected-window-accent-percentage-desaturate 0)
+            (setq accent-bg-color (color-desaturate-name accent-bg-color selected-window-accent-percentage-desaturate))
+            (setq accent-bg-color (color-saturate-name accent-bg-color (abs selected-window-accent-percentage-desaturate)))))
+        (setq accent-bg-color selected-window-accent-custom-color)))
 
     (setq accent-fg-color (selected-window-accent--set-foreground-color accent-bg-color))
 

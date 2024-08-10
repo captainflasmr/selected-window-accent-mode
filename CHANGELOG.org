@@ -11,6 +11,15 @@ project's main git repository: [[https://github.com/captainflasmr/selected-windo
 
 * Versions
 
+** v0.9 <2024-08-10>
+
+Add Pywal color integration to selected-window-accent-mode
+
+- Introduce `selected-window-accent-use-pywal` option to use a Pywal-generated color palette.
+- Add `selected-window-accent--get-pywal-color` function to fetch colors from Pywal palette.
+- Update logic in `selected-window-accent` function to use Pywal color if enabled.
+- Require `json` package for handling Pywal palette.
+
 ** v0.8.1 <2024-08-03>
 
 feat: Add transient dependency and fix indentation
@@ -93,6 +102,7 @@ This is considered beta.
 * Testing
 
 developing locally using:
+
 #+begin_src elisp
 (use-package selected-window-accent-mode
    :load-path "~/repos/selected-window-accent-mode"
@@ -124,6 +134,6 @@ Documentation style:       Ok
 Message/Query text style:  Ok
 Unwanted Spaces:           Ok
 
-** package-lint
+** package-lint-current-buffer
 
 =package-lint= to help identify common errors in package metadata.
