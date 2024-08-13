@@ -16,6 +16,9 @@ The Selected Window Accent Mode is an Emacs package designed to visually disting
 
 * Whats New
 
+** v0.9.1 <2024-08-13>
+
+Added explicit (require 'transient)
 
 ** v0.9.0 <2024-08-10>
 
