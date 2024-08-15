@@ -6,10 +6,6 @@
 (use-package selected-window-accent-mode
   :config (selected-window-accent-mode 1))
 
-(use-package selected-window-accent-mode
-  :vc (:fetcher github :repo "captainflasmr/selected-window-accent-mode")
-  :config (selected-window-accent-mode 1))
-
 (require 'selected-window-accent-mode)
 (selected-window-accent-mode 1)
 

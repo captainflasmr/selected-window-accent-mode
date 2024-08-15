@@ -178,7 +178,7 @@ OR define your own colour:
   :config (selected-window-accent-mode 1))
 #+end_src
 
-** use-package (emacs 29)
+** use-package (emacs 30+)
 
 Put the following into your emacs init file:
 

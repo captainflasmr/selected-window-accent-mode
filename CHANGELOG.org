@@ -112,15 +112,6 @@ developing locally using:
    :load-path "~/repos/selected-window-accent-mode"
 #+end_src
 
-commiting to github then removing ~/.config/emacs/elpa/selected-window-accent-mode, changing emacs init to:
-
-#+begin_src elisp
-(use-package selected-window-accent-mode
-  :vc (:fetcher github :repo "captainflasmr/selected-window-accent-mode")
-#+end_src
-
-restart emacs and test
-
 and running through and evaluating elisp code in selected-window-accent-mode-quick-tests.el
 
 * Validation
