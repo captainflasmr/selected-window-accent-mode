@@ -1,7 +1,7 @@
 ;;; selected-window-accent-mode.el --- Accent Selected Window -*- lexical-binding: t; -*-
 ;;
 ;; Author: James Dyer <captainflasmr@gmail.com>
-;; Version: 0.9.1
+;; Version: 0.9.5
 ;; Package-Requires: ((emacs "28.1")(transient "0.1.0"))
 ;; Keywords: convenience
 ;; URL: https://github.com/captainflasmr/selected-window-accent-mode
@@ -109,7 +109,7 @@ background color as the accent color for the selected window.  Setting
 this to nil disables the custom color, reverting to the default
 behavior."
   :type '(choice (const :tag "None" nil)
-           (color :tag "Custom Color"))
+                 (color :tag "Custom Color"))
   :group 'selected-window-accent-group)
 
 (defvar selected-window-accent-fg-color "#ffffff"
@@ -139,8 +139,8 @@ from unselected ones.
 - `subtle': Adds a subtle accent to the selected window with minimal
   visual change."
   :type '(choice (const :tag "Default Style" default)
-           (const :tag "Tiling Style" tiling)
-           (const :tag "Subtle Style" subtle))
+                 (const :tag "Tiling Style" tiling)
+                 (const :tag "Subtle Style" subtle))
   :group 'selected-window-accent-group)
 
 (defcustom selected-window-accent-percentage-darken 20
@@ -198,31 +198,41 @@ Doesn't accent when a frame contains only a single window."
   :type 'boolean
   :group 'selected-window-accent-group)
 
+(defcustom selected-window-accent-use-blend-background nil
+  "When non-nil, use the accent color to blend with background of selected window."
+  :type 'boolean
+  :group 'selected-window-accent-group)
+
+(defcustom selected-window-accent-use-blend-alpha 0.5
+  "Adjustment alpha factor for background of selected window blending."
+  :type 'float
+  :group 'selected-window-accent-group)
+
 (defun selected-window-accent--window-update (window)
   "Update fringes and margins for the given WINDOW.
 IS-SELECTED defines if the current window is being processed"
   (pcase selected-window-accent-mode-style
     ('tiling
-      (setq header-line-format '(""))
-      (set-face-attribute 'header-line nil :height (* 6 selected-window-accent-fringe-thickness))
-      (set-face-attribute 'mode-line-active nil :height (* 8 selected-window-accent-fringe-thickness))
-      (set-window-fringes window
-        selected-window-accent-fringe-thickness
-        selected-window-accent-fringe-thickness 0 t))
+     (setq header-line-format '(""))
+     (set-face-attribute 'header-line nil :height (* 6 selected-window-accent-fringe-thickness))
+     (set-face-attribute 'mode-line-active nil :height (* 8 selected-window-accent-fringe-thickness))
+     (set-window-fringes window
+                         selected-window-accent-fringe-thickness
+                         selected-window-accent-fringe-thickness 0 t))
     ('subtle
-      (set-face-attribute 'mode-line-active nil :height 'unspecified)
-      (setq header-line-format 'nil)
-      (set-window-fringes window
-        selected-window-accent-fringe-thickness 0 0 t))
+     (set-face-attribute 'mode-line-active nil :height 'unspecified)
+     (setq header-line-format 'nil)
+     (set-window-fringes window
+                         selected-window-accent-fringe-thickness 0 0 t))
     ('default
-      (set-face-attribute 'mode-line-active nil :height 'unspecified))))
+     (set-face-attribute 'mode-line-active nil :height 'unspecified))))
 
 (defun selected-window-accent--color-name-to-hex (color-name)
   "Convert COLOR-NAME to its hexadecimal representation."
   (let ((rgb (color-name-to-rgb color-name)))
     (when rgb
       (apply #'format "#%02x%02x%02x"
-        (mapcar (lambda (x) (round (* x 255))) rgb)))))
+             (mapcar (lambda (x) (round (* x 255))) rgb)))))
 
 (defun selected-window-accent--more-than-one-window-p ()
   "Return t if the current frame has more than one window."
@@ -231,29 +241,29 @@ IS-SELECTED defines if the current window is being processed"
 (defun selected-window-accent--increment-color-brightness (hex-color factor)
   "Increment the brightness of HEX-COLOR by FACTOR."
   (let* ((rgb (color-name-to-rgb hex-color))
-          (new-rgb (mapcar (lambda (x) (min 1.0 (+ x factor))) rgb)))
+         (new-rgb (mapcar (lambda (x) (min 1.0 (+ x factor))) rgb)))
     (apply #'format "#%02x%02x%02x"
-      (mapcar (lambda (x) (round (* x 255))) new-rgb))))
+           (mapcar (lambda (x) (round (* x 255))) new-rgb))))
 
 (defun selected-window-accent--decrement-color-brightness (hex-color factor)
   "Decrement the brightness of HEX-COLOR by FACTOR."
   (let* ((rgb (color-name-to-rgb hex-color))
-          (new-rgb (mapcar (lambda (x) (max 0.0 (- x factor))) rgb)))
+         (new-rgb (mapcar (lambda (x) (max 0.0 (- x factor))) rgb)))
     (apply #'format "#%02x%02x%02x"
-      (mapcar (lambda (x) (round (* x 255))) new-rgb))))
+           (mapcar (lambda (x) (round (* x 255))) new-rgb))))
 
 (defun selected-window-accent--invert-color (hex-color)
   "Invert HEX-COLOR to its opposite value."
   (let* ((rgb (color-name-to-rgb hex-color))
-          (inverted-rgb (mapcar (lambda (x) (- 1 x)) rgb)))
+         (inverted-rgb (mapcar (lambda (x) (- 1 x)) rgb)))
     (apply #'format "#%02x%02x%02x"
-      (mapcar (lambda (x) (round (* x 255))) inverted-rgb))))
+           (mapcar (lambda (x) (round (* x 255))) inverted-rgb))))
 
 (defun selected-window-accent-flip-foreground-color ()
   "Flip the current foreground color to its opposite value."
   (interactive)
   (setq selected-window-accent--foreground-invert-state
-    (not selected-window-accent--foreground-invert-state))
+        (not selected-window-accent--foreground-invert-state))
   (selected-window-accent))
 
 (defun selected-window-accent-increment-foreground-color ()
@@ -261,9 +271,9 @@ IS-SELECTED defines if the current window is being processed"
   (interactive "p")
   (let ((repeat-map (make-sparse-keymap)))
     (setq selected-window-accent--foreground-offset
-      (max 0.0 (min 1.0
-                 (+ selected-window-accent--foreground-offset
-                   selected-window-accent-foreground-adjust-factor))))
+          (max 0.0 (min 1.0
+                        (+ selected-window-accent--foreground-offset
+                           selected-window-accent-foreground-adjust-factor))))
     (selected-window-accent)
     (message "Foreground color incremented to %s" selected-window-accent--foreground-offset)
     (define-key repeat-map (kbd "+") 'selected-window-accent-increment-foreground-color)
@@ -275,9 +285,9 @@ IS-SELECTED defines if the current window is being processed"
   (interactive "p")
   (let ((repeat-map (make-sparse-keymap)))
     (setq selected-window-accent--foreground-offset
-      (max 0.0 (min 1.0
-                 (- selected-window-accent--foreground-offset
-                   selected-window-accent-foreground-adjust-factor))))
+          (max 0.0 (min 1.0
+                        (- selected-window-accent--foreground-offset
+                           selected-window-accent-foreground-adjust-factor))))
     (selected-window-accent)
     (message "Foreground color decremented to %s" selected-window-accent--foreground-offset)
     (define-key repeat-map (kbd "+") 'selected-window-accent-increment-foreground-color)
@@ -288,21 +298,35 @@ IS-SELECTED defines if the current window is being processed"
   "Toggle between complementary color for foreground based on background color."
   (interactive)
   (setq selected-window-accent--use-complementary-color
-    (not selected-window-accent--use-complementary-color))
+        (not selected-window-accent--use-complementary-color))
   (selected-window-accent))
 
 (defun selected-window-accent-toggle-tab-accent ()
   "Toggle between showing the tab accent."
   (interactive)
   (setq selected-window-accent-tab-accent
-    (not selected-window-accent-tab-accent))
+        (not selected-window-accent-tab-accent))
   (selected-window-accent))
 
 (defun selected-window-accent-toggle-smart-borders ()
   "Toggle between smart borders."
   (interactive)
   (setq selected-window-accent-smart-borders
-    (not selected-window-accent-smart-borders))
+        (not selected-window-accent-smart-borders))
+  (selected-window-accent))
+
+(defun selected-window-accent-toggle-blend-background ()
+  "Toggle between blend background."
+  (interactive)
+  (setq selected-window-accent-use-blend-background
+        (not selected-window-accent-use-blend-background))
+  (selected-window-accent))
+
+(defun selected-window-accent-toggle-pywal ()
+  "Toggle between pywal."
+  (interactive)
+  (setq selected-window-accent-use-pywal
+        (not selected-window-accent-use-pywal))
   (selected-window-accent))
 
 (defun selected-window-accent-output-selected-window-accent-settings ()
@@ -327,48 +351,57 @@ IS-SELECTED defines if the current window is being processed"
     (with-current-buffer (get-buffer-create "*selected-window-accent-mode-settings*")
       (erase-buffer)
       (insert (format use-package-string
-                selected-window-accent-fringe-thickness
-                selected-window-accent-percentage-darken
-                selected-window-accent-percentage-desaturate
-                (if selected-window-accent-smart-borders "t" "nil")
-                (if selected-window-accent-tab-accent "t" "nil")
-                (or selected-window-accent-custom-color "nil")
-                selected-window-accent-mode-style
-                selected-window-accent-foreground-adjust-factor
-                (if selected-window-accent-use-pywal "t" "nil")
-                (if selected-window-accent--use-complementary-color "t" "nil")
-                (if selected-window-accent--foreground-invert-state "t" "nil")
-                selected-window-accent--foreground-offset))
+                      selected-window-accent-fringe-thickness
+                      selected-window-accent-percentage-darken
+                      selected-window-accent-percentage-desaturate
+                      (if selected-window-accent-smart-borders "t" "nil")
+                      (if selected-window-accent-tab-accent "t" "nil")
+                      (or selected-window-accent-custom-color "nil")
+                      selected-window-accent-mode-style
+                      selected-window-accent-foreground-adjust-factor
+                      (if selected-window-accent-use-pywal "t" "nil")
+                      (if selected-window-accent--use-complementary-color "t" "nil")
+                      (if selected-window-accent--foreground-invert-state "t" "nil")
+                      selected-window-accent--foreground-offset))
       (pop-to-buffer (current-buffer)))))
 
 (defun selected-window-accent--set-foreground-color (bg-color)
   "Determine the foreground color based on BG-COLOR, toggle value, and store it."
   (let ((new-fg-color))
     (if selected-window-accent--use-complementary-color
-      (setq new-fg-color (color-complement-hex bg-color))
+        (setq new-fg-color (color-complement-hex bg-color))
       (progn
         (if (string-greaterp bg-color "#888888")
-          (setq new-fg-color "#000000")
+            (setq new-fg-color "#000000")
           (setq new-fg-color "#ffffff"))
         (when selected-window-accent--foreground-invert-state
           (setq new-fg-color (selected-window-accent--invert-color new-fg-color)))
         (setq new-fg-color
-          (selected-window-accent--increment-color-brightness
-            new-fg-color selected-window-accent--foreground-offset))))
+              (selected-window-accent--increment-color-brightness
+               new-fg-color selected-window-accent--foreground-offset))))
     (selected-window-accent--color-name-to-hex new-fg-color)))
 
 (defun selected-window-accent--get-pywal-color ()
   "Get the first color from Pywal palette."
   (let* ((wal-colors-file (expand-file-name "~/.cache/wal/colors.json"))
-          (colors-data (when (file-exists-p wal-colors-file)
-                         (with-temp-buffer
-                           (insert-file-contents wal-colors-file)
-                           (goto-char (point-min))
-                           (json-parse-buffer :object-type 'hash-table)))))
+         (colors-data (when (file-exists-p wal-colors-file)
+                        (with-temp-buffer
+                          (insert-file-contents wal-colors-file)
+                          (goto-char (point-min))
+                          (json-parse-buffer :object-type 'hash-table)))))
     (when colors-data
       (let ((colors (gethash "colors" colors-data)))
         (when colors
           (gethash "color1" colors))))))
+
+(defun selected-window-accent-blend-colors (color1 color2 alpha)
+  "Blend two colors COLOR1 COLOR2 together by a coefficient ALPHA."
+  (let ((c1 (color-name-to-rgb color1))
+        (c2 (color-name-to-rgb color2)))
+    (apply #'format "#%02x%02x%02x"
+           (cl-mapcar (lambda (x y)
+                        (round (+ (* alpha x 255) (* (- 1 alpha) y 255))))
+                      c1 c2))))
 
 (defun selected-window-accent (&optional custom-accent-color)
   "Set accent colors for the selected window fringes, mode line, and margins.
@@ -379,52 +412,57 @@ With optional CUSTOM-ACCENT-COLOR, explicitly defined color"
     (setq selected-window-accent-custom-color (read-color "Enter custom accent color: ")))
 
   (let* ((background-color (selected-window-accent--color-name-to-hex (face-attribute 'default :background)))
-          (accent-bg-color)
-          (accent-fg-color)
-          (smart-borders-active (and selected-window-accent-smart-borders
-                                  (not (selected-window-accent--more-than-one-window-p)))))
+         (accent-bg-color)
+         (accent-fg-color)
+         (smart-borders-active (and selected-window-accent-smart-borders
+                                    (not (selected-window-accent--more-than-one-window-p)))))
 
     (if (and selected-window-accent-use-pywal (file-exists-p "~/.cache/wal/colors.json"))
-      (setq accent-bg-color (selected-window-accent--get-pywal-color))
+        (setq accent-bg-color (selected-window-accent--get-pywal-color))
       (if (not selected-window-accent-custom-color)
-        (progn
-          (setq accent-bg-color
-            (selected-window-accent--color-name-to-hex (face-attribute 'highlight :background)))
-          (if (> selected-window-accent-percentage-darken 0)
-            (setq accent-bg-color (color-darken-name accent-bg-color selected-window-accent-percentage-darken))
-            (setq accent-bg-color (color-lighten-name accent-bg-color (abs selected-window-accent-percentage-darken))))
-          (if (> selected-window-accent-percentage-desaturate 0)
-            (setq accent-bg-color (color-desaturate-name accent-bg-color selected-window-accent-percentage-desaturate))
-            (setq accent-bg-color (color-saturate-name accent-bg-color (abs selected-window-accent-percentage-desaturate)))))
-        (setq accent-bg-color selected-window-accent-custom-color)))
+          (progn
+            (setq accent-bg-color
+                  (selected-window-accent--color-name-to-hex (face-attribute 'highlight :background)))
+            (if (> selected-window-accent-percentage-darken 0)
+                (setq accent-bg-color (color-darken-name accent-bg-color selected-window-accent-percentage-darken))
+              (setq accent-bg-color (color-lighten-name accent-bg-color (abs selected-window-accent-percentage-darken))))
+            (if (> selected-window-accent-percentage-desaturate 0)
+                (setq accent-bg-color (color-desaturate-name accent-bg-color selected-window-accent-percentage-desaturate))
+              (setq accent-bg-color (color-saturate-name accent-bg-color (abs selected-window-accent-percentage-desaturate)))))
+        (setq accent-bg-color (selected-window-accent--color-name-to-hex selected-window-accent-custom-color))))
 
     (setq accent-fg-color (selected-window-accent--set-foreground-color accent-bg-color))
 
-    ;; (message (concat "new color : " accent-fg-color))
-
     (if (eq selected-window-accent-mode-style 'default)
-      (set-face-attribute 'fringe nil :background background-color :foreground background-color)
+        (set-face-attribute 'fringe nil :background background-color :foreground background-color)
       (set-face-attribute 'fringe nil :background accent-bg-color :foreground accent-bg-color))
 
     (if smart-borders-active
-      (set-face-attribute 'mode-line-active nil :background 'unspecified :foreground 'unspecified)
+        (set-face-attribute 'mode-line-active nil :background 'unspecified :foreground 'unspecified)
       (set-face-attribute 'mode-line-active nil :background accent-bg-color :foreground accent-fg-color))
 
     (set-face-attribute 'header-line nil :background accent-bg-color :foreground accent-bg-color)
     (if selected-window-accent-tab-accent
-      (set-face-attribute 'tab-bar-tab nil :background accent-bg-color :foreground accent-fg-color)
+        (set-face-attribute 'tab-bar-tab nil :background accent-bg-color :foreground accent-fg-color)
       (set-face-attribute 'tab-bar-tab nil :background 'unspecified :foreground 'unspecified))
 
     (walk-windows
-      (lambda (window)
-        (let* ((is-selected (and (not smart-borders-active) (eq window (selected-window)))))
-          (selected-window-accent--window-update window)
-          (with-selected-window window
-            (when (not is-selected)
-              (setq header-line-format 'nil)
-              (when (not (eq selected-window-accent-mode-style 'default))
-                (set-window-fringes window 0 0 0 t)))))
-        nil t))))
+     (lambda (window)
+       (let* ((is-selected (and (not smart-borders-active) (eq window (selected-window)))))
+         (selected-window-accent--window-update window)
+         (with-selected-window window
+           (if (and is-selected selected-window-accent-use-blend-background)
+               (setq-local face-remapping-alist
+                     `((default :background
+                                ,(selected-window-accent-blend-colors
+                                  accent-bg-color background-color
+                                  selected-window-accent-use-blend-alpha))))
+             (progn
+               (setq-local face-remapping-alist nil)
+               (setq header-line-format 'nil)
+               (when (not (eq selected-window-accent-mode-style 'default))
+                 (set-window-fringes window 0 0 0 t))))))
+       nil t))))
 
 (defun selected-window-accent--reset-window-accent ()
   "Reset the accent colors for all windows to their defaults."
@@ -434,10 +472,10 @@ With optional CUSTOM-ACCENT-COLOR, explicitly defined color"
   (set-face-attribute 'header-line nil :background 'unspecified :foreground 'unspecified)
   (set-face-attribute 'tab-bar-tab nil :background 'unspecified :foreground 'unspecified)
   (walk-windows
-    (lambda (window)
-      (set-window-margins window 0 0)
-      (set-window-fringes window 0 0 0 t))
-    nil t))
+   (lambda (window)
+     (set-window-margins window 0 0)
+     (set-window-fringes window 0 0 0 t))
+   nil t))
 
 ;;;###autoload
 (define-minor-mode selected-window-accent-mode
@@ -445,10 +483,10 @@ With optional CUSTOM-ACCENT-COLOR, explicitly defined color"
   :global t
   :lighter " SWA"
   (if selected-window-accent-mode
-    (progn
-      (add-hook 'window-configuration-change-hook #'selected-window-accent)
-      (add-hook 'window-state-change-hook #'selected-window-accent)
-      (selected-window-accent))
+      (progn
+        (add-hook 'window-configuration-change-hook #'selected-window-accent)
+        (add-hook 'window-state-change-hook #'selected-window-accent)
+        (selected-window-accent))
     (progn
       (remove-hook 'window-configuration-change-hook #'selected-window-accent)
       (remove-hook 'window-state-change-hook #'selected-window-accent)
@@ -457,27 +495,34 @@ With optional CUSTOM-ACCENT-COLOR, explicitly defined color"
 (defun selected-window-accent-switch-selected-window-accent-style (style)
   "Switch the selected window accent style to STYLE and apply it."
   (interactive
-    (list (intern (completing-read "Choose accent style: " '(default tiling subtle)))))
+   (list (intern (completing-read "Choose accent style: " '(default tiling subtle)))))
   (customize-set-variable 'selected-window-accent-mode-style style)
   (selected-window-accent))
+
+(defun selected-window-accent-switch-accent-color ()
+  "Switch the selected window accent color and apply it."
+  (interactive
+  (selected-window-accent t)))
 
 ;; Define the transient command and its bindings
 (transient-define-prefix selected-window-accent-transient ()
   "Transient for selected window accent."
   ["Selected Window Accent"
-    ["Main"
-      ("s" "Switch Style" selected-window-accent-switch-selected-window-accent-style)
-      ("c" "Switch Color" (lambda () (interactive) (selected-window-accent t)))
-      ("o" "Output Settings" selected-window-accent-output-selected-window-accent-settings)
-      ("q" "Quit" transient-quit-one)]
-    ["Toggle"
-      ("m" "Smart Borders" selected-window-accent-toggle-smart-borders)
-      ("t" "Tab" selected-window-accent-toggle-tab-accent)]
-    ["Foreground"
-      ("f" "Flip Value" selected-window-accent-flip-foreground-color)
-      ("l" "Complementary" selected-window-accent-toggle-complementary-color)
-      ("+" "Increment Value" selected-window-accent-increment-foreground-color)
-      ("-" "Decrement Value" selected-window-accent-decrement-foreground-color)]])
+   ["Main"
+    ("s" "Switch Style" selected-window-accent-switch-selected-window-accent-style)
+    ("c" "Switch Color" selected-window-accent-switch-accent-color)
+    ("o" "Output Settings" selected-window-accent-output-selected-window-accent-settings)
+    ("q" "Quit" transient-quit-one)]
+   ["Toggle"
+    ("b" "Blend Background" selected-window-accent-toggle-blend-background)
+    ("p" "Pywal" selected-window-accent-toggle-pywal)
+    ("m" "Smart Borders" selected-window-accent-toggle-smart-borders)
+    ("t" "Tab" selected-window-accent-toggle-tab-accent)]
+   ["Foreground"
+    ("f" "Flip Value" selected-window-accent-flip-foreground-color)
+    ("l" "Complementary" selected-window-accent-toggle-complementary-color)
+    ("+" "Increment Value" selected-window-accent-increment-foreground-color)
+    ("-" "Decrement Value" selected-window-accent-decrement-foreground-color)]])
 
 (provide 'selected-window-accent-mode)
 

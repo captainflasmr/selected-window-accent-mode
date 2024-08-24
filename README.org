@@ -16,6 +16,57 @@ The Selected Window Accent Mode is an Emacs package designed to visually disting
 
 * Whats New
 
+** v0.9.5 <2024-08-24>
+
+Enhanced selected-window-accent functionality with blending options
+
+This means that not only will the modeline, fringes and header be accent colored, but also the whole selected window background color, tinted to the alpha chosen.
+
+- Introduced =selected-window-accent-use-blend-background= and =selected-window-accent-use-blend-alpha= to allow blending of the accent color with the background of the selected window a selected alpha amount.
+- Introduced new toggle functions and added to transient:
+  - =selected-window-accent-toggle-blend-background=
+  - =selected-window-accent-toggle-pywal=
+- Added function =selected-window-accent-blend-colors= to support blending of two colors.
+- Updated =selected-window-accent--set-foreground-color= and =selected-window-accent= functions to incorporate new blending feature.
+- Improved existing functions for setting and toggling accent features, ensuring consistent style and formatting.
+- Cleaned up indentation and formatting inconsistencies across the file for better readability.
+
+Example use of new selected window blending functionality:
+
+/Note/: that currently there are some limitations, and in fact the same ones that apply to general =tiling= outline borders - see *Limitations* section.
+
+#+begin_src elisp
+(use-package selected-window-accent-mode
+  :config (selected-window-accent-mode 1)
+  :custom
+  (selected-window-accent-fringe-thickness 10)
+  (selected-window-accent-use-blend-background t)
+  (selected-window-accent-use-blend-alpha 0.2)
+  (selected-window-accent-tab-accent t)
+  (selected-window-accent-custom-color "cyan4")
+  (selected-window-accent-mode-style 'default))
+#+end_src
+
+#+attr_org: :width 300px
+#+attr_html: :width 100%
+[[file:img/selected-window-accent-mode-07.jpg]]
+
+#+begin_src elisp
+(use-package selected-window-accent-mode
+  :config (selected-window-accent-mode 1)
+  :custom
+  (selected-window-accent-fringe-thickness 10)
+  (selected-window-accent-use-blend-background t)
+  (selected-window-accent-use-blend-alpha 0.1)
+  (selected-window-accent-tab-accent t)
+  (selected-window-accent-custom-color "orange")
+  (selected-window-accent-mode-style 'subtle))
+#+end_src
+
+#+attr_org: :width 300px
+#+attr_html: :width 100%
+[[file:img/selected-window-accent-mode-08.jpg]]
+
 ** v0.9.1 <2024-08-13>
 
 Added explicit (require 'transient)
@@ -109,7 +160,7 @@ if [[ $XDG_SESSION_TYPE == "wayland" ]]; then
    swww img "$wallpaper_path" --transition-step 20 --transition-fps=20
 fi
 
-# lets run pywal for colour scheme generation
+# lets run pywal for color scheme generation
 wal -c
 wal -i ~/.last_wallpaper.jpg -q -n
 #+end_src
@@ -147,7 +198,7 @@ Details:
 
 * Quick Start
 
-To use left and bottom accent based on the themes highlight colour:
+To use left and bottom accent based on the themes highlight color:
 
 #+begin_src elisp
 (use-package selected-window-accent-mode
@@ -158,7 +209,7 @@ To use left and bottom accent based on the themes highlight colour:
   (selected-window-accent-mode-style 'subtle))
 #+end_src
 
-OR define your own colour:
+OR define your own color:
 
 #+begin_src elisp
 (use-package selected-window-accent-mode
@@ -269,7 +320,7 @@ Example is using the theme doom-one
 
 #+attr_org: :width 300px
 #+attr_html: :width 100%
-[[file:img/selected-window-accent-mode-03.jpg]]
+j[[file:img/selected-window-accent-mode-03.jpg]]
 
 #+begin_src elisp
 (use-package selected-window-accent-mode
@@ -301,11 +352,11 @@ Example is using the theme doom-one
 
 This will accent the modeline and just the left fringe and in this case be quite a pronounced thick accent.
 
-** Example 5 - Subtle / theme accent colour with darkening and desaturation
+** Example 5 - Subtle / theme accent color with darkening and desaturation
 
 Example is using the theme doom-one
 
-The takes the default highlight colour from the theme as before but applies darkening and desaturation.
+The takes the default highlight color from the theme as before but applies darkening and desaturation.
 
 #+attr_org: :width 300px
 #+attr_html: :width 100%
@@ -322,11 +373,11 @@ The takes the default highlight colour from the theme as before but applies dark
   (selected-window-accent-mode-style 'subtle))
 #+end_src
 
-** Example 6 - Subtle / theme accent colour with lightening and saturation and tab accent
+** Example 6 - Subtle / theme accent color with lightening and saturation and tab accent
 
 Example is using the theme doom-one
 
-The takes the default highlight colour from the theme as before but applies lightening and saturation along with the same colour tab accent.
+The takes the default highlight color from the theme as before but applies lightening and saturation along with the same color tab accent.
 
 #+attr_org: :width 300px
 #+attr_html: :width 100%
@@ -373,12 +424,14 @@ The takes the default highlight colour from the theme as before but applies ligh
 | selected-window-accent-foreground-adjust-factor | Adjustment factor for incrementing or decrementing foreground color brightness. |
 | selected-window-accent-mode-style               | Current style for accenting the selected window.                                |
 | selected-window-accent-percentage-darken        | The percentage the highlight accent is darkened.                                |
+| selected-window-accent-use-blend-background     | When non-nil, use the accent color to blend with background of selected window. |
 | selected-window-accent-use-pywal                | When non-nil, use a color from Pywal generated palette.                         |
 | selected-window-accent-smart-borders            | When non-nil, the `selected-window-accent-smart-borders` is active.             |
 | selected-window-accent-fg-color                 | Custom foreground accent color for the selected window.                         |
 | selected-window-accent-custom-color             | Custom accent color for the selected window.                                    |
 | selected-window-accent-percentage-desaturate    | The percentage the highlight accent is saturated.                               |
 | selected-window-accent-mode                     | Non-nil if Selected-Window-Accent mode is enabled.                              |
+| selected-window-accent-use-blend-alpha          | Adjustment alpha factor for background of selected window blending              |
 | selected-window-accent-tab-accent               | When non-nil, the `selected-window-accent-tab-accent` is active.                |
 | selected-window-accent-mode-hook                | Hook run after entering or leaving `selected-window-accent-mode'.               |
 | selected-window-accent-fringe-thickness         | The thickness of the fringes in pixels.                                         |
@@ -428,6 +481,8 @@ The takes the default highlight colour from the theme as before but applies ligh
 | C-c w | selected-window-accent-transient                              | Transient for selected window accent.                                            |
 |       | selected-window-accent-toggle-tab-accent                      | Toggle between showing the tab accent.                                           |
 | C-q a | selected-window-accent-mode                                   | Toggle selected window accenting.                                                |
+|       | selected-window-accent-toggle-pywal                           | Toggle between pywal.                                                            |
+|       | selected-window-accent-toggle-blend-background                | Toggle between blend background.                                                 |
 |       | selected-window-accent-toggle-smart-borders                   | Toggle between smart borders.                                                    |
 |       | selected-window-accent-toggle-complementary-color             | Toggle between complementary color for foreground based on background color.     |
 
@@ -486,7 +541,7 @@ face-attribute: 'tab-bar-tab
 ** Pseudo-code
 
 #+begin_src
-calculate accent colours
+calculate accent colors
 update global face-attributes
 
 walk-windows
@@ -499,13 +554,13 @@ walk-windows
 
 ** Limitations
 
-As a header-line can only have a single global colour it does mean that the header-line-format for each window needs to be made blank in order to preserve accent consistency, this means that modes which change the header-line, such as some modes of magit and org-sticky-header will possibly have to be sacrificed for this selected-window-accent-mode to function coherently.
+As a header-line can only have a single global color it does mean that the header-line-format for each window needs to be made blank in order to preserve accent consistency, this means that modes which change the header-line, such as some modes of magit and org-sticky-header will possibly have to be sacrificed for this selected-window-accent-mode to function coherently.
 
 There is a possibility that I could add in some extra logic depending on the mode that is set, but that might be for a future version, and at this moment I'm just not sure the effort is worth it.
 
 The accent is now always alongside an Emacs default margin so as not to overlap with existing packages that utilize the window margin settings, this would make the accent facility look a little less visually appealing then applying a little margin for the selected window along with a compensating margin for non selected windows, but this will have to be sacrificed for not disrupting other Emacs package functionality.
 
-All non selected windows have been fringe zeroed to preserve fringe accent consistency as the fringe colour can only be set globally meaning that any Emacs packages that implement fringe functionality, which I have found to be uncommon, would show varying levels of window accents.
+All non selected windows have been fringe zeroed to preserve fringe accent consistency as the fringe color can only be set globally meaning that any Emacs packages that implement fringe functionality, which I have found to be uncommon, would show varying levels of window accents.
 
 When a buffer is split into multiple windows in tiling mode the header line is shared, thus leading to an accented header line across all splits, this is an inherent limitation of Emacs and how it processes windows / buffers.
 
@@ -519,46 +574,50 @@ At the moment this package works well enough for my needs and I will think about
 
 I of course shall keep an eye on Emacs development to see if at some time in the future a more flexible per window visual facility becomes available.
 
-* kanban (ISSUES)
+* ISSUES
 
-#+begin: kanban :layout ("..." . 50) :scope nil :range ("TODO" . "DONE") :sort "O" :depth 3 :match "ISSUES" :compressed t
-| TODO                            | DOING                                             | DONE                                               |
-|---------------------------------+---------------------------------------------------+----------------------------------------------------|
-| [[file:README.org::*Limiting magit-log when enabled][Limiting magit-log when enabled]] | [[file:README.org::*ISSUE #4 -  Doesn't work well with other packages][ISSUE #4 -  Doesn't work well with other packages]] | [[file:README.org::*ISSUE #1 - Do not apply highlighting when frame only contains 1 window][ISSUE #1 - Do not apply highlighting when frame...]] |
-|                                 |                                                   | [[file:README.org::*ISSUE #3 - Package breaks fringes][ISSUE #3 - Package breaks fringes]]                  |
-|                                 |                                                   | [[file:README.org::*Added pywal integration][Added pywal integration]]                            |
-|                                 |                                                   | [[file:README.org::*Restore modeline height when switching between modes][Restore modeline height when switching between ...]] |
-|                                 |                                                   | [[file:README.org::*Define accent color saturation adjustment][Define accent color saturation adjustment]]          |
-|                                 |                                                   | [[file:README.org::*Define accent color darken adjustment][Define accent color darken adjustment]]              |
-|                                 |                                                   | [[file:README.org::*Highlight selected tab with same accent color][Highlight selected tab with same accent color]]      |
-|                                 |                                                   | [[file:README.org::*Add to MELPA][Add to MELPA]]                                       |
-|                                 |                                                   | [[file:README.org::*Minor change to properly format color-theme-buffer-local][Minor change to properly format color-theme-buf...]] |
-|                                 |                                                   | [[file:README.org::*Pacified package-lint with visual-fill-column 0.0][Pacified package-lint with visual-fill-column 0.0]]  |
-|                                 |                                                   | [[file:README.org::*Added similar package comparisons as suggested][Added similar package comparisons as suggested]]     |
-|                                 |                                                   | [[file:README.org::*Rename color-name-to-hex to selected-window-accent--color-name-to-hex][Rename color-name-to-hex to selected-window-acc...]] |
-|                                 |                                                   | [[file:README.org::*Fixing issues to be able to submit to MELPA][Fixing issues to be able to submit to MELPA]]        |
-|                                 |                                                   | [[file:README.org::*Images to img directory and referenced from README][Images to img directory and referenced from README]] |
-|                                 |                                                   | [[file:README.org::*Expand emacs help / documentation][Expand emacs help / documentation]]                  |
-|                                 |                                                   | [[file:README.org::*Add GNU header][Add GNU header]]                                     |
-|                                 |                                                   | [[file:README.org::*Cope better with 0 thickness][Cope better with 0 thickness]]                       |
-|                                 |                                                   | [[file:README.org::*Add ChangeLog.][Add ChangeLog.]]                                     |
-|                                 |                                                   | [[file:README.org::*isual-fill-column-mode not working again!][isual-fill-column-mode not working again!]]          |
-|                                 |                                                   | [[file:README.org::*Improve modeline contrast between fg and bg][Improve modeline contrast between fg and bg]]        |
+#+begin: kanban :layout ("..." . 50) :scope nil :range ("TODO" . "DONE") :sort "O" :depth 3 :match "issues" :compressed t
+| TODO                                               | DOING                                             | DONE                                               |
+|----------------------------------------------------+---------------------------------------------------+----------------------------------------------------|
+| [[file:README.org::*ISSUE #6 - Feature request: accent currently selected/focused frame][ISSUE #6 - Feature request: accent currently se...]] | [[file:README.org::*ISSUE #4 -  Doesn't work well with other packages][ISSUE #4 -  Doesn't work well with other packages]] | [[file:README.org::*ISSUE #1 - Do not apply highlighting when frame only contains 1 window][ISSUE #1 - Do not apply highlighting when frame...]] |
+| [[file:README.org::*Limiting magit-log when enabled][Limiting magit-log when enabled]]                    |                                                   | [[file:README.org::*ISSUE #3 - Package breaks fringes][ISSUE #3 - Package breaks fringes]]                  |
+| [[file:README.org::*Add pywal toggle to transient][Add pywal toggle to transient]]                      |                                                   | [[file:README.org::*Added pywal integration][Added pywal integration]]                            |
+|                                                    |                                                   | [[file:README.org::*Restore modeline height when switching between modes][Restore modeline height when switching between ...]] |
+|                                                    |                                                   | [[file:README.org::*Define accent color saturation adjustment][Define accent color saturation adjustment]]          |
+|                                                    |                                                   | [[file:README.org::*Define accent color darken adjustment][Define accent color darken adjustment]]              |
+|                                                    |                                                   | [[file:README.org::*Highlight selected tab with same accent color][Highlight selected tab with same accent color]]      |
+|                                                    |                                                   | [[file:README.org::*Add to MELPA][Add to MELPA]]                                       |
+|                                                    |                                                   | [[file:README.org::*Minor change to properly format color-theme-buffer-local][Minor change to properly format color-theme-buf...]] |
+|                                                    |                                                   | [[file:README.org::*Pacified package-lint with visual-fill-column 0.0][Pacified package-lint with visual-fill-column 0.0]]  |
+|                                                    |                                                   | [[file:README.org::*Added similar package comparisons as suggested][Added similar package comparisons as suggested]]     |
+|                                                    |                                                   | [[file:README.org::*Rename color-name-to-hex to selected-window-accent--color-name-to-hex][Rename color-name-to-hex to selected-window-acc...]] |
+|                                                    |                                                   | [[file:README.org::*Fixing issues to be able to submit to MELPA][Fixing issues to be able to submit to MELPA]]        |
+|                                                    |                                                   | [[file:README.org::*Images to img directory and referenced from README][Images to img directory and referenced from README]] |
+|                                                    |                                                   | [[file:README.org::*Expand emacs help / documentation][Expand emacs help / documentation]]                  |
+|                                                    |                                                   | [[file:README.org::*Add GNU header][Add GNU header]]                                     |
+|                                                    |                                                   | [[file:README.org::*Cope better with 0 thickness][Cope better with 0 thickness]]                       |
+|                                                    |                                                   | [[file:README.org::*Add ChangeLog.][Add ChangeLog.]]                                     |
+|                                                    |                                                   | [[file:README.org::*isual-fill-column-mode not working again!][isual-fill-column-mode not working again!]]          |
+|                                                    |                                                   | [[file:README.org::*Improve modeline contrast between fg and bg][Improve modeline contrast between fg and bg]]        |
 #+end:
 
-* kanban (ROADMAP)
+* ROADMAP
 
-#+begin: kanban :layout ("..." . 100) :scope nil :range ("TODO" . "TODO") :sort "O" :depth 3 :match "ROADMAP" :compressed t
-| TODO                                                                                  |
-|---------------------------------------------------------------------------------------|
-| [[file:README.org::*Incorporate mode-line-active and mode-line-inactive][Incorporate mode-line-active and mode-line-inactive]]                                   |
-| [[file:README.org::*Header-line not shown on window split][Header-line not shown on window split]]                                                 |
-| [[file:README.org::*Adjust the not selected-window margin to avoid little window navigation. disruption][Adjust the not selected-window margin to avoid little window navigation. disruption]]   |
-| [[file:README.org::*Excess selected-window disruption in header-line. (not sure I can do much about this)][Excess selected-window disruption in header-line. (not sure I can do much about this)]] |
-| [[file:README.org::*Add some form of unit test][Add some form of unit test]]                                                            |
+#+begin: kanban :layout ("..." . 100) :scope nil :range ("TODO" . "DOING") :sort "O" :depth 3 :match "roadmap" :compressed t
+| TODO                                                                                  | DOING                                               |
+|---------------------------------------------------------------------------------------+-----------------------------------------------------|
+| [[file:README.org::*Incorporate mode-line-active and mode-line-inactive][Incorporate mode-line-active and mode-line-inactive]]                                   | [[file:README.org::*improve transient with toggle functionality][improve transient with toggle functionality]]         |
+| [[file:README.org::*Header-line not shown on window split][Header-line not shown on window split]]                                                 | [[file:README.org::*blend accent color into selected window background][blend accent color into selected window background]] |
+| [[file:README.org::*Adjust the not selected-window margin to avoid little window navigation. disruption][Adjust the not selected-window margin to avoid little window navigation. disruption]]   |                                                     |
+| [[file:README.org::*Excess selected-window disruption in header-line. (not sure I can do much about this)][Excess selected-window disruption in header-line. (not sure I can do much about this)]] |                                                     |
+| [[file:README.org::*Add some form of unit test][Add some form of unit test]]                                                            |                                                     |
 #+end:
 
-* ISSUES (github)                                                    :ISSUES:
+* ISSUES (github)                                                    :issues:
+
+** TODO ISSUE #6 - Feature request: accent currently selected/focused frame
+
+If multiple Emacs frames exist, then the selected window in each will be accented. It would be nice if the currently selected/focused frame was accented more than non-focused frames.
 
 ** DOING ISSUE #4 -  Doesn't work well with other packages
 
@@ -577,9 +636,10 @@ However this currently doesn't cover any mode that modifies a window header, lik
 ** DONE ISSUE #1 - Do not apply highlighting when frame only contains 1 window
 ** DONE ISSUE #3 - Package breaks fringes
 
-* ISSUES (other)                                                     :ISSUES:
+* ISSUES (other)                                                     :issues:
 
 ** TODO Limiting magit-log when enabled
+** TODO Add pywal toggle to transient
 ** DONE Added pywal integration
 ** DONE Restore modeline height when switching between modes
 ** DONE Define accent color saturation adjustment
@@ -603,8 +663,10 @@ However this currently doesn't cover any mode that modifies a window header, lik
 ** DONE isual-fill-column-mode not working again!
 ** DONE Improve modeline contrast between fg and bg
 
-* ROADMAP                                                           :ROADMAP:
+* ROADMAP                                                           :roadmap:
 
+** DOING improve transient with toggle functionality
+** DOING blend accent color into selected window background
 ** TODO Incorporate mode-line-active and mode-line-inactive
 This would make more sense especially in the 'default mode.  So in-built Emacs modeline functionality would come into play.
 ** TODO Header-line not shown on window split
@@ -634,7 +696,7 @@ dimmer can be used in conjunction and will complement selected-window-accent to 
 
 ** hiwin
 
-"This package provides a minor-mode to change the background colour of the non active window."
+"This package provides a minor-mode to change the background color of the non active window."
 
 It uses overlays to highlight non active windows, so is similar to dimmer but is less subtle in its highlighting mechanism and hasn't been updated in excess of 10 years.
 
@@ -649,3 +711,7 @@ Unlike dimmer and hiwin this package isn't related to the concept of a selected 
 "This package is designed to visually distinguish "real" buffers (i.e. file-visiting code buffers where you do most of your work) from "unreal" buffers (like popups, sidebars, log buffers, terminals, etc) by giving the latter a slightly different -- often darker -- background"
 
 Unlike dimmer and hiwin this package isn't related to the concept of a selected window but more of distinguishing between collections of IDE like elements within Emacs.
+
+* Contributing
+
+Contributions to arscript-mode are welcome! Whether it's bug reports, feature suggestions, or code contributions, feel free to reach out or submit pull requests on GitHub.

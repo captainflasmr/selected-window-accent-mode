@@ -11,9 +11,20 @@ project's main git repository: [[https://github.com/captainflasmr/selected-windo
 
 * Versions
 
-** v0.9.1 <2024-08-13>
+** v0.9.5 <2024-08-24>
 
-Added explicit (require 'transient)
+Enhanced selected-window-accent functionality with blending options
+
+This means that not only will the modeline, fringes and header be accent colored, but also the whole selected window background color, tinted to the alpha chosen.
+
+- Introduced =selected-window-accent-use-blend-background= and =selected-window-accent-use-blend-alpha= to allow blending of the accent color with the background of the selected window a selected alpha amount.
+- Introduced new toggle functions and added to transient:
+  - =selected-window-accent-toggle-blend-background=
+  - =selected-window-accent-toggle-pywal=
+- Added function =selected-window-accent-blend-colors= to support blending of two colors.
+- Updated =selected-window-accent--set-foreground-color= and =selected-window-accent= functions to incorporate new blending feature.
+- Improved existing functions for setting and toggling accent features, ensuring consistent style and formatting.
+- Cleaned up indentation and formatting inconsistencies across the file for better readability.
 
 ** v0.9.0 <2024-08-10>
 
@@ -132,3 +143,61 @@ Unwanted Spaces:           Ok
 ** package-lint-current-buffer
 
 =package-lint= to help identify common errors in package metadata.
+
+** check in basic vanilla emacs
+
+Just in case I am using some dependencies without realising it!
+
+emacs -q -l ~/source/repos/selected-window-accent-mode/selected-window-accent-init-file.el
+
+In this case init-file.el can be:
+
+#+begin_src elisp
+;;
+;; -> package-archives
+;;
+
+(require 'package)
+
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                          ("elpa" . "https://elpa.gnu.org/packages/")
+                          ("org" . "https://orgmode.org/elpa/")))
+
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
+(setq use-package-verbose t)
+(setq use-package-always-ensure t)
+(require 'use-package)
+(setq load-prefer-newer t)
+
+;; (when init-file-debug
+(setq use-package-verbose t
+  use-package-expand-minimally nil
+  use-package-compute-statistics t
+  debug-on-error nil)
+
+  ;;
+;; -> selected-window-accent-mode
+;;
+
+(use-package selected-window-accent-mode
+  :load-path "~/source/repos/selected-window-accent-mode"
+  ;; :ensure nil
+  ;; :vc (:fetcher github :repo "captainflasmr/selected-window-accent-mode")
+  :config (selected-window-accent-mode 1)
+  :custom
+  (selected-window-accent-fringe-thickness 10)
+  (selected-window-accent-percentage-darken 0)
+  (selected-window-accent-percentage-desaturate 0)
+  (selected-window-accent-smart-borders t)
+  (selected-window-accent-use-blend-background t)
+  (selected-window-accent-use-blend-alpha 0.2)
+  (selected-window-accent-tab-accent t)
+  (selected-window-accent-use-pywal t)
+  (selected-window-accent-custom-color "cyan4")
+  (selected-window-accent-mode-style 'default))
+
+(eval-after-load 'selected-window-accent-mode
+  '(progn
+     (define-key global-map (kbd "C-c w") 'selected-window-accent-transient)))
+#+end_src

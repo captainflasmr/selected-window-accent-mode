@@ -22,6 +22,7 @@
 (use-package selected-window-accent-mode
   :config (selected-window-accent-mode 1)
   :custom
+  (selected-window-accent-use-pywal nil)
   (selected-window-accent-fringe-thickness 10)
   (selected-window-accent-custom-color nil)
   (selected-window-accent-mode-style 'subtle))
@@ -29,6 +30,7 @@
 (use-package selected-window-accent-mode
   :config (selected-window-accent-mode 1)
   :custom
+  (selected-window-accent-use-pywal nil)
   (selected-window-accent-fringe-thickness 10)
   (selected-window-accent-custom-color "#427900")
   (selected-window-accent-mode-style 'subtle))
@@ -45,6 +47,7 @@
 (use-package selected-window-accent-mode
   :config (selected-window-accent-mode 1)
   :custom
+  (selected-window-accent-use-pywal nil)
   (selected-window-accent-fringe-thickness 20)
   (selected-window-accent-custom-color "goldenrod")
   (selected-window-accent-mode-style 'default))
@@ -54,6 +57,7 @@
 (use-package selected-window-accent-mode
   :config (selected-window-accent-mode 1)
   :custom
+  (selected-window-accent-use-pywal nil)
   (selected-window-accent-fringe-thickness 6)
   (selected-window-accent-custom-color "#4179b2")
   (selected-window-accent-mode-style 'tiling))
@@ -63,6 +67,7 @@
 (use-package selected-window-accent-mode
   :config (selected-window-accent-mode 1)
   :custom
+  (selected-window-accent-use-pywal nil)
   (selected-window-accent-fringe-thickness 10)
   (selected-window-accent-custom-color nil)
   (selected-window-accent-mode-style 'tiling))
@@ -72,6 +77,7 @@
 (use-package selected-window-accent-mode
   :config (selected-window-accent-mode 1)
   :custom
+  (selected-window-accent-use-pywal nil)
   (selected-window-accent-fringe-thickness 20)
   (selected-window-accent-custom-color nil)
   (selected-window-accent-mode-style 'subtle))
@@ -81,6 +87,7 @@
 (use-package selected-window-accent-mode
   :config (selected-window-accent-mode 1)
   :custom
+  (selected-window-accent-use-pywal nil)
   (selected-window-accent-fringe-thickness 20)
   (selected-window-accent-percentage-darken 10)
   (selected-window-accent-percentage-desaturate 100)
@@ -92,9 +99,36 @@
 (use-package selected-window-accent-mode
   :config (selected-window-accent-mode 1)
   :custom
+  (selected-window-accent-use-pywal nil)
   (selected-window-accent-fringe-thickness 20)
   (selected-window-accent-percentage-darken -10)
   (selected-window-accent-percentage-desaturate -100)
   (selected-window-accent-tab-accent t)
   (selected-window-accent-custom-color nil)
+  (selected-window-accent-mode-style 'subtle))
+
+;; Example 7 - Blending #1
+
+(use-package selected-window-accent-mode
+  :config (selected-window-accent-mode 1)
+  :custom
+  (selected-window-accent-use-pywal nil)
+  (selected-window-accent-fringe-thickness 10)
+  (selected-window-accent-use-blend-background t)
+  (selected-window-accent-use-blend-alpha 0.2)
+  (selected-window-accent-tab-accent t)
+  (selected-window-accent-custom-color "cyan4")
+  (selected-window-accent-mode-style 'default))
+
+;; Example 8 - Blending #2
+
+(use-package selected-window-accent-mode
+  :config (selected-window-accent-mode 1)
+  :custom
+  (selected-window-accent-use-pywal nil)
+  (selected-window-accent-fringe-thickness 10)
+  (selected-window-accent-use-blend-background t)
+  (selected-window-accent-use-blend-alpha 0.1)
+  (selected-window-accent-tab-accent t)
+  (selected-window-accent-custom-color "orange")
   (selected-window-accent-mode-style 'subtle))
