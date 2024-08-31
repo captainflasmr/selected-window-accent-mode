@@ -20,7 +20,7 @@ The Selected Window Accent Mode is an Emacs package designed to visually disting
 
 Enhanced selected-window-accent functionality with blending options
 
-#+HTML: <img src="https://raw.githubusercontent.com/captainflasmr/selected-window-accent-mode/main/demos/selected-window-accent-mode-demo-blending.gif" width="80%" />
+#+HTML: <img src="https://raw.githubusercontent.com/captainflasmr/selected-window-accent-mode/main/demos/selected-window-accent-mode-demo-pywal.gif" width="80%" />
 
 This means that not only will the modeline, fringes and header be accent colored, but also the whole selected window background color, tinted to the alpha chosen.
 
@@ -76,6 +76,8 @@ Added explicit (require 'transient)
 ** v0.9.0 <2024-08-10>
 
 Add Pywal color integration to selected-window-accent-mode to allow the accent color to be consistent with the wallpaper of the operating system.
+
+#+HTML: <img src="https://raw.githubusercontent.com/captainflasmr/selected-window-accent-mode/main/demos/selected-window-accent-mode-demo-pywal.gif" width="80%" />
 
 Note: will only work on linux.
 
