@@ -452,15 +452,11 @@ With optional CUSTOM-ACCENT-COLOR, explicitly defined color"
          (selected-window-accent--window-update window)
          (with-selected-window window
            (if (and is-selected selected-window-accent-use-blend-background)
-               (progn
-                 (selected-window-accent-blend-colors
-                  accent-bg-color background-color
-                  selected-window-accent-use-blend-alpha)))
-                 (setq-local face-remapping-alist
-                             `((default :background
-                                        ,(selected-window-accent-blend-colors
-                                          accent-bg-color background-color
-                                          selected-window-accent-use-blend-alpha)))))
+               (setq-local face-remapping-alist
+                           `((default :background
+                                      ,(selected-window-accent-blend-colors
+                                        accent-bg-color background-color
+                                        selected-window-accent-use-blend-alpha))))
              (progn
                (setq-local face-remapping-alist nil)
                (setq header-line-format 'nil)
@@ -506,7 +502,7 @@ With optional CUSTOM-ACCENT-COLOR, explicitly defined color"
 (defun selected-window-accent-switch-accent-color ()
   "Switch the selected window accent color and apply it."
   (interactive
-  (selected-window-accent t)))
+   (selected-window-accent t)))
 
 ;; Define the transient command and its bindings
 (transient-define-prefix selected-window-accent-transient ()
