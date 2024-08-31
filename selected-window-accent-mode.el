@@ -453,10 +453,9 @@ With optional CUSTOM-ACCENT-COLOR, explicitly defined color"
          (with-selected-window window
            (if (and is-selected selected-window-accent-use-blend-background)
                (progn
-                 (message (format "%s %s -> %s" accent-bg-color background-color
-                                  (selected-window-accent-blend-colors
-                                          accent-bg-color background-color
-                                          selected-window-accent-use-blend-alpha)))
+                 (selected-window-accent-blend-colors
+                  accent-bg-color background-color
+                  selected-window-accent-use-blend-alpha)))
                  (setq-local face-remapping-alist
                              `((default :background
                                         ,(selected-window-accent-blend-colors
