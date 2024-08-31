@@ -20,7 +20,7 @@ The Selected Window Accent Mode is an Emacs package designed to visually disting
 
 Enhanced selected-window-accent functionality with blending options
 
-#+HTML: <img src="https://raw.githubusercontent.com/captainflasmr/selected-window-accent-mode/main/demos/selected-window-accent-mode-demo-pywal.gif" width="80%" />
+#+HTML: <img src="https://raw.githubusercontent.com/captainflasmr/selected-window-accent-mode/main/demos/selected-window-accent-mode-demo-blend.gif" width="80%" />
 
 This means that not only will the modeline, fringes and header be accent colored, but also the whole selected window background color, tinted to the alpha chosen.
 

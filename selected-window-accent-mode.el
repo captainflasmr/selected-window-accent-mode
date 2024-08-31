@@ -452,11 +452,16 @@ With optional CUSTOM-ACCENT-COLOR, explicitly defined color"
          (selected-window-accent--window-update window)
          (with-selected-window window
            (if (and is-selected selected-window-accent-use-blend-background)
-               (setq-local face-remapping-alist
-                     `((default :background
-                                ,(selected-window-accent-blend-colors
-                                  accent-bg-color background-color
-                                  selected-window-accent-use-blend-alpha))))
+               (progn
+                 (message (format "%s %s -> %s" accent-bg-color background-color
+                                  (selected-window-accent-blend-colors
+                                          accent-bg-color background-color
+                                          selected-window-accent-use-blend-alpha)))
+                 (setq-local face-remapping-alist
+                             `((default :background
+                                        ,(selected-window-accent-blend-colors
+                                          accent-bg-color background-color
+                                          selected-window-accent-use-blend-alpha)))))
              (progn
                (setq-local face-remapping-alist nil)
                (setq header-line-format 'nil)
