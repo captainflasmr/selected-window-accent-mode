@@ -451,12 +451,13 @@ With optional CUSTOM-ACCENT-COLOR, explicitly defined color"
        (let* ((is-selected (and (not smart-borders-active) (eq window (selected-window)))))
          (selected-window-accent--window-update window)
          (with-selected-window window
-           (if (and is-selected selected-window-accent-use-blend-background)
+           (when (and is-selected selected-window-accent-use-blend-background)
                (setq-local face-remapping-alist
                            `((default :background
                                       ,(selected-window-accent-blend-colors
                                         accent-bg-color background-color
-                                        selected-window-accent-use-blend-alpha))))
+                                        selected-window-accent-use-blend-alpha)))))
+           (when (not is-selected)
              (progn
                (setq-local face-remapping-alist nil)
                (setq header-line-format 'nil)
