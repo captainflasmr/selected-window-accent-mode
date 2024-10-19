@@ -11,6 +11,16 @@ project's main git repository: [[https://github.com/captainflasmr/selected-windo
 
 * Versions
 
+** v1.0.0 <2024-10-19>
+
+feat: add function to sync tab-bar faces with current theme
+
+- Introduced `selected-window-accent-sync-tab-bar-to-theme`, which synchronizes the tab-bar faces (tab, tab-inactive) with the current theme.
+  - Sets the tab-bar face background and foreground to match the current `default` face settings.
+- Added "Tab Sync to Theme" option under "Other" actions in the selected-window-accent hydra.
+
+First full version.
+
 ** v0.9.5 <2024-08-24>
 
 Enhanced selected-window-accent functionality with blending options

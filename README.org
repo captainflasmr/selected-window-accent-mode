@@ -16,6 +16,16 @@ The Selected Window Accent Mode is an Emacs package designed to visually disting
 
 * Whats New
 
+** v1.0.0 <2024-10-19>
+
+feat: add function to sync tab-bar faces with current theme
+
+- Introduced `selected-window-accent-sync-tab-bar-to-theme`, which synchronizes the tab-bar faces (tab, tab-inactive) with the current theme.
+  - Sets the tab-bar face background and foreground to match the current `default` face settings.
+- Added "Tab Sync to Theme" option under "Other" actions in the selected-window-accent hydra.
+
+First full version.
+
 ** v0.9.5 <2024-08-24>
 
 Enhanced selected-window-accent functionality with blending options
@@ -278,8 +288,6 @@ The styles that are currently supported :
 - tiling
 - subtle
 
-see *roadmap* below for a description.
-
 * Examples
 
 ** Example 1 - Default / custom color
@@ -435,7 +443,7 @@ The takes the default highlight color from the theme as before but applies light
 | selected-window-accent-custom-color             | Custom accent color for the selected window.                                    |
 | selected-window-accent-percentage-desaturate    | The percentage the highlight accent is saturated.                               |
 | selected-window-accent-mode                     | Non-nil if Selected-Window-Accent mode is enabled.                              |
-| selected-window-accent-use-blend-alpha          | Adjustment alpha factor for background of selected window blending              |
+| selected-window-accent-use-blend-alpha          | Adjustment alpha factor for background of selected window blending.             |
 | selected-window-accent-tab-accent               | When non-nil, the `selected-window-accent-tab-accent` is active.                |
 | selected-window-accent-mode-hook                | Hook run after entering or leaving `selected-window-accent-mode'.               |
 | selected-window-accent-fringe-thickness         | The thickness of the fringes in pixels.                                         |
@@ -477,6 +485,7 @@ The takes the default highlight color from the theme as before but applies light
 
 #+RESULTS:
 |       | selected-window-accent--reset-window-accent                   | Reset the accent colors for all windows to their defaults.                       |
+|       | selected-window-accent-sync-tab-bar-to-theme                  | Synchronize tab-bar faces with the current theme.                                |
 |       | selected-window-accent-switch-selected-window-accent-style    | Switch the selected window accent style to STYLE and apply it.                   |
 |       | selected-window-accent-increment-foreground-color             | Increment the foreground color brightness.  With ARG, adjust by a larger factor. |
 |       | selected-window-accent-decrement-foreground-color             | Decrement the foreground color brightness.  With ARG, adjust by a larger factor. |
@@ -486,6 +495,7 @@ The takes the default highlight color from the theme as before but applies light
 |       | selected-window-accent-toggle-tab-accent                      | Toggle between showing the tab accent.                                           |
 | C-q a | selected-window-accent-mode                                   | Toggle selected window accenting.                                                |
 |       | selected-window-accent-toggle-pywal                           | Toggle between pywal.                                                            |
+|       | selected-window-accent-switch-accent-color                    | Switch the selected window accent color and apply it.                            |
 |       | selected-window-accent-toggle-blend-background                | Toggle between blend background.                                                 |
 |       | selected-window-accent-toggle-smart-borders                   | Toggle between smart borders.                                                    |
 |       | selected-window-accent-toggle-complementary-color             | Toggle between complementary color for foreground based on background color.     |
@@ -585,7 +595,9 @@ I of course shall keep an eye on Emacs development to see if at some time in the
 |----------------------------------------------------+---------------------------------------------------+----------------------------------------------------|
 | [[file:README.org::*ISSUE #6 - Feature request: accent currently selected/focused frame][ISSUE #6 - Feature request: accent currently se...]] | [[file:README.org::*ISSUE #4 -  Doesn't work well with other packages][ISSUE #4 -  Doesn't work well with other packages]] | [[file:README.org::*ISSUE #1 - Do not apply highlighting when frame only contains 1 window][ISSUE #1 - Do not apply highlighting when frame...]] |
 | [[file:README.org::*Limiting magit-log when enabled][Limiting magit-log when enabled]]                    |                                                   | [[file:README.org::*ISSUE #3 - Package breaks fringes][ISSUE #3 - Package breaks fringes]]                  |
-| [[file:README.org::*Add pywal toggle to transient][Add pywal toggle to transient]]                      |                                                   | [[file:README.org::*Added pywal integration][Added pywal integration]]                            |
+|                                                    |                                                   | [[file:README.org::*Add pywal toggle to transient][Add pywal toggle to transient]]                      |
+|                                                    |                                                   | [[file:README.org::*blend accent color into selected window background][blend accent color into selected window background]] |
+|                                                    |                                                   | [[file:README.org::*Added pywal integration][Added pywal integration]]                            |
 |                                                    |                                                   | [[file:README.org::*Restore modeline height when switching between modes][Restore modeline height when switching between ...]] |
 |                                                    |                                                   | [[file:README.org::*Define accent color saturation adjustment][Define accent color saturation adjustment]]          |
 |                                                    |                                                   | [[file:README.org::*Define accent color darken adjustment][Define accent color darken adjustment]]              |
@@ -608,13 +620,13 @@ I of course shall keep an eye on Emacs development to see if at some time in the
 * ROADMAP
 
 #+begin: kanban :layout ("..." . 100) :scope nil :range ("TODO" . "DOING") :sort "O" :depth 3 :match "roadmap" :compressed t
-| TODO                                                                                  | DOING                                               |
-|---------------------------------------------------------------------------------------+-----------------------------------------------------|
-| [[file:README.org::*Incorporate mode-line-active and mode-line-inactive][Incorporate mode-line-active and mode-line-inactive]]                                   | [[file:README.org::*improve transient with toggle functionality][improve transient with toggle functionality]]         |
-| [[file:README.org::*Header-line not shown on window split][Header-line not shown on window split]]                                                 | [[file:README.org::*blend accent color into selected window background][blend accent color into selected window background]] |
-| [[file:README.org::*Adjust the not selected-window margin to avoid little window navigation. disruption][Adjust the not selected-window margin to avoid little window navigation. disruption]]   |                                                     |
-| [[file:README.org::*Excess selected-window disruption in header-line. (not sure I can do much about this)][Excess selected-window disruption in header-line. (not sure I can do much about this)]] |                                                     |
-| [[file:README.org::*Add some form of unit test][Add some form of unit test]]                                                            |                                                     |
+| TODO                                                                                  | DOING |
+|---------------------------------------------------------------------------------------+-------|
+| [[file:README.org::*Incorporate mode-line-active and mode-line-inactive][Incorporate mode-line-active and mode-line-inactive]]                                   |       |
+| [[file:README.org::*Header-line not shown on window split][Header-line not shown on window split]]                                                 |       |
+| [[file:README.org::*Adjust the not selected-window margin to avoid little window navigation. disruption][Adjust the not selected-window margin to avoid little window navigation. disruption]]   |       |
+| [[file:README.org::*Excess selected-window disruption in header-line. (not sure I can do much about this)][Excess selected-window disruption in header-line. (not sure I can do much about this)]] |       |
+| [[file:README.org::*Add some form of unit test][Add some form of unit test]]                                                            |       |
 #+end:
 
 * ISSUES (github)                                                    :issues:
@@ -643,7 +655,9 @@ However this currently doesn't cover any mode that modifies a window header, lik
 * ISSUES (other)                                                     :issues:
 
 ** TODO Limiting magit-log when enabled
-** TODO Add pywal toggle to transient
+** DONE Add pywal toggle to transient
+** DONE blend accent color into selected window background
+
 ** DONE Added pywal integration
 ** DONE Restore modeline height when switching between modes
 ** DONE Define accent color saturation adjustment
@@ -669,8 +683,6 @@ However this currently doesn't cover any mode that modifies a window header, lik
 
 * ROADMAP                                                           :roadmap:
 
-** DOING improve transient with toggle functionality
-** DOING blend accent color into selected window background
 ** TODO Incorporate mode-line-active and mode-line-inactive
 This would make more sense especially in the 'default mode.  So in-built Emacs modeline functionality would come into play.
 ** TODO Header-line not shown on window split

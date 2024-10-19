@@ -1,7 +1,7 @@
 ;;; selected-window-accent-mode.el --- Accent Selected Window -*- lexical-binding: t; -*-
 ;;
 ;; Author: James Dyer <captainflasmr@gmail.com>
-;; Version: 0.9.5
+;; Version: 1.0.0
 ;; Package-Requires: ((emacs "28.1")(transient "0.1.0"))
 ;; Keywords: convenience
 ;; URL: https://github.com/captainflasmr/selected-window-accent-mode
@@ -329,6 +329,17 @@ IS-SELECTED defines if the current window is being processed"
         (not selected-window-accent-use-pywal))
   (selected-window-accent))
 
+(defun selected-window-accent-sync-tab-bar-to-theme ()
+  "Synchronize tab-bar faces with the current theme."
+  (interactive)
+  (let ((default-bg (face-background 'default))
+        (default-fg (face-foreground 'default))
+        (inactive-fg (face-foreground 'mode-line-inactive))) ;; Fallback to mode-line-inactive
+    (custom-set-faces
+     `(tab-bar ((t (:inherit default :background ,default-bg :foreground ,default-fg))))
+     `(tab-bar-tab ((t (:inherit default :background ,default-fg :foreground ,default-bg))))
+     `(tab-bar-tab-inactive ((t (:inherit default :background ,default-bg :foreground ,inactive-fg)))))))
+
 (defun selected-window-accent-output-selected-window-accent-settings ()
   "Output current `selected-window-accent-mode' settings to a new buffer."
   (interactive)
@@ -523,7 +534,9 @@ With optional CUSTOM-ACCENT-COLOR, explicitly defined color"
     ("f" "Flip Value" selected-window-accent-flip-foreground-color)
     ("l" "Complementary" selected-window-accent-toggle-complementary-color)
     ("+" "Increment Value" selected-window-accent-increment-foreground-color)
-    ("-" "Decrement Value" selected-window-accent-decrement-foreground-color)]])
+    ("-" "Decrement Value" selected-window-accent-decrement-foreground-color)]
+   ["Other"
+    ("h" "Tab Sync to Theme" selected-window-accent-sync-tab-bar-to-theme)]])
 
 (provide 'selected-window-accent-mode)
 
