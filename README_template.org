@@ -1,0 +1,174 @@
+#+title: new-emacs-pkg
+#+author: James Dyer
+#+email: captainflasmr@gmail.com
+#+language: en
+#+options: ':t toc:nil author:nil email:nil num:nil title:nil
+#+todo: TODO DOING | DONE
+#+startup: showall
+
+* Summary
+
+The new-emacs-pkg is designed to...
+
+#+attr_org: :width 300px
+#+attr_html: :width 100%
+[[file:img/new-emacs-pkg-00.jpg]]
+
+* Whats New
+
+** v0.0.1
+
+Initial Version
+
+* Quick Start
+
+To quickly set up new-emacs-pkg...
+
+#+begin_src elisp
+(use-package new-emacs-pkg
+  :config (new-emacs-pkg 1)
+  :custom
+  (new-emacs-pkg-option1 1)
+  (new-emacs-pkg-option2 2))
+#+end_src
+
+* Installation
+
+** use-package (MELPA)
+
+#+begin_src elisp
+(use-package new-emacs-pkg
+  :config (new-emacs-pkg 1))
+#+end_src
+
+** use-package (emacs 30+)
+
+Put the following into your emacs init file:
+
+#+begin_src elisp
+(use-package new-emacs-pkg
+  :vc (:fetcher github :repo "captainflasmr/new-emacs-pkg")
+  :config (new-emacs-pkg 1))
+#+end_src
+
+** From source
+
+Download the `.el` file and place it in your Emacs `load-path`.
+
+Then either manually load it or add it to your configuration to be loaded at startup.
+
+#+begin_src elisp
+(require 'new-emacs-pkg)
+(new-emacs-pkg 1)
+#+end_src
+
+* Usage
+
+Interactively Toggle the mode on and off =M-x new-emacs-pkg=
+
+* Examples
+
+** Example 1 - new-emacs-pkg= function 1
+
+Demonstrate function 1 here
+
+** Example 2 - new-emacs-pkg= function 2
+
+Demonstrate function 2 here
+
+* Customization
+
+#+begin_src emacs-lisp :results table :colnames '("Custom variable" "Description") :exports results
+  (let ((rows))
+    (mapatoms
+     (lambda (symbol)
+       (when (and (string-match "^new-emacs-pkg-"
+                                (symbol-name symbol))
+                  (not (string-match "--" (symbol-name symbol)))
+                  (or (custom-variable-p symbol)
+                      (boundp symbol)))
+         (push `(,symbol
+                 ,(car
+                   (split-string
+                    (or (get (indirect-variable symbol)
+                             'variable-documentation)
+                        (get symbol 'variable-documentation)
+                        "")
+                    "\n")))
+               rows))))
+    rows)
+#+end_src
+
+#+RESULTS:
+
+* Commands
+
+#+BEGIN_SRC emacs-lisp :results table :colnames '("Command" "Description") :exports results
+    (let ((rows))
+      (mapatoms
+       (lambda (symbol)
+         (when (and (string-match "^new-emacs-pkg-"
+                                  (symbol-name symbol))
+                    (commandp symbol))
+           (push `(,(string-join
+                     (seq-filter
+                      (lambda (symbol)
+                        (not (string-match "menu" symbol)))
+                      (mapcar
+                       (lambda (keys)
+                         (key-description keys))
+                       (or
+                        (where-is-internal
+                         (symbol-function symbol)
+                         comint-mode-map
+                         nil nil (command-remapping 'comint-next-input))
+                        (where-is-internal
+                         symbol ready-player-major-mode-map nil nil (command-remapping symbol))
+                        (where-is-internal
+                         (symbol-function symbol)
+                         ready-player-major-mode-map nil nil (command-remapping symbol)))))  " or ")
+                   ,(symbol-name symbol)
+                   ,(car
+                     (split-string
+                      (or (documentation symbol t) "")
+                      "\n")))
+                 rows))))
+      rows)
+#+END_SRC
+
+#+RESULTS:
+
+* Design / Algorithm / Limitations
+
+new-emacs-pkg description of design, algorithm and limitations
+
+** Pseudo-code
+
+#+begin_src
+#+end_src
+
+* ISSUES
+
+#+begin: kanban :layout ("..." . 50) :scope nil :range ("TODO" . "DONE") :sort "O" :depth 3 :match "issues" :compressed t
+
+* ROADMAP
+
+#+begin: kanban :layout ("..." . 100) :scope nil :range ("TODO" . "DOING") :sort "O" :depth 3 :match "roadmap" :compressed t
+
+* ISSUES (github)                                                    :issues:
+
+** TODO ISSUE #1 - text directly from ISSUE#1 on github
+** TODO ISSUE #2 - text directly from ISSUE#2 on github
+
+* ROADMAP                                                           :roadmap:
+
+** DOING new-emacs-pkg first idea for significant functionality
+** DOING new-emacs-pkg second idea for significant functionality
+
+* Testing
+
+See CHANGELOG.org
+
+* Alternative new-emacs-pkg packages
+
+There exist a few Emacs packages that perform the functionality that new-emacs-pkg does but that don't quite provide the feature set of new-emacs-pkg.
