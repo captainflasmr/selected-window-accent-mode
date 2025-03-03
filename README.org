@@ -16,6 +16,19 @@ The Selected Window Accent Mode is an Emacs package designed to visually disting
 
 * Whats New
 
+** v1.1.0 <2025-03-03>
+
+Add margin compensation to prevent text shifting
+
+- Introduce `selected-window-accent-use-margin-compensation` to use margins 
+  in non-selected windows instead of fringes.
+- Add `selected-window-accent-margin-compensation-factor` for fine-tuning margin size.
+- Implement `selected-window-accent--pixels-to-chars` for converting pixel 
+  widths to character widths.
+- Refactor `selected-window-accent` to apply fringe and margin adjustments 
+  dynamically based on the selected window.
+- Improve handling of header-line formats to prevent unintended changes.
+
 ** v1.0.0 <2024-10-19>
 
 feat: add function to sync tab-bar faces with current theme

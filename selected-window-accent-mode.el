@@ -1,7 +1,7 @@
 ;;; selected-window-accent-mode.el --- Accent Selected Window -*- lexical-binding: t; -*-
 ;;
 ;; Author: James Dyer <captainflasmr@gmail.com>
-;; Version: 1.0.0
+;; Version: 1.1.0
 ;; Package-Requires: ((emacs "28.1")(transient "0.1.0"))
 ;; Keywords: convenience
 ;; URL: https://github.com/captainflasmr/selected-window-accent-mode
@@ -92,6 +92,11 @@
 (defgroup selected-window-accent-group nil
   "Customization group for the `selected-window-accent' package."
   :group 'convenience)
+
+(defcustom selected-window-accent-use-margin-compensation t
+  "When non-nil, use margins on non-selected windows to prevent text shifting."
+  :type 'boolean
+  :group 'selected-window-accent-group)
 
 (defcustom selected-window-accent-fringe-thickness 6
   "The thickness of the fringes in pixels.
@@ -208,24 +213,16 @@ Doesn't accent when a frame contains only a single window."
   :type 'float
   :group 'selected-window-accent-group)
 
-(defun selected-window-accent--window-update (window)
-  "Update fringes and margins for the given WINDOW.
-IS-SELECTED defines if the current window is being processed"
-  (pcase selected-window-accent-mode-style
-    ('tiling
-     (setq header-line-format '(""))
-     (set-face-attribute 'header-line nil :height (* 6 selected-window-accent-fringe-thickness))
-     (set-face-attribute 'mode-line-active nil :height (* 8 selected-window-accent-fringe-thickness))
-     (set-window-fringes window
-                         selected-window-accent-fringe-thickness
-                         selected-window-accent-fringe-thickness 0 t))
-    ('subtle
-     (set-face-attribute 'mode-line-active nil :height 'unspecified)
-     (setq header-line-format 'nil)
-     (set-window-fringes window
-                         selected-window-accent-fringe-thickness 0 0 t))
-    ('default
-     (set-face-attribute 'mode-line-active nil :height 'unspecified))))
+(defcustom selected-window-accent-margin-compensation-factor 1.0
+  "Factor to adjust margin compensation calculation.
+Increase this value if margins appear too small, decrease if too large."
+  :type 'float
+  :group 'selected-window-accent-group)
+
+(defun selected-window-accent--pixels-to-chars (pixels)
+  "Convert PIXELS to an approximate character width with compensation factor."
+  (round (* selected-window-accent-margin-compensation-factor 
+            (/ pixels (frame-char-width)))))
 
 (defun selected-window-accent--color-name-to-hex (color-name)
   "Convert COLOR-NAME to its hexadecimal representation."
@@ -414,20 +411,38 @@ IS-SELECTED defines if the current window is being processed"
                         (round (+ (* alpha x 255) (* (- 1 alpha) y 255))))
                       c1 c2))))
 
+(defun selected-window-accent--meaningful-header-line-p (header-format)
+  "Return t if HEADER-FORMAT contains meaningful content.
+This distinguishes between empty headers like (\"\") and
+headers with actual content or properties."
+  (interactive)
+  (cond
+   ;; Nil header line
+   ((null header-format) nil)
+   ;; Simple empty string
+   ((and (stringp header-format) (string-empty-p header-format)) nil)
+   ;; List with just an empty string
+   ((and (listp header-format) 
+         (= (length header-format) 1)
+         (stringp (car header-format))
+         (string-empty-p (car header-format)))
+    nil)
+   ;; All other cases (including strings with properties, formatted lists, etc.)
+   (t t)))
+
 (defun selected-window-accent (&optional custom-accent-color)
   "Set accent colors for the selected window fringes, mode line, and margins.
 With optional CUSTOM-ACCENT-COLOR, explicitly defined color"
   (interactive "P")
-
   (when custom-accent-color
     (setq selected-window-accent-custom-color (read-color "Enter custom accent color: ")))
-
   (let* ((background-color (selected-window-accent--color-name-to-hex (face-attribute 'default :background)))
          (accent-bg-color)
          (accent-fg-color)
          (smart-borders-active (and selected-window-accent-smart-borders
-                                    (not (selected-window-accent--more-than-one-window-p)))))
-
+                                    (not (selected-window-accent--more-than-one-window-p))))
+         (fringe-chars (selected-window-accent--pixels-to-chars 
+                        selected-window-accent-fringe-thickness)))
     (if (and selected-window-accent-use-pywal (file-exists-p "~/.cache/wal/colors.json"))
         (setq accent-bg-color (selected-window-accent--get-pywal-color))
       (if (not selected-window-accent-custom-color)
@@ -441,39 +456,89 @@ With optional CUSTOM-ACCENT-COLOR, explicitly defined color"
                 (setq accent-bg-color (color-desaturate-name accent-bg-color selected-window-accent-percentage-desaturate))
               (setq accent-bg-color (color-saturate-name accent-bg-color (abs selected-window-accent-percentage-desaturate)))))
         (setq accent-bg-color (selected-window-accent--color-name-to-hex selected-window-accent-custom-color))))
-
+    
     (setq accent-fg-color (selected-window-accent--set-foreground-color accent-bg-color))
 
-    (if (eq selected-window-accent-mode-style 'default)
-        (set-face-attribute 'fringe nil :background background-color :foreground background-color)
-      (set-face-attribute 'fringe nil :background accent-bg-color :foreground accent-bg-color))
-
+    ;; general window setup
+    (pcase selected-window-accent-mode-style
+      ('tiling
+       (set-face-attribute 'header-line nil :background accent-bg-color :foreground accent-bg-color)
+       (set-face-attribute 'header-line nil :height (* 6 selected-window-accent-fringe-thickness))
+       (set-face-attribute 'fringe nil :background accent-bg-color :foreground accent-bg-color)
+       (set-face-attribute 'mode-line-active nil :height (* 8 selected-window-accent-fringe-thickness)))
+      ('subtle
+       (set-face-attribute 'header-line nil :background accent-bg-color :foreground accent-bg-color)
+       (set-face-attribute 'fringe nil :background accent-bg-color :foreground accent-bg-color)
+       (set-face-attribute 'mode-line-active nil :height 'unspecified))
+      ('default
+       (set-face-attribute 'header-line nil :background background-color :foreground background-color)
+       (set-face-attribute 'fringe nil :background background-color :foreground background-color)
+       (set-face-attribute 'mode-line-active nil :height 'unspecified)))
+    
     (if smart-borders-active
         (set-face-attribute 'mode-line-active nil :background 'unspecified :foreground 'unspecified)
       (set-face-attribute 'mode-line-active nil :background accent-bg-color :foreground accent-fg-color))
-
-    (set-face-attribute 'header-line nil :background accent-bg-color :foreground accent-bg-color)
+    
     (if selected-window-accent-tab-accent
         (set-face-attribute 'tab-bar-tab nil :background accent-bg-color :foreground accent-fg-color)
       (set-face-attribute 'tab-bar-tab nil :background 'unspecified :foreground 'unspecified))
-
+    
     (walk-windows
      (lambda (window)
        (let* ((is-selected (and (not smart-borders-active) (eq window (selected-window)))))
-         (selected-window-accent--window-update window)
          (with-selected-window window
+           ;; check the any blends sets
            (when (and is-selected selected-window-accent-use-blend-background)
-               (setq-local face-remapping-alist
-                           `((default :background
-                                      ,(selected-window-accent-blend-colors
-                                        accent-bg-color background-color
-                                        selected-window-accent-use-blend-alpha)))))
-           (when (not is-selected)
+             (setq-local face-remapping-alist
+                         `((default :background
+                                    ,(selected-window-accent-blend-colors
+                                      accent-bg-color background-color
+                                      selected-window-accent-use-blend-alpha)))))
+           (if is-selected
+               (progn
+                 ;; Selected window: use fringes, no margins
+                 (pcase selected-window-accent-mode-style
+                   ('tiling
+                    (if (selected-window-accent--meaningful-header-line-p header-line-format)
+                        (progn
+                          ;; Don't modify the format, just apply face remapping
+                          (setq-local face-remapping-alist
+                                      (cons `(header-line
+                                              ;; :background ,accent-bg-color
+                                              :height ,(* 6 selected-window-accent-fringe-thickness))
+                                            (assq-delete-all 'header-line face-remapping-alist))))
+                      (progn
+                        (setq header-line-format '(""))))
+                    (set-window-margins window 0 0)
+                    (set-window-fringes window
+                                        selected-window-accent-fringe-thickness
+                                        selected-window-accent-fringe-thickness 0 t))
+                   ('subtle
+                    (set-window-margins window 0 0)
+                    (set-window-fringes window
+                                        selected-window-accent-fringe-thickness 0 0 t))))
+             ;; Non-selected window: use margins to compensate for missing fringes
              (progn
-               (setq-local face-remapping-alist nil)
-               (setq header-line-format 'nil)
-               (when (not (eq selected-window-accent-mode-style 'default))
-                 (set-window-fringes window 0 0 0 t))))))
+               (pcase selected-window-accent-mode-style
+                 ('tiling
+                  (if (selected-window-accent--meaningful-header-line-p header-line-format)
+                      (progn
+                        ;; Don't modify the format, just apply face remapping
+                        (setq-local face-remapping-alist
+                                    (cons `(header-line
+                                            ;; :background ,accent-bg-color
+                                            :height ,(* 6 selected-window-accent-fringe-thickness))
+                                          (assq-delete-all 'header-line face-remapping-alist))))
+                    (progn
+                      (setq header-line-format nil)))
+                  ;; Use character-based margin width
+                  (set-window-fringes window 0 0 0 t)
+                  (set-window-margins window fringe-chars fringe-chars))
+                 ('subtle
+                  ;; Only left margin for subtle style
+                  (set-window-fringes window 0 0 0 t)
+                  (set-window-margins window fringe-chars 0)
+                  (setq-local face-remapping-alist nil)))))))
        nil t))))
 
 (defun selected-window-accent--reset-window-accent ()
