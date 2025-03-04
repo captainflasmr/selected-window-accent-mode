@@ -11,6 +11,19 @@ project's main git repository: [[https://github.com/captainflasmr/selected-windo
 
 * Versions
 
+** v2.0.0 <2025-03-04>
+
+refactored/streamlined selected-window-accent-mode
+
+- Removed dependencies on json and transient libraries
+- Replaced complex color manipulation with straightforward foreground detection
+- Removed pywal integration and background blending features
+- Eliminated header line special handling logic
+- Replaced transient UI with simple keymap for commands
+- Consolidated window handling code for cleaner implementation
+- Reduced overall codebase by ~50%
+- Maintained backward compatibility for core configuration options
+
 ** v1.1.0 <2025-03-03>
 
 Add margin compensation to prevent text shifting
