@@ -14,6 +14,8 @@ The Selected Window Accent Mode is an Emacs package designed to visually disting
 #+attr_html: :width 100%
 [[file:img/selected-window-accent-mode-00.jpg]]
 
+See [[file:docs/selected-window-accent-mode.org]] for the manual!
+
 * Whats New
 
 ** v2.1.0 <2025-04-05>
