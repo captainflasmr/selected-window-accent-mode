@@ -1,0 +1,385 @@
+<<Top>>
+
+Next: [[#Introduction][Introduction]]   [[[#Index][Index]]]
+
+* Selected Window Accent Mode [[#Selected-Window-Accent-Mode][¶]]
+:PROPERTIES:
+:CUSTOM_ID: Selected-Window-Accent-Mode
+:CLASS: top
+:END:
+The Selected Window Accent Mode is an Emacs package designed to visually
+distinguish the currently selected window by applying a unique accent
+color to its fringes, mode line, header line, and margins.
+
+- [[#Introduction][Introduction]]
+- [[#Installation][Installation]]
+- [[#Configuration][Configuration]]
+- [[#Usage][Usage]]
+- [[#Command-Reference][Command Reference]]
+- [[#Customization][Customization]]
+- [[#License][License]]
+- [[#Index][Index]]
+
+--------------
+
+<<Introduction>>
+
+Next: [[#Installation][Installation]], Previous: [[#Top][Selected Window
+Accent Mode]], Up: [[#Top][Selected Window Accent Mode]]  
+[[[#Index][Index]]]
+
+** 1 Introduction [[#Introduction-1][¶]]
+:PROPERTIES:
+:CUSTOM_ID: Introduction-1
+:CLASS: chapter
+:END:
+- [[#Overview][Overview]]
+- [[#Features][Features]]
+
+<<Overview>>
+*** 1.1 Overview [[#Overview][¶]]
+:PROPERTIES:
+:CUSTOM_ID: overview
+:CLASS: section
+:END:
+Selected Window Accent Mode is an Emacs package that helps you keep
+track of which window has focus by visually accenting it. It applies
+distinctive colors to the fringes, mode line, and potentially tabs of
+the active window.
+
+This is particularly helpful when working with complex window layouts or
+when using themes where the distinction between active and inactive
+windows is subtle.
+
+<<Features>>
+*** 1.2 Features [[#Features][¶]]
+:PROPERTIES:
+:CUSTOM_ID: features
+:CLASS: section
+:END:
+- Visually highlights the currently selected window
+- Multiple accent styles (default, tiling, subtle)
+- Customizable accent colors
+- Optional tab-bar integration
+- Smart borders option for single-window frames
+- Theme integration via highlight color
+
+--------------
+
+<<Installation>>
+
+Next: [[#Configuration][Configuration]], Previous:
+[[#Introduction][Introduction]], Up: [[#Top][Selected Window Accent
+Mode]]   [[[#Index][Index]]]
+
+** 2 Installation [[#Installation-1][¶]]
+:PROPERTIES:
+:CUSTOM_ID: Installation-1
+:CLASS: chapter
+:END:
+- [[#Package-Repositories][Package Repositories]]
+- [[#Manual-Installation][Manual Installation]]
+
+<<Package-Repositories>>
+*** 2.1 Package Repositories [[#Package-Repositories][¶]]
+:PROPERTIES:
+:CUSTOM_ID: package-repositories
+:CLASS: section
+:END:
+The easiest way to install Selected Window Accent Mode is through MELPA.
+
+#+begin_src example-preformatted
+M-x package-install RET selected-window-accent-mode RET
+#+end_src
+
+<<Manual-Installation>>
+*** 2.2 Manual Installation [[#Manual-Installation][¶]]
+:PROPERTIES:
+:CUSTOM_ID: manual-installation
+:CLASS: section
+:END:
+You can also install manually by downloading the package from GitHub:
+[[https://github.com/captainflasmr/selected-window-accent-mode]]
+
+--------------
+
+<<Configuration>>
+
+Next: [[#Usage][Usage]], Previous: [[#Installation][Installation]], Up:
+[[#Top][Selected Window Accent Mode]]   [[[#Index][Index]]]
+
+** 3 Configuration [[#Configuration-1][¶]]
+:PROPERTIES:
+:CUSTOM_ID: Configuration-1
+:CLASS: chapter
+:END:
+- [[#Basic-Configuration][Basic Configuration]]
+- [[#Using-a-Custom-Color][Using a Custom Color]]
+- [[#Tweaking-Theme-Highlight-Color][Tweaking Theme Highlight Color]]
+- [[#Keybinding-Setup][Keybinding Setup]]
+
+<<Basic-Configuration>>
+*** 3.1 Basic Configuration [[#Basic-Configuration][¶]]
+:PROPERTIES:
+:CUSTOM_ID: basic-configuration
+:CLASS: section
+:END:
+Here's a simple configuration using =use-package=:
+
+#+begin_src example-preformatted
+(use-package selected-window-accent-mode
+  :config (selected-window-accent-mode 1)
+  :custom
+  (selected-window-accent-fringe-thickness 10)
+  (selected-window-accent-custom-color nil)
+  (selected-window-accent-mode-style 'subtle))
+#+end_src
+
+This will enable the mode with a subtle style, using the current theme's
+highlight color for accents and setting the fringe thickness to 10
+pixels.
+
+<<Using-a-Custom-Color>>
+*** 3.2 Using a Custom Color [[#Using-a-Custom-Color][¶]]
+:PROPERTIES:
+:CUSTOM_ID: using-a-custom-color
+:CLASS: section
+:END:
+If you want to specify your own accent color:
+
+#+begin_src example-preformatted
+(use-package selected-window-accent-mode
+  :config (selected-window-accent-mode 1)
+  :custom
+  (selected-window-accent-fringe-thickness 10)
+  (selected-window-accent-custom-color "orange")
+  (selected-window-accent-mode-style 'tiling)
+  (selected-window-accent-percentage-darken 0)
+  (selected-window-accent-percentage-desaturate 0)
+  (selected-window-accent-tab-accent t)
+  (selected-window-accent-smart-borders t))
+#+end_src
+
+<<Tweaking-Theme-Highlight-Color>>
+*** 3.3 Tweaking Theme Highlight Color [[#Tweaking-Theme-Highlight-Color][¶]]
+:PROPERTIES:
+:CUSTOM_ID: tweaking-theme-highlight-color
+:CLASS: section
+:END:
+You can also use the theme's highlight color but adjust it:
+
+#+begin_src example-preformatted
+(use-package selected-window-accent-mode
+  :config (selected-window-accent-mode 1)
+  :custom
+  (selected-window-accent-fringe-thickness 10)
+  (selected-window-accent-custom-color nil)
+  (selected-window-accent-mode-style 'tiling)
+  (selected-window-accent-percentage-darken 20)
+  (selected-window-accent-percentage-desaturate 20)
+  (selected-window-accent-tab-accent t)
+  (selected-window-accent-smart-borders t))
+#+end_src
+
+<<Keybinding-Setup>>
+*** 3.4 Keybinding Setup [[#Keybinding-Setup][¶]]
+:PROPERTIES:
+:CUSTOM_ID: keybinding-setup
+:CLASS: section
+:END:
+To set up a key binding for the command map:
+
+#+begin_src example-preformatted
+(global-set-key (kbd "C-c w") selected-window-accent-map)
+#+end_src
+
+--------------
+
+<<Usage>>
+
+Next: [[#Command-Reference][Command Reference]], Previous:
+[[#Configuration][Configuration]], Up: [[#Top][Selected Window Accent
+Mode]]   [[[#Index][Index]]]
+
+** 4 Usage [[#Usage-1][¶]]
+:PROPERTIES:
+:CUSTOM_ID: Usage-1
+:CLASS: chapter
+:END:
+- [[#Basic-Usage][Basic Usage]]
+- [[#Switching-Styles][Switching Styles]]
+- [[#Changing-Color][Changing Color]]
+- [[#Using-the-Command-Map][Using the Command Map]]
+
+<<Basic-Usage>>
+*** 4.1 Basic Usage [[#Basic-Usage][¶]]
+:PROPERTIES:
+:CUSTOM_ID: basic-usage
+:CLASS: section
+:END:
+Once enabled, the mode will automatically highlight the selected window.
+No further actions are required for basic functionality.
+
+<<Switching-Styles>>
+*** 4.2 Switching Styles [[#Switching-Styles][¶]]
+:PROPERTIES:
+:CUSTOM_ID: switching-styles
+:CLASS: section
+:END:
+You can interactively switch between different accent styles using:
+
+#+begin_src example-preformatted
+M-x selected-window-accent-switch-style RET
+#+end_src
+
+You'll be prompted to choose between:
+
+- =default= - Standard Emacs appearance
+- =tiling= - Thicker fringes and mode line
+- =subtle= - Minimal visual change with accent color
+
+<<Changing-Color>>
+*** 4.3 Changing Color [[#Changing-Color][¶]]
+:PROPERTIES:
+:CUSTOM_ID: changing-color
+:CLASS: section
+:END:
+To interactively change the accent color:
+
+#+begin_src example-preformatted
+M-x selected-window-accent-switch-color RET
+#+end_src
+
+<<Using-the-Command-Map>>
+*** 4.4 Using the Command Map [[#Using-the-Command-Map][¶]]
+:PROPERTIES:
+:CUSTOM_ID: using-the-command-map
+:CLASS: section
+:END:
+If you've set up the keybinding for the command map (e.g., =C-c w=), you
+can access the following commands:
+
+- C-c w w :: Switch accent style
+
+- C-c w RET :: Change accent color
+
+- C-c w t :: Toggle tab bar accenting
+
+- C-c w l :: Synchronize tab bar with theme
+
+- C-c w b :: Toggle smart borders
+
+--------------
+
+<<Command-Reference>>
+
+Next: [[#Customization][Customization]], Previous: [[#Usage][Usage]],
+Up: [[#Top][Selected Window Accent Mode]]   [[[#Index][Index]]]
+
+** 5 Command Reference [[#Command-Reference-1][¶]]
+:PROPERTIES:
+:CUSTOM_ID: Command-Reference-1
+:CLASS: chapter
+:END:
+- =selected-window-accent-mode= :: Toggle the minor mode on or off. When
+  enabled, the selected window will be visually accented.
+
+- =selected-window-accent-switch-style= :: Switch between different
+  accent styles (default, tiling, or subtle).
+
+- =selected-window-accent-switch-color= :: Interactively choose a new
+  accent color.
+
+- =selected-window-accent-toggle-tab-accent= :: Toggle whether to apply
+  the accent color to the tab bar.
+
+- =selected-window-accent-toggle-smart-borders= :: Toggle whether to use
+  smart borders (don't accent single-window frames).
+
+- =selected-window-accent-sync-tab-bar-to-theme= :: Synchronize tab bar
+  faces with the current theme.
+
+--------------
+
+<<Customization>>
+
+Next: [[#License][License]], Previous: [[#Command-Reference][Command
+Reference]], Up: [[#Top][Selected Window Accent Mode]]  
+[[[#Index][Index]]]
+
+** 6 Customization [[#Customization-1][¶]]
+:PROPERTIES:
+:CUSTOM_ID: Customization-1
+:CLASS: chapter
+:END:
+- [[#Available-Options][Available Options]]
+- [[#Accessing-Customization-Interface][Accessing Customization
+  Interface]]
+
+<<Available-Options>>
+*** 6.1 Available Options [[#Available-Options][¶]]
+:PROPERTIES:
+:CUSTOM_ID: available-options
+:CLASS: section
+:END:
+- =selected-window-accent-fringe-thickness= :: The thickness of the
+  accent fringes in pixels. Default is 6.
+
+- =selected-window-accent-custom-color= :: Custom accent color for the
+  selected window. When nil, uses the current theme's highlight color.
+
+- =selected-window-accent-mode-style= :: Style for accenting the
+  selected window: 'default, 'tiling, or 'subtle.
+
+- =selected-window-accent-percentage-darken= :: Percentage to darken the
+  accent color. Default is 20.
+
+- =selected-window-accent-percentage-desaturate= :: Percentage to
+  desaturate the accent color. Default is 20.
+
+- =selected-window-accent-tab-accent= :: When non-nil, accent the
+  selected tab in the tab-bar.
+
+- =selected-window-accent-smart-borders= :: When non-nil, don't accent
+  single-window frames.
+
+<<Accessing-Customization-Interface>>
+*** 6.2 Accessing Customization Interface [[#Accessing-Customization-Interface][¶]]
+:PROPERTIES:
+:CUSTOM_ID: accessing-customization-interface
+:CLASS: section
+:END:
+You can access all customization options through the Emacs customization
+interface:
+
+#+begin_src example-preformatted
+M-x customize-group RET selected-window-accent RET
+#+end_src
+
+--------------
+
+<<License>>
+
+Next: [[#Index][Index]], Previous: [[#Customization][Customization]],
+Up: [[#Top][Selected Window Accent Mode]]   [[[#Index][Index]]]
+
+** 7 License [[#License-1][¶]]
+:PROPERTIES:
+:CUSTOM_ID: License-1
+:CLASS: chapter
+:END:
+Selected Window Accent Mode is licensed under the GNU General Public
+License version 3 or later.
+
+--------------
+
+<<Index>>
+
+Previous: [[#License][License]], Up: [[#Top][Selected Window Accent
+Mode]]   [[[#Index][Index]]]
+
+** Index [[#Index-1][¶]]
+:PROPERTIES:
+:CUSTOM_ID: Index-1
+:CLASS: unnumbered
+:END:

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.2, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Selected Window Accent Mode User Manual</title>
+
+<meta name="description" content="Selected Window Accent Mode User Manual">
+<meta name="keywords" content="Selected Window Accent Mode User Manual">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="#Top" rel="start" title="Top">
+<link href="#Index" rel="index" title="Index">
+<link href="#Introduction" rel="next" title="Introduction">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+span:hover a.copiable-link {visibility: visible}
+ul.mark-bullet {list-style-type: disc}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+
+
+
+<div class="top-level-extent" id="Top">
+<div class="nav-panel">
+<p>
+Next: <a href="#Introduction" accesskey="n" rel="next">Introduction</a> &nbsp; [<a href="#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<h1 class="top" id="Selected-Window-Accent-Mode"><span>Selected Window Accent Mode<a class="copiable-link" href="#Selected-Window-Accent-Mode"> &para;</a></span></h1>
+
+<p>The Selected Window Accent Mode is an Emacs package designed to
+visually distinguish the currently selected window by applying a
+unique accent color to its fringes, mode line, header line, and
+margins.
+</p>
+
+<ul class="mini-toc">
+<li><a href="#Introduction" accesskey="1">Introduction</a></li>
+<li><a href="#Installation" accesskey="2">Installation</a></li>
+<li><a href="#Configuration" accesskey="3">Configuration</a></li>
+<li><a href="#Usage" accesskey="4">Usage</a></li>
+<li><a href="#Command-Reference" accesskey="5">Command Reference</a></li>
+<li><a href="#Customization" accesskey="6">Customization</a></li>
+<li><a href="#License" accesskey="7">License</a></li>
+<li><a href="#Index" accesskey="8">Index</a></li>
+</ul>
+<hr>
+<div class="chapter-level-extent" id="Introduction">
+<div class="nav-panel">
+<p>
+Next: <a href="#Installation" accesskey="n" rel="next">Installation</a>, Previous: <a href="#Top" accesskey="p" rel="prev">Selected Window Accent Mode</a>, Up: <a href="#Top" accesskey="u" rel="up">Selected Window Accent Mode</a> &nbsp; [<a href="#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<h2 class="chapter" id="Introduction-1"><span>1 Introduction<a class="copiable-link" href="#Introduction-1"> &para;</a></span></h2>
+
+<ul class="mini-toc">
+<li><a href="#Overview" accesskey="1">Overview</a></li>
+<li><a href="#Features" accesskey="2">Features</a></li>
+</ul>
+<div class="section-level-extent" id="Overview">
+<h3 class="section"><span>1.1 Overview<a class="copiable-link" href="#Overview"> &para;</a></span></h3>
+
+<p>Selected Window Accent Mode is an Emacs package that helps you keep track of which
+window has focus by visually accenting it. It applies distinctive colors to the
+fringes, mode line, and potentially tabs of the active window.
+</p>
+<p>This is particularly helpful when working with complex window layouts or when using
+themes where the distinction between active and inactive windows is subtle.
+</p>
+</div>
+<div class="section-level-extent" id="Features">
+<h3 class="section"><span>1.2 Features<a class="copiable-link" href="#Features"> &para;</a></span></h3>
+
+<ul class="itemize mark-bullet">
+<li>Visually highlights the currently selected window
+</li><li>Multiple accent styles (default, tiling, subtle)
+</li><li>Customizable accent colors
+</li><li>Optional tab-bar integration
+</li><li>Smart borders option for single-window frames
+</li><li>Theme integration via highlight color
+</li></ul>
+
+<hr>
+</div>
+</div>
+<div class="chapter-level-extent" id="Installation">
+<div class="nav-panel">
+<p>
+Next: <a href="#Configuration" accesskey="n" rel="next">Configuration</a>, Previous: <a href="#Introduction" accesskey="p" rel="prev">Introduction</a>, Up: <a href="#Top" accesskey="u" rel="up">Selected Window Accent Mode</a> &nbsp; [<a href="#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<h2 class="chapter" id="Installation-1"><span>2 Installation<a class="copiable-link" href="#Installation-1"> &para;</a></span></h2>
+
+<ul class="mini-toc">
+<li><a href="#Package-Repositories" accesskey="1">Package Repositories</a></li>
+<li><a href="#Manual-Installation" accesskey="2">Manual Installation</a></li>
+</ul>
+<div class="section-level-extent" id="Package-Repositories">
+<h3 class="section"><span>2.1 Package Repositories<a class="copiable-link" href="#Package-Repositories"> &para;</a></span></h3>
+
+<p>The easiest way to install Selected Window Accent Mode is through MELPA.
+</p>
+<div class="example">
+<pre class="example-preformatted">M-x package-install RET selected-window-accent-mode RET
+</pre></div>
+
+</div>
+<div class="section-level-extent" id="Manual-Installation">
+<h3 class="section"><span>2.2 Manual Installation<a class="copiable-link" href="#Manual-Installation"> &para;</a></span></h3>
+
+<p>You can also install manually by downloading the package from GitHub:
+<a class="url" href="https://github.com/captainflasmr/selected-window-accent-mode">https://github.com/captainflasmr/selected-window-accent-mode</a>
+</p>
+<hr>
+</div>
+</div>
+<div class="chapter-level-extent" id="Configuration">
+<div class="nav-panel">
+<p>
+Next: <a href="#Usage" accesskey="n" rel="next">Usage</a>, Previous: <a href="#Installation" accesskey="p" rel="prev">Installation</a>, Up: <a href="#Top" accesskey="u" rel="up">Selected Window Accent Mode</a> &nbsp; [<a href="#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<h2 class="chapter" id="Configuration-1"><span>3 Configuration<a class="copiable-link" href="#Configuration-1"> &para;</a></span></h2>
+
+<ul class="mini-toc">
+<li><a href="#Basic-Configuration" accesskey="1">Basic Configuration</a></li>
+<li><a href="#Using-a-Custom-Color" accesskey="2">Using a Custom Color</a></li>
+<li><a href="#Tweaking-Theme-Highlight-Color" accesskey="3">Tweaking Theme Highlight Color</a></li>
+<li><a href="#Keybinding-Setup" accesskey="4">Keybinding Setup</a></li>
+</ul>
+<div class="section-level-extent" id="Basic-Configuration">
+<h3 class="section"><span>3.1 Basic Configuration<a class="copiable-link" href="#Basic-Configuration"> &para;</a></span></h3>
+
+<p>Here&rsquo;s a simple configuration using <code class="code">use-package</code>:
+</p>
+<div class="example">
+<pre class="example-preformatted">(use-package selected-window-accent-mode
+  :config (selected-window-accent-mode 1)
+  :custom
+  (selected-window-accent-fringe-thickness 10)
+  (selected-window-accent-custom-color nil)
+  (selected-window-accent-mode-style 'subtle))
+</pre></div>
+
+<p>This will enable the mode with a subtle style, using the current theme&rsquo;s highlight
+color for accents and setting the fringe thickness to 10 pixels.
+</p>
+</div>
+<div class="section-level-extent" id="Using-a-Custom-Color">
+<h3 class="section"><span>3.2 Using a Custom Color<a class="copiable-link" href="#Using-a-Custom-Color"> &para;</a></span></h3>
+
+<p>If you want to specify your own accent color:
+</p>
+<div class="example">
+<pre class="example-preformatted">(use-package selected-window-accent-mode
+  :config (selected-window-accent-mode 1)
+  :custom
+  (selected-window-accent-fringe-thickness 10)
+  (selected-window-accent-custom-color &quot;orange&quot;)
+  (selected-window-accent-mode-style 'tiling)
+  (selected-window-accent-percentage-darken 0)
+  (selected-window-accent-percentage-desaturate 0)
+  (selected-window-accent-tab-accent t)
+  (selected-window-accent-smart-borders t))
+</pre></div>
+
+</div>
+<div class="section-level-extent" id="Tweaking-Theme-Highlight-Color">
+<h3 class="section"><span>3.3 Tweaking Theme Highlight Color<a class="copiable-link" href="#Tweaking-Theme-Highlight-Color"> &para;</a></span></h3>
+
+<p>You can also use the theme&rsquo;s highlight color but adjust it:
+</p>
+<div class="example">
+<pre class="example-preformatted">(use-package selected-window-accent-mode
+  :config (selected-window-accent-mode 1)
+  :custom
+  (selected-window-accent-fringe-thickness 10)
+  (selected-window-accent-custom-color nil)
+  (selected-window-accent-mode-style 'tiling)
+  (selected-window-accent-percentage-darken 20)
+  (selected-window-accent-percentage-desaturate 20)
+  (selected-window-accent-tab-accent t)
+  (selected-window-accent-smart-borders t))
+</pre></div>
+
+</div>
+<div class="section-level-extent" id="Keybinding-Setup">
+<h3 class="section"><span>3.4 Keybinding Setup<a class="copiable-link" href="#Keybinding-Setup"> &para;</a></span></h3>
+
+<p>To set up a key binding for the command map:
+</p>
+<div class="example">
+<pre class="example-preformatted">(global-set-key (kbd &quot;C-c w&quot;) selected-window-accent-map)
+</pre></div>
+
+<hr>
+</div>
+</div>
+<div class="chapter-level-extent" id="Usage">
+<div class="nav-panel">
+<p>
+Next: <a href="#Command-Reference" accesskey="n" rel="next">Command Reference</a>, Previous: <a href="#Configuration" accesskey="p" rel="prev">Configuration</a>, Up: <a href="#Top" accesskey="u" rel="up">Selected Window Accent Mode</a> &nbsp; [<a href="#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<h2 class="chapter" id="Usage-1"><span>4 Usage<a class="copiable-link" href="#Usage-1"> &para;</a></span></h2>
+
+<ul class="mini-toc">
+<li><a href="#Basic-Usage" accesskey="1">Basic Usage</a></li>
+<li><a href="#Switching-Styles" accesskey="2">Switching Styles</a></li>
+<li><a href="#Changing-Color" accesskey="3">Changing Color</a></li>
+<li><a href="#Using-the-Command-Map" accesskey="4">Using the Command Map</a></li>
+</ul>
+<div class="section-level-extent" id="Basic-Usage">
+<h3 class="section"><span>4.1 Basic Usage<a class="copiable-link" href="#Basic-Usage"> &para;</a></span></h3>
+
+<p>Once enabled, the mode will automatically highlight the selected window. No further
+actions are required for basic functionality.
+</p>
+</div>
+<div class="section-level-extent" id="Switching-Styles">
+<h3 class="section"><span>4.2 Switching Styles<a class="copiable-link" href="#Switching-Styles"> &para;</a></span></h3>
+
+<p>You can interactively switch between different accent styles using:
+</p>
+<div class="example">
+<pre class="example-preformatted">M-x selected-window-accent-switch-style RET
+</pre></div>
+
+<p>You&rsquo;ll be prompted to choose between:
+</p><ul class="itemize mark-bullet">
+<li><code class="code">default</code> - Standard Emacs appearance
+</li><li><code class="code">tiling</code> - Thicker fringes and mode line
+</li><li><code class="code">subtle</code> - Minimal visual change with accent color
+</li></ul>
+
+</div>
+<div class="section-level-extent" id="Changing-Color">
+<h3 class="section"><span>4.3 Changing Color<a class="copiable-link" href="#Changing-Color"> &para;</a></span></h3>
+
+<p>To interactively change the accent color:
+</p>
+<div class="example">
+<pre class="example-preformatted">M-x selected-window-accent-switch-color RET
+</pre></div>
+
+</div>
+<div class="section-level-extent" id="Using-the-Command-Map">
+<h3 class="section"><span>4.4 Using the Command Map<a class="copiable-link" href="#Using-the-Command-Map"> &para;</a></span></h3>
+
+<p>If you&rsquo;ve set up the keybinding for the command map (e.g., <code class="code">C-c w</code>), you can access
+the following commands:
+</p>
+<dl class="table">
+<dt><kbd class="kbd">C-c w w</kbd></dt>
+<dd><p>Switch accent style
+</p></dd>
+<dt><kbd class="kbd">C-c w RET</kbd></dt>
+<dd><p>Change accent color
+</p></dd>
+<dt><kbd class="kbd">C-c w t</kbd></dt>
+<dd><p>Toggle tab bar accenting
+</p></dd>
+<dt><kbd class="kbd">C-c w l</kbd></dt>
+<dd><p>Synchronize tab bar with theme
+</p></dd>
+<dt><kbd class="kbd">C-c w b</kbd></dt>
+<dd><p>Toggle smart borders
+</p></dd>
+</dl>
+
+<hr>
+</div>
+</div>
+<div class="chapter-level-extent" id="Command-Reference">
+<div class="nav-panel">
+<p>
+Next: <a href="#Customization" accesskey="n" rel="next">Customization</a>, Previous: <a href="#Usage" accesskey="p" rel="prev">Usage</a>, Up: <a href="#Top" accesskey="u" rel="up">Selected Window Accent Mode</a> &nbsp; [<a href="#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<h2 class="chapter" id="Command-Reference-1"><span>5 Command Reference<a class="copiable-link" href="#Command-Reference-1"> &para;</a></span></h2>
+
+<dl class="table">
+<dt><code class="code">selected-window-accent-mode</code></dt>
+<dd><p>Toggle the minor mode on or off. When enabled, the selected window will be visually
+accented.
+</p>
+</dd>
+<dt><code class="code">selected-window-accent-switch-style</code></dt>
+<dd><p>Switch between different accent styles (default, tiling, or subtle).
+</p>
+</dd>
+<dt><code class="code">selected-window-accent-switch-color</code></dt>
+<dd><p>Interactively choose a new accent color.
+</p>
+</dd>
+<dt><code class="code">selected-window-accent-toggle-tab-accent</code></dt>
+<dd><p>Toggle whether to apply the accent color to the tab bar.
+</p>
+</dd>
+<dt><code class="code">selected-window-accent-toggle-smart-borders</code></dt>
+<dd><p>Toggle whether to use smart borders (don&rsquo;t accent single-window frames).
+</p>
+</dd>
+<dt><code class="code">selected-window-accent-sync-tab-bar-to-theme</code></dt>
+<dd><p>Synchronize tab bar faces with the current theme.
+</p></dd>
+</dl>
+
+<hr>
+</div>
+<div class="chapter-level-extent" id="Customization">
+<div class="nav-panel">
+<p>
+Next: <a href="#License" accesskey="n" rel="next">License</a>, Previous: <a href="#Command-Reference" accesskey="p" rel="prev">Command Reference</a>, Up: <a href="#Top" accesskey="u" rel="up">Selected Window Accent Mode</a> &nbsp; [<a href="#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<h2 class="chapter" id="Customization-1"><span>6 Customization<a class="copiable-link" href="#Customization-1"> &para;</a></span></h2>
+
+<ul class="mini-toc">
+<li><a href="#Available-Options" accesskey="1">Available Options</a></li>
+<li><a href="#Accessing-Customization-Interface" accesskey="2">Accessing Customization Interface</a></li>
+</ul>
+<div class="section-level-extent" id="Available-Options">
+<h3 class="section"><span>6.1 Available Options<a class="copiable-link" href="#Available-Options"> &para;</a></span></h3>
+
+<dl class="table">
+<dt><code class="code">selected-window-accent-fringe-thickness</code></dt>
+<dd><p>The thickness of the accent fringes in pixels. Default is 6.
+</p>
+</dd>
+<dt><code class="code">selected-window-accent-custom-color</code></dt>
+<dd><p>Custom accent color for the selected window. When nil, uses the current theme&rsquo;s highlight color.
+</p>
+</dd>
+<dt><code class="code">selected-window-accent-mode-style</code></dt>
+<dd><p>Style for accenting the selected window: &rsquo;default, &rsquo;tiling, or &rsquo;subtle.
+</p>
+</dd>
+<dt><code class="code">selected-window-accent-percentage-darken</code></dt>
+<dd><p>Percentage to darken the accent color. Default is 20.
+</p>
+</dd>
+<dt><code class="code">selected-window-accent-percentage-desaturate</code></dt>
+<dd><p>Percentage to desaturate the accent color. Default is 20.
+</p>
+</dd>
+<dt><code class="code">selected-window-accent-tab-accent</code></dt>
+<dd><p>When non-nil, accent the selected tab in the tab-bar.
+</p>
+</dd>
+<dt><code class="code">selected-window-accent-smart-borders</code></dt>
+<dd><p>When non-nil, don&rsquo;t accent single-window frames.
+</p></dd>
+</dl>
+
+</div>
+<div class="section-level-extent" id="Accessing-Customization-Interface">
+<h3 class="section"><span>6.2 Accessing Customization Interface<a class="copiable-link" href="#Accessing-Customization-Interface"> &para;</a></span></h3>
+
+<p>You can access all customization options through the Emacs customization interface:
+</p>
+<div class="example">
+<pre class="example-preformatted">M-x customize-group RET selected-window-accent RET
+</pre></div>
+
+<hr>
+</div>
+</div>
+<div class="chapter-level-extent" id="License">
+<div class="nav-panel">
+<p>
+Next: <a href="#Index" accesskey="n" rel="next">Index</a>, Previous: <a href="#Customization" accesskey="p" rel="prev">Customization</a>, Up: <a href="#Top" accesskey="u" rel="up">Selected Window Accent Mode</a> &nbsp; [<a href="#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<h2 class="chapter" id="License-1"><span>7 License<a class="copiable-link" href="#License-1"> &para;</a></span></h2>
+
+<p>Selected Window Accent Mode is licensed under the GNU General Public License version 3 or later.
+</p>
+<hr>
+</div>
+<div class="unnumbered-level-extent" id="Index">
+<div class="nav-panel">
+<p>
+Previous: <a href="#License" accesskey="p" rel="prev">License</a>, Up: <a href="#Top" accesskey="u" rel="up">Selected Window Accent Mode</a> &nbsp; [<a href="#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<h2 class="unnumbered" id="Index-1"><span>Index<a class="copiable-link" href="#Index-1"> &para;</a></span></h2>
+
+
+</div>
+</div>
+
+
+
+</body>
+</html>
