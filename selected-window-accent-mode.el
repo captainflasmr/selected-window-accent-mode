@@ -1,7 +1,7 @@
 ;;; selected-window-accent-mode.el --- Accent Selected Window -*- lexical-binding: t; -*-
 ;;
 ;; Author: James Dyer <captainflasmr@gmail.com>
-;; Version: 2.0.0
+;; Version: 2.1.0
 ;; Package-Requires: ((emacs "28.1")(transient "0.1.0"))
 ;; Keywords: convenience
 ;; URL: https://github.com/captainflasmr/selected-window-accent-mode

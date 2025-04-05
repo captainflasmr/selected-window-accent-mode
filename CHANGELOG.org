@@ -11,6 +11,10 @@ project's main git repository: [[https://github.com/captainflasmr/selected-windo
 
 * Versions
 
+** v2.1.0 <2025-04-05>
+
+- Added texinfo manual
+
 ** v2.0.0 <2025-03-04>
 
 refactored/streamlined selected-window-accent-mode
