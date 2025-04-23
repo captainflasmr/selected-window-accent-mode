@@ -118,6 +118,11 @@ When nil, uses the current theme's highlight color."
   :type 'boolean
   :group 'selected-window-accent)
 
+(defcustom selected-window-accent-use-pywal nil
+  "When non-nil, use a color from Pywal generated palette."
+  :type 'boolean
+  :group 'selected-window-accent-group)
+
 (defun selected-window-accent--pixels-to-chars (pixels)
   "Convert PIXELS to an approximate character width."
   (round (/ pixels (frame-char-width))))
@@ -148,6 +153,19 @@ When nil, uses the current theme's highlight color."
      `(tab-bar-tab ((t (:inherit default :background ,default-fg :foreground ,default-bg))))
      `(tab-bar-tab-inactive ((t (:inherit default :background ,default-bg :foreground ,inactive-fg)))))))
 
+(defun selected-window-accent--get-pywal-color ()
+  "Get the first color from Pywal palette."
+  (let* ((wal-colors-file (expand-file-name "~/.cache/wal/colors.json"))
+         (colors-data (when (file-exists-p wal-colors-file)
+                        (with-temp-buffer
+                          (insert-file-contents wal-colors-file)
+                          (goto-char (point-min))
+                          (json-parse-buffer :object-type 'hash-table)))))
+    (when colors-data
+      (let ((colors (gethash "colors" colors-data)))
+        (when colors
+          (gethash "color1" colors))))))
+
 (defun selected-window-accent (&optional custom-accent-color)
   "Set accent colors for the selected window.
 With optional CUSTOM-ACCENT-COLOR, use the provided color."
@@ -157,15 +175,19 @@ With optional CUSTOM-ACCENT-COLOR, use the provided color."
   
   (let* ((background-color (selected-window-accent--color-name-to-hex 
                            (face-attribute 'default :background)))
-         (accent-bg-color (if selected-window-accent-custom-color
+         (accent-bg-color (cond
+                           ((and selected-window-accent-use-pywal (file-exists-p "~/.cache/wal/colors.json"))
+                            (setq accent-bg-color (selected-window-accent--get-pywal-color)))
+                           (selected-window-accent-custom-color
                              (selected-window-accent--color-name-to-hex 
-                              selected-window-accent-custom-color)
-                           (let ((base-color (selected-window-accent--color-name-to-hex 
-                                             (face-attribute 'highlight :background))))
-                             (setq base-color (color-darken-name base-color 
-                                                                selected-window-accent-percentage-darken))
-                             (color-desaturate-name base-color 
-                                                   selected-window-accent-percentage-desaturate))))
+                              selected-window-accent-custom-color))
+                           (t
+                            (let ((base-color (selected-window-accent--color-name-to-hex 
+                                               (face-attribute 'highlight :background))))
+                              (setq base-color (color-darken-name base-color 
+                                                                  selected-window-accent-percentage-darken))
+                              (color-desaturate-name base-color 
+                                                     selected-window-accent-percentage-desaturate)))))
          (accent-fg-color (selected-window-accent--determine-foreground accent-bg-color))
          (smart-borders-active (and selected-window-accent-smart-borders
                                    (not (selected-window-accent--more-than-one-window-p))))

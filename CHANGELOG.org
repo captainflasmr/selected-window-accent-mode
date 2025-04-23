@@ -11,6 +11,12 @@ project's main git repository: [[https://github.com/captainflasmr/selected-windo
 
 * Versions
 
+** v2.2.0 <2025-04-23>
+
+Added back in Pywal color support
+
+Introduce =selected-window-accent-use-pywal= option to allow the usage of a color from the Pywal generated palette.
+
 ** v2.1.0 <2025-04-05>
 
 - Added texinfo manual
