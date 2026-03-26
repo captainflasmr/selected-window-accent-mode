@@ -2,7 +2,7 @@
 ;;
 ;; Author: James Dyer <captainflasmr@gmail.com>
 ;; Version: 2.2.1
-;; Package-Requires: ((emacs "28.1"))
+;; Package-Requires: ((emacs "29.1"))
 ;; Keywords: convenience
 ;; URL: https://github.com/captainflasmr/selected-window-accent-mode
 ;;
@@ -71,20 +71,25 @@
 ;;; Code:
 
 (require 'color)
-(require 'json)
-(require 'face-remap)
 
 (defgroup selected-window-accent nil
   "Customization group for the `selected-window-accent-mode' package."
   :group 'convenience)
 
+(defconst selected-window-accent--pywal-colors-file
+  (expand-file-name "~/.cache/wal/colors.json")
+  "Path to the Pywal generated colors JSON file.")
+
+(defun selected-window-accent--set-and-refresh (symbol value)
+  "Set SYMBOL to VALUE and refresh accents if the mode is active."
+  (set-default symbol value)
+  (when (bound-and-true-p selected-window-accent-mode)
+    (selected-window-accent nil t)))
+
 (defcustom selected-window-accent-fringe-thickness 6
   "Thickness of the accent fringes in pixels."
   :type 'integer
-  :set (lambda (symbol value)
-         (set-default symbol value)
-         (when (bound-and-true-p selected-window-accent-mode)
-           (selected-window-accent nil t)))
+  :set #'selected-window-accent--set-and-refresh
   :group 'selected-window-accent)
 
 (defcustom selected-window-accent-custom-color nil
@@ -92,10 +97,7 @@
 When nil, uses the current theme's highlight color."
   :type '(choice (const :tag "None" nil)
                  (color :tag "Custom Color"))
-  :set (lambda (symbol value)
-         (set-default symbol value)
-         (when (bound-and-true-p selected-window-accent-mode)
-           (selected-window-accent nil t)))
+  :set #'selected-window-accent--set-and-refresh
   :group 'selected-window-accent)
 
 (defcustom selected-window-accent-mode-style 'default
@@ -106,69 +108,45 @@ When nil, uses the current theme's highlight color."
   :type '(choice (const :tag "Default Style" default)
                  (const :tag "Tiling Style" tiling)
                  (const :tag "Subtle Style" subtle))
-  :set (lambda (symbol value)
-         (set-default symbol value)
-         (when (bound-and-true-p selected-window-accent-mode)
-           (selected-window-accent nil t)))
+  :set #'selected-window-accent--set-and-refresh
   :group 'selected-window-accent)
 
 (defcustom selected-window-accent-percentage-darken 20
   "Percentage to darken the accent color."
   :type 'integer
-  :set (lambda (symbol value)
-         (set-default symbol value)
-         (when (bound-and-true-p selected-window-accent-mode)
-           (selected-window-accent nil t)))
+  :set #'selected-window-accent--set-and-refresh
   :group 'selected-window-accent)
 
 (defcustom selected-window-accent-percentage-desaturate 20
   "Percentage to desaturate the accent color."
   :type 'integer
-  :set (lambda (symbol value)
-         (set-default symbol value)
-         (when (bound-and-true-p selected-window-accent-mode)
-           (selected-window-accent nil t)))
+  :set #'selected-window-accent--set-and-refresh
   :group 'selected-window-accent)
 
 (defcustom selected-window-accent-tab-accent nil
   "When non-nil, accent the selected tab in the tab-bar."
   :type 'boolean
-  :set (lambda (symbol value)
-         (set-default symbol value)
-         (when (bound-and-true-p selected-window-accent-mode)
-           (selected-window-accent nil t)))
+  :set #'selected-window-accent--set-and-refresh
   :group 'selected-window-accent)
 
 (defcustom selected-window-accent-smart-borders nil
   "When non-nil, don't accent single-window frames."
   :type 'boolean
-  :set (lambda (symbol value)
-         (set-default symbol value)
-         (when (bound-and-true-p selected-window-accent-mode)
-           (selected-window-accent nil t)))
+  :set #'selected-window-accent--set-and-refresh
   :group 'selected-window-accent)
 
 (defcustom selected-window-accent-use-pywal nil
   "When non-nil, use a color from Pywal generated palette."
   :type 'boolean
-  :set (lambda (symbol value)
-         (set-default symbol value)
-         (when (bound-and-true-p selected-window-accent-mode)
-           (selected-window-accent nil t)))
+  :set #'selected-window-accent--set-and-refresh
   :group 'selected-window-accent)
 
 (defcustom selected-window-accent-pywal-color "color1"
   "Which Pywal color to use from the palette.
 Common values: color0 through color15."
   :type 'string
-  :set (lambda (symbol value)
-         (set-default symbol value)
-         (when (bound-and-true-p selected-window-accent-mode)
-           (selected-window-accent nil t)))
+  :set #'selected-window-accent--set-and-refresh
   :group 'selected-window-accent)
-
-(defvar selected-window-accent--last-selected-window nil
-  "Cache of the last selected window to avoid redundant updates.")
 
 (defvar selected-window-accent--original-fringe-bg nil
   "Storage for original fringe background color.")
@@ -194,20 +172,19 @@ and returns a hex string in the format #RRGGBB."
 (defun selected-window-accent--more-than-one-window-p ()
   "Return t if the current frame has more than one window.
 Used by smart-borders feature to determine whether to apply accenting."
-  (> (length (window-list)) 1))
+  (not (one-window-p t)))
 
 (defun selected-window-accent--determine-foreground (bg-color)
-  "Determine appropriate foreground color based on BG-COLOR brightness.
-Uses a threshold of #888888 to determine if BG-COLOR is light or dark.
-Returns black (#000000) for light backgrounds, white (#ffffff) for
-dark backgrounds."
-  (if (string-greaterp bg-color "#888888") "#000000" "#ffffff"))
-
-(defun selected-window-accent--supports-header-line-active-p ()
-  "Check if Emacs supports header-line-active face.
-This face was introduced in Emacs 31 and allows independent styling
-of header lines in active vs inactive windows."
-  (facep 'header-line-active))
+  "Determine appropriate foreground color based on BG-COLOR luminance.
+Computes relative luminance using the ITU-R BT.601 formula and returns
+black (#000000) for light backgrounds, white (#ffffff) for dark."
+  (let ((rgb (color-name-to-rgb bg-color)))
+    (if (and rgb (> (+ (* 0.299 (nth 0 rgb))
+                       (* 0.587 (nth 1 rgb))
+                       (* 0.114 (nth 2 rgb)))
+                    0.5))
+        "#000000"
+      "#ffffff")))
 
 (defun selected-window-accent-sync-tab-bar-to-theme ()
   "Synchronize tab-bar faces with the current theme.
@@ -217,19 +194,26 @@ custom accenting applied by this mode."
   (interactive)
   (let ((default-bg (face-background 'default))
         (default-fg (face-foreground 'default))
-        (inactive-fg (face-foreground 'mode-line-inactive))) ;; Fallback to mode-line-inactive
-    (custom-set-faces
-     `(tab-bar ((t (:inherit default :background ,default-bg :foreground ,default-fg))))
-     `(tab-bar-tab ((t (:inherit default :background ,default-fg :foreground ,default-bg))))
-     `(tab-bar-tab-inactive ((t (:inherit default :background ,default-bg :foreground ,inactive-fg)))))))
+        (inactive-fg (face-foreground 'mode-line-inactive)))
+    (set-face-attribute 'tab-bar nil
+                        :inherit 'default
+                        :background default-bg
+                        :foreground default-fg)
+    (set-face-attribute 'tab-bar-tab nil
+                        :inherit 'default
+                        :background default-fg
+                        :foreground default-bg)
+    (set-face-attribute 'tab-bar-tab-inactive nil
+                        :inherit 'default
+                        :background default-bg
+                        :foreground inactive-fg)))
 
 (defun selected-window-accent--get-pywal-color ()
   "Get a color from Pywal palette based on `selected-window-accent-pywal-color'."
   (condition-case err
-      (let* ((wal-colors-file (expand-file-name "~/.cache/wal/colors.json"))
-             (colors-data (when (file-exists-p wal-colors-file)
+      (let* ((colors-data (when (file-exists-p selected-window-accent--pywal-colors-file)
                             (with-temp-buffer
-                              (insert-file-contents wal-colors-file)
+                              (insert-file-contents selected-window-accent--pywal-colors-file)
                               (goto-char (point-min))
                               (json-parse-buffer :object-type 'hash-table)))))
         (when colors-data
@@ -242,35 +226,35 @@ custom accenting applied by this mode."
 
 (defun selected-window-accent (&optional custom-accent-color _force-update)
   "Set accent colors for the selected window.
-With optional CUSTOM-ACCENT-COLOR, use the provided color.
-FORCE-UPDATE argument is ignored (kept for backward compatibility)."
+With optional CUSTOM-ACCENT-COLOR, prompt for and use a new color.
+FORCE-UPDATE argument is accepted for compatibility but currently unused."
   (interactive "P")
   (when custom-accent-color
     (setq selected-window-accent-custom-color (read-color "Enter custom accent color: ")))
 
-  ;; Always update when called (removed caching to ensure reliable fringe updates)
-  (progn
-    (setq selected-window-accent--last-selected-window (selected-window))
-
-    (let* ((accent-bg-color (cond
-                           ((and selected-window-accent-use-pywal (file-exists-p "~/.cache/wal/colors.json"))
-                            (selected-window-accent--get-pywal-color))
-                           (selected-window-accent-custom-color
-                             (selected-window-accent--color-name-to-hex
-                              selected-window-accent-custom-color))
-                           (t
-                            (let* ((base-color (selected-window-accent--color-name-to-hex
-                                               (face-attribute 'highlight :background)))
-                                   (darkened-color (color-darken-name base-color
-                                                                  selected-window-accent-percentage-darken)))
-                              (color-desaturate-name darkened-color
-                                                     selected-window-accent-percentage-desaturate)))))
+  (let* ((accent-bg-color (or (cond
+                                ((and selected-window-accent-use-pywal
+                                      (file-exists-p selected-window-accent--pywal-colors-file))
+                                 (selected-window-accent--get-pywal-color))
+                                (selected-window-accent-custom-color
+                                 (selected-window-accent--color-name-to-hex
+                                  selected-window-accent-custom-color))
+                                (t
+                                 (let ((highlight-bg (face-attribute 'highlight :background nil 'default)))
+                                   (when (stringp highlight-bg)
+                                     (let ((base-color (selected-window-accent--color-name-to-hex highlight-bg)))
+                                       (when base-color
+                                         (color-desaturate-name
+                                          (color-darken-name base-color
+                                                             selected-window-accent-percentage-darken)
+                                          selected-window-accent-percentage-desaturate)))))))
+                               "#888888"))
          (accent-fg-color (selected-window-accent--determine-foreground accent-bg-color))
          (smart-borders-active (and selected-window-accent-smart-borders
-                                   (not (selected-window-accent--more-than-one-window-p))))
-         (fringe-chars (selected-window-accent--pixels-to-chars 
+                                    (not (selected-window-accent--more-than-one-window-p))))
+         (fringe-chars (selected-window-accent--pixels-to-chars
                         selected-window-accent-fringe-thickness)))
-    
+
     ;; Configure mode-line height based on style
     (pcase selected-window-accent-mode-style
       ('tiling
@@ -280,17 +264,17 @@ FORCE-UPDATE argument is ignored (kept for backward compatibility)."
        (set-face-attribute 'mode-line-active nil :height 'unspecified))
       ('default
        (set-face-attribute 'mode-line-active nil :height 'unspecified)))
-    
+
     ;; Set mode-line colors
     (if smart-borders-active
         (set-face-attribute 'mode-line-active nil :background 'unspecified :foreground 'unspecified)
       (set-face-attribute 'mode-line-active nil :background accent-bg-color :foreground accent-fg-color))
-    
+
     ;; Set tab colors if requested
     (if selected-window-accent-tab-accent
         (set-face-attribute 'tab-bar-tab nil :background accent-bg-color :foreground accent-fg-color)
       (set-face-attribute 'tab-bar-tab nil :background 'unspecified :foreground 'unspecified))
-    
+
     ;; Store original fringe colors if not already stored
     (unless selected-window-accent--original-fringe-bg
       (setq selected-window-accent--original-fringe-bg
@@ -335,7 +319,7 @@ FORCE-UPDATE argument is ignored (kept for backward compatibility)."
                ('default
                 (set-window-fringes window 0 0 0 nil)
                 (set-window-margins window 0 0)))))))
-     nil t))))
+     nil t)))
 
 (defun selected-window-accent--reset ()
   "Reset window accents to defaults.
@@ -382,7 +366,7 @@ applies it to all windows. Displays a confirmation message."
    (list (intern (completing-read "Choose accent style: " '(default tiling subtle)))))
   (customize-set-variable 'selected-window-accent-mode-style style)
   (message "Switched to %s accent style" style)
-  (selected-window-accent t t))
+  (selected-window-accent nil t))
 
 (defun selected-window-accent-switch-color ()
   "Switch the selected window accent color.
