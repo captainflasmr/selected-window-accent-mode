@@ -154,6 +154,22 @@ This command synchronizes your tab bar appearance with your current theme colors
 
 This is helpful when switching themes or when you want to reset your tab bar appearance to something that matches your overall Emacs theme rather than your accent color.
 
+To automatically sync the tab bar whenever you switch themes, add the following to your configuration:
+
+#+begin_src emacs-lisp
+(if (version<= "29.1" emacs-version)
+    ;; Emacs 29.1+ — use the official theme hook
+    (add-hook 'enable-theme-functions
+              (lambda (_theme)
+                (selected-window-accent-sync-tab-bar-to-theme)))
+  ;; Older Emacs — fall back to advising load-theme
+  (progn
+    (defun selected-window-accent-sync-tab-bar-to-theme--after (&rest _)
+      (selected-window-accent-sync-tab-bar-to-theme))
+    (advice-add 'load-theme :after
+                #'selected-window-accent-sync-tab-bar-to-theme--after)))
+#+end_src
+
 ** =b= - Toggle Smart Borders
 *Command:* =selected-window-accent-toggle-smart-borders=
 
