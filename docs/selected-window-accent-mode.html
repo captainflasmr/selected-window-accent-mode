@@ -333,6 +333,15 @@ Next: <a href="#License" accesskey="n" rel="next">License</a>, Previous: <a href
 <dd><p>The thickness of the accent fringes in pixels. Default is 6.
 </p>
 </dd>
+<dt><code class="code">selected-window-accent-fringe-minimum</code></dt>
+<dd><p>Minimum fringe width in pixels to preserve in default style.  When set to a
+positive value (e.g., 8), fringes remain visible in default style so that fringe
+indicators such as line-wrapping arrows, git-gutter marks, and flycheck icons are
+usable.  The fringe background matches the buffer background so indicators blend
+naturally.  Default is 0 (fringes hidden in default style, matching prior
+behaviour).
+</p>
+</dd>
 <dt><code class="code">selected-window-accent-custom-color</code></dt>
 <dd><p>Custom accent color for the selected window. When nil, uses the current theme&rsquo;s highlight color.
 </p>

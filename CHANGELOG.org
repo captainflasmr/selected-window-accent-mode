@@ -11,6 +11,12 @@ project's main git repository: [[https://github.com/captainflasmr/selected-windo
 
 * Versions
 
+** v2.3.0 <2026-03-26>
+
+Added minimum fringe width for default style
+
+Introduce =selected-window-accent-fringe-minimum= option to set a minimum fringe width (in pixels) when using the default accent style.  This allows fringe indicators such as line-wrapping arrows, git-gutter marks, and flycheck icons to remain visible while the mode is active.  When set to 0 (the default) the behaviour is unchanged.  In default style the fringe background now matches the buffer background so indicators blend naturally.
+
 ** v2.2.0 <2025-04-23>
 
 Added back in Pywal color support

@@ -1,7 +1,7 @@
 ;;; selected-window-accent-mode.el --- Accent Selected Window -*- lexical-binding: t; -*-
 ;;
 ;; Author: James Dyer <captainflasmr@gmail.com>
-;; Version: 2.2.1
+;; Version: 2.3.0
 ;; Package-Requires: ((emacs "29.1"))
 ;; Keywords: convenience
 ;; URL: https://github.com/captainflasmr/selected-window-accent-mode
@@ -88,6 +88,16 @@
 
 (defcustom selected-window-accent-fringe-thickness 6
   "Thickness of the accent fringes in pixels."
+  :type 'integer
+  :set #'selected-window-accent--set-and-refresh
+  :group 'selected-window-accent)
+
+(defcustom selected-window-accent-fringe-minimum 0
+  "Minimum fringe width in pixels to preserve in default style.
+In default style, fringes are normally set to zero.  Set this to a
+positive value (e.g., 8) to keep fringes visible so that fringe
+indicators such as line-wrapping arrows, git-gutter marks, and
+flycheck icons remain usable."
   :type 'integer
   :set #'selected-window-accent--set-and-refresh
   :group 'selected-window-accent)
@@ -282,10 +292,15 @@ FORCE-UPDATE argument is accepted for compatibility but currently unused."
       (setq selected-window-accent--original-fringe-fg
             (face-attribute 'fringe :foreground nil 'default)))
 
-    ;; Set global fringe face to accent color
-    (set-face-attribute 'fringe nil
-                        :background accent-bg-color
-                        :foreground accent-bg-color)
+    ;; Set global fringe face: accent color for tiling/subtle,
+    ;; match default background for default style so indicators remain visible
+    (if (eq selected-window-accent-mode-style 'default)
+        (set-face-attribute 'fringe nil
+                            :background (face-background 'default)
+                            :foreground selected-window-accent--original-fringe-fg)
+      (set-face-attribute 'fringe nil
+                          :background accent-bg-color
+                          :foreground accent-bg-color))
 
     ;; Configure windows
     (walk-windows
@@ -306,7 +321,9 @@ FORCE-UPDATE argument is accepted for compatibility but currently unused."
                                      selected-window-accent-fringe-thickness 0 0 nil))
                  ('default
                   (set-window-margins window 0 0)
-                  (set-window-fringes window 0 0 0 nil))))
+                  (set-window-fringes window
+                                     selected-window-accent-fringe-minimum
+                                     selected-window-accent-fringe-minimum 0 nil))))
            ;; Non-selected window: set fringes to 0, use margins to compensate
            (progn
              (pcase selected-window-accent-mode-style
@@ -317,7 +334,9 @@ FORCE-UPDATE argument is accepted for compatibility but currently unused."
                 (set-window-fringes window 0 0 0 nil)
                 (set-window-margins window fringe-chars 0))
                ('default
-                (set-window-fringes window 0 0 0 nil)
+                (set-window-fringes window
+                                   selected-window-accent-fringe-minimum
+                                   selected-window-accent-fringe-minimum 0 nil)
                 (set-window-margins window 0 0)))))))
      nil t)))
 

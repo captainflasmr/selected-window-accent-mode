@@ -128,6 +128,8 @@ This command allows you to cycle between the three available accent styles:
 - =tiling=: Thicker fringes and mode line for a more pronounced window border
 - =subtle=: Minimal visual change with accent color applied to fringes
 
+By default, fringes are hidden in the =default= style.  If you rely on fringe indicators (line-wrapping arrows, git-gutter, flycheck, etc.) you can set =selected-window-accent-fringe-minimum= to a positive pixel value (e.g., 8) to keep fringes visible.  The fringe background will match the buffer background so indicators blend naturally.
+
 When invoked, it will prompt you with a minibuffer completion interface to select your preferred style. This is ideal for quickly testing which style works best for your workflow.
 
 ** =RET= (Enter) - Switch Accent Color

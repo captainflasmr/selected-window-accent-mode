@@ -325,6 +325,14 @@ Reference]], Up: [[#Top][Selected Window Accent Mode]]  
 - =selected-window-accent-fringe-thickness= :: The thickness of the
   accent fringes in pixels. Default is 6.
 
+- =selected-window-accent-fringe-minimum= :: Minimum fringe width in
+  pixels to preserve in default style. When set to a positive value
+  (e.g., 8), fringes remain visible in default style so that fringe
+  indicators such as line-wrapping arrows, git-gutter marks, and
+  flycheck icons are usable. The fringe background matches the buffer
+  background so indicators blend naturally. Default is 0 (fringes hidden
+  in default style, matching prior behaviour).
+
 - =selected-window-accent-custom-color= :: Custom accent color for the
   selected window. When nil, uses the current theme's highlight color.
 
