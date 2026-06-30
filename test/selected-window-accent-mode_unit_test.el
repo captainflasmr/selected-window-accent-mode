@@ -107,6 +107,17 @@
     (with-current-buffer output-buffer
       (should (string-match "(use-package selected-window-accent-mode" (buffer-string))))))
 
+(ert-deftest test-selected-window-accent-preserves-margins ()
+  "Test that `selected-window-accent` does not clobber existing window margins.
+Other packages (e.g., simply-annotate, olivetti, visual-fill-column) rely on
+margins being preserved."
+  (let ((selected-window-accent-custom-color "#ff0000"))
+    ;; Set known margins on the selected window
+    (set-window-margins nil 4 2)
+    (selected-window-accent)
+    ;; Margins should be unchanged
+    (should (equal (window-margins) (cons 4 2)))))
+
 ;;; Run all tests
 
 ;; You can invoke this via `M-x ert` or programmatically

@@ -1,7 +1,7 @@
 ;;; selected-window-accent-mode.el --- Accent Selected Window -*- lexical-binding: t; -*-
 ;;
 ;; Author: James Dyer <captainflasmr@gmail.com>
-;; Version: 2.3.0
+;; Version: 2.3.1
 ;; Package-Requires: ((emacs "29.1"))
 ;; Keywords: convenience
 ;; URL: https://github.com/captainflasmr/selected-window-accent-mode
@@ -25,8 +25,8 @@
 ;;
 ;; The Selected Window Accent Mode is an Emacs package designed to
 ;; visually distinguish the currently selected window by applying a
-;; unique accent color to its fringes, mode line, header line, and
-;; margins.
+;; unique accent color to its fringes, mode line, and
+;; header line.
 ;;
 ;;; Quick Start
 ;;
@@ -164,12 +164,6 @@ Common values: color0 through color15."
 (defvar selected-window-accent--original-fringe-fg nil
   "Storage for original fringe foreground color.")
 
-(defun selected-window-accent--pixels-to-chars (pixels)
-  "Convert PIXELS to an approximate character width.
-This is used to calculate margin widths that compensate for fringe spacing,
-ensuring text alignment remains consistent across windows."
-  (round (/ pixels (frame-char-width))))
-
 (defun selected-window-accent--color-name-to-hex (color-name)
   "Convert COLOR-NAME to its hexadecimal representation.
 Accepts any valid Emacs color name (e.g., `red', `blue') or color spec
@@ -259,11 +253,9 @@ FORCE-UPDATE argument is accepted for compatibility but currently unused."
                                                              selected-window-accent-percentage-darken)
                                           selected-window-accent-percentage-desaturate)))))))
                                "#888888"))
-         (accent-fg-color (selected-window-accent--determine-foreground accent-bg-color))
-         (smart-borders-active (and selected-window-accent-smart-borders
-                                    (not (selected-window-accent--more-than-one-window-p))))
-         (fringe-chars (selected-window-accent--pixels-to-chars
-                        selected-window-accent-fringe-thickness)))
+          (accent-fg-color (selected-window-accent--determine-foreground accent-bg-color))
+          (smart-borders-active (and selected-window-accent-smart-borders
+                                     (not (selected-window-accent--more-than-one-window-p)))))
 
     ;; Configure mode-line height based on style
     (pcase selected-window-accent-mode-style
@@ -306,43 +298,37 @@ FORCE-UPDATE argument is accepted for compatibility but currently unused."
     (walk-windows
      (lambda (window)
        (let ((is-selected (and (not smart-borders-active) (eq window (selected-window)))))
-         (if is-selected
-             (progn
-               ;; Selected window: use fringes with accent color, no margins
-               (pcase selected-window-accent-mode-style
-                 ('tiling
-                  (set-window-margins window 0 0)
-                  (set-window-fringes window
-                                     selected-window-accent-fringe-thickness
-                                     selected-window-accent-fringe-thickness 0 nil))
-                 ('subtle
-                  (set-window-margins window 0 0)
-                  (set-window-fringes window
-                                     selected-window-accent-fringe-thickness 0 0 nil))
-                 ('default
-                  (set-window-margins window 0 0)
-                  (set-window-fringes window
-                                     selected-window-accent-fringe-minimum
-                                     selected-window-accent-fringe-minimum 0 nil))))
-           ;; Non-selected window: set fringes to 0, use margins to compensate
+          (if is-selected
+              (progn
+                ;; Selected window: use fringes with accent color
+                (pcase selected-window-accent-mode-style
+                  ('tiling
+                   (set-window-fringes window
+                                      selected-window-accent-fringe-thickness
+                                      selected-window-accent-fringe-thickness 0 nil))
+                  ('subtle
+                   (set-window-fringes window
+                                      selected-window-accent-fringe-thickness 0 0 nil))
+                  ('default
+                   (set-window-fringes window
+                                      selected-window-accent-fringe-minimum
+                                      selected-window-accent-fringe-minimum 0 nil))))
+           ;; Non-selected window: set fringes to 0
            (progn
              (pcase selected-window-accent-mode-style
                ('tiling
-                (set-window-fringes window 0 0 0 nil)
-                (set-window-margins window fringe-chars fringe-chars))
+                (set-window-fringes window 0 0 0 nil))
                ('subtle
-                (set-window-fringes window 0 0 0 nil)
-                (set-window-margins window fringe-chars 0))
+                (set-window-fringes window 0 0 0 nil))
                ('default
                 (set-window-fringes window
                                    selected-window-accent-fringe-minimum
-                                   selected-window-accent-fringe-minimum 0 nil)
-                (set-window-margins window 0 0)))))))
+                                   selected-window-accent-fringe-minimum 0 nil)))))))
      nil t)))
 
 (defun selected-window-accent--reset ()
   "Reset window accents to defaults.
-Removes all face customizations and restores default fringe and margin
+Removes all face customizations and restores default fringe
 settings for all windows. Called when the mode is disabled."
   ;; Restore original fringe colors
   (when selected-window-accent--original-fringe-bg
@@ -358,7 +344,6 @@ settings for all windows. Called when the mode is disabled."
 
   (walk-windows
    (lambda (window)
-     (set-window-margins window 0 0)
      (set-window-fringes window 0 0 0 nil))
    nil t))
 

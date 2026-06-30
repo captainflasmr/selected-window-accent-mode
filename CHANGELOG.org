@@ -11,6 +11,15 @@ project's main git repository: [[https://github.com/captainflasmr/selected-windo
 
 * Versions
 
+** v2.3.1 <2026-06-30>
+
+Stop clobbering window margins used by other packages
+
+Remove all =set-window-margins= calls so that packages relying on
+margins (e.g., simply-annotate, olivetti, visual-fill-column) are no
+longer disrupted.  The mode now only touches fringes.  This aligns the
+code with the documented design intent.
+
 ** v2.3.0 <2026-03-26>
 
 Added minimum fringe width for default style
