@@ -142,6 +142,8 @@ Pressing Enter or =j= in the keymap will prompt you to choose a custom color for
 
 This command allows you to personalize your window accenting to match your theme or preferences.
 
+If =selected-window-accent-use-pywal= is enabled, a message is shown in the minibuffer after selecting a color because Pywal colors take precedence.  Use =p= in the command map to turn Pywal off first.
+
 ** =t= - Toggle Tab Bar Accent
 *Command:* =selected-window-accent-toggle-tab-accent=
 

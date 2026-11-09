@@ -198,6 +198,13 @@ Only used on Emacs versions without the `header-line-active' face.")
   'selected-window-accent--original-header-line-format
   "Window parameter storing a window's original `header-line-format'.")
 
+;; Emacs 31 uses this property to decide whether changing a window
+;; parameter requires a redisplay for face filters.  Set it eagerly so
+;; the first focus change does not rely on the filter having already
+;; been evaluated.
+(put selected-window-accent--fringe-window-parameter :filtered t)
+(put selected-window-accent--header-line-window-parameter :filtered t)
+
 (defface selected-window-accent--fringe
   '((t :inherit fringe))
   "Face remapped onto `fringe' in the selected window.")
@@ -278,6 +285,22 @@ here is remembered so it can be removed again."
     (set-window-parameter
      window selected-window-accent--original-header-line-format-parameter nil)
     (force-window-update window)))
+
+(defun selected-window-accent--refresh-window-fringes (window)
+  "Force WINDOW to redraw its fringes.
+`set-window-fringes' only requests a thorough redisplay when a width
+changes, so briefly toggle the right fringe width and restore it.  Both
+changes happen before the next redisplay, so the visible geometry does
+not change."
+  (let* ((fringes (window-fringes window))
+         (left (nth 0 fringes))
+         (right (nth 1 fringes))
+         (outside (nth 2 fringes))
+         (persistent (nth 3 fringes)))
+    (when (and left right)
+      (set-window-fringes window left (if (> right 0) 0 1)
+                          outside persistent)
+      (set-window-fringes window left right outside persistent))))
 
 (defun selected-window-accent--fringe-color (color)
   "Return COLOR if it is a color string, or `unspecified' otherwise."
@@ -365,13 +388,20 @@ custom accenting applied by this mode."
      (message "Error reading Pywal colors: %s" (error-message-string err))
      nil)))
 
+(defun selected-window-accent--message-pywal-overrides-color ()
+  "Show a minibuffer message that Pywal overrides a custom accent color."
+  (when (and selected-window-accent-use-pywal
+             (file-exists-p selected-window-accent--pywal-colors-file))
+    (message "Pywal enabled; custom color ignored.")))
+
 (defun selected-window-accent (&optional custom-accent-color _force-update)
   "Set accent colors for the selected window.
 With optional CUSTOM-ACCENT-COLOR, prompt for and use a new color.
 FORCE-UPDATE argument is accepted for compatibility but currently unused."
   (interactive "P")
   (when custom-accent-color
-    (setq selected-window-accent-custom-color (read-color "Enter custom accent color: ")))
+    (setq selected-window-accent-custom-color (read-color "Enter custom accent color: "))
+    (selected-window-accent--message-pywal-overrides-color))
 
   (let* ((accent-bg-color (or (cond
                                 ((and selected-window-accent-use-pywal
@@ -515,18 +545,19 @@ FORCE-UPDATE argument is accepted for compatibility but currently unused."
             (set-window-fringes window
                                 selected-window-accent-fringe-minimum
                                 selected-window-accent-fringe-minimum 0 nil)))
-         (when is-selected
+         (unless (window-minibuffer-p window)
            (with-current-buffer (window-buffer window)
-             (selected-window-accent--ensure-face-remappings)))
-         (unless (eq (window-parameter
-                      window selected-window-accent--fringe-window-parameter)
-                     is-selected)
-           (set-window-parameter
-            window selected-window-accent--fringe-window-parameter
-            (and is-selected t))
-           ;; Emacs 31+ redraws automatically when a parameter used by a
-           ;; face filter changes.  Older versions need a nudge.
-           (unless (bound-and-true-p window-auto-redraw-on-parameter-change)
+             (selected-window-accent--ensure-face-remappings))
+           (unless (eq (window-parameter
+                        window selected-window-accent--fringe-window-parameter)
+                       is-selected)
+             (set-window-parameter
+              window selected-window-accent--fringe-window-parameter
+              (and is-selected t))
+             ;; Fringes are not redrawn for face-only changes, so force
+             ;; a full window redraw to make the new colour appear
+             ;; immediately on the next redisplay.
+             (selected-window-accent--refresh-window-fringes window)
              (force-window-update window)))))
      nil t)))
 

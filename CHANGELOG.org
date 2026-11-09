@@ -27,7 +27,11 @@ window-filtered =header-line= face remapping on older versions.  Set
 behaviour.
 
 Bind =p= in =selected-window-accent-map= to toggle Pywal colors with
-=selected-window-accent-toggle-pywal=.
+=selected-window-accent-toggle-pywal=.  Selecting a custom accent color
+while Pywal is enabled now shows a minibuffer message, since the Pywal
+color takes precedence.  Accent fringes are forced to redraw when focus
+moves, so the subtle style's colour appears immediately instead of
+popping in a moment later.
 
 ** v2.3.2 <2026-11-09>
 

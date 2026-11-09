@@ -258,6 +258,11 @@ To interactively change the accent color:
 M-x selected-window-accent-switch-color RET
 #+end_src
 
+If =selected-window-accent-use-pywal= is enabled, selecting a color
+shows a message in the minibuffer because Pywal colors take precedence.
+Toggle Pywal off with =p= in the command map before choosing a custom
+color.
+
 <<Using-the-Command-Map>>
 *** 4.4 Using the Command Map [[#Using-the-Command-Map][¶]]
 :PROPERTIES:
