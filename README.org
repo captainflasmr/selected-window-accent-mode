@@ -8,7 +8,7 @@
 
 * Summary
 
-The Selected Window Accent Mode is an Emacs package designed to visually distinguish the currently selected window by applying a unique accent color to its fringes, mode line, header line, and margins.
+The Selected Window Accent Mode is an Emacs package designed to visually distinguish the currently selected window by applying a unique accent color to its fringes, mode line, and header line.
 
 #+attr_org: :width 300px
 #+attr_html: :width 100%
@@ -416,8 +416,8 @@ It works well enough I think at the moment and I especially I tend to favour the
 *** fringe
 
 position: left, right
-face-attribute: 'fringe : all-windows
-size: (set-window-fringes left right) : per-window
+face-attribute: 'fringe, remapped per-window with a =(:filtered (:window ...))= spec
+size: (set-window-fringes left right) : same for all windows
 
 *** header-line
 
@@ -445,10 +445,10 @@ update global face-attributes
 
 walk-windows
   for each window
-    update window with accent or default appearance
-    if window is not selected
-      reset header-line to nil
-      reset fringes to 0
+    update mode-line and tab-bar appearance
+    give every window the same style-dependent fringe widths
+    mark the selected window with a window parameter
+ensure the selected window's buffer remaps `fringe' to the accent face
 #+end_src
 
 ** Limitations
@@ -457,9 +457,9 @@ As a header-line can only have a single global color it does mean that the heade
 
 There is a possibility that I could add in some extra logic depending on the mode that is set, but that might be for a future version, and at this moment I'm just not sure the effort is worth it.
 
-The accent is now always alongside an Emacs default margin so as not to overlap with existing packages that utilize the window margin settings, this would make the accent facility look a little less visually appealing then applying a little margin for the selected window along with a compensating margin for non selected windows, but this will have to be sacrificed for not disrupting other Emacs package functionality.
+This mode does not modify window margins, so packages such as olivetti-mode and visual-fill-column can continue to use them.
 
-All non selected windows have been fringe zeroed to preserve fringe accent consistency as the fringe color can only be set globally meaning that any Emacs packages that implement fringe functionality, which I have found to be uncommon, would show varying levels of window accents.
+All windows reserve the same fringe widths for the active style, and the selected window's fringes are coloured with a window-filtered =fringe= face remapping.  Keeping the widths identical is what prevents buffer contents from shifting when focus moves between windows, while non-selected windows keep their normal fringe indicators.
 
 When a buffer is split into multiple windows in tiling mode the header line is shared, thus leading to an accented header line across all splits, this is an inherent limitation of Emacs and how it processes windows / buffers.
 
@@ -526,11 +526,9 @@ If multiple Emacs frames exist, then the selected window in each will be accente
 
 I have decided to disable the setting of windows margins as part of this package as this is often used for padding in other packages.  This means I can now let packages such as olivetti-mode and visual-fill-column do their own thing without any margin interference.  Therefore this package will mainly achieve its functionality via fringe modification rather than fringe/margins.
 
-The disadvantage of this is that on window transition there will be more of a text in buffer offset shift as the select-window-accent-mode fringe is applied to the select window without a default compensatory margin / fringe shift.  This didn't really work anyway and there was always a little shift depending on the width of the native emacs margin character vs fringe pixel size.
+To avoid the text offset shift that used to happen on window transitions, every window now reserves the same fringe widths for the active style.  Only the selected window's fringe colours are changed, using a window-filtered =fringe= face remapping, so moving focus no longer changes the text area of any window.
 
 This means I don't have to depend on package checks and maybe packages I am unaware of that depend on window buffer margin changes will work better in the future.
-
-Maybe I can just define a non selected window compensatory margin in the future, for now I will leave as is and see how it goes!
 
 However this currently doesn't cover any mode that modifies a window header, like for example org-sticky-header.
 

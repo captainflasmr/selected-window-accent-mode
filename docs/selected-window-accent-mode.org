@@ -9,7 +9,7 @@ Next: [[#Introduction][Introduction]]   [[[#Index][Index]]]
 :END:
 The Selected Window Accent Mode is an Emacs package designed to visually
 distinguish the currently selected window by applying a unique accent
-color to its fringes, mode line, header line, and margins.
+color to its fringes, mode line, and header line.
 
 - [[#Introduction][Introduction]]
 - [[#Installation][Installation]]
@@ -237,6 +237,10 @@ You'll be prompted to choose between:
 - =default= - Standard Emacs appearance
 - =tiling= - Thicker fringes and mode line
 - =subtle= - Minimal visual change with accent color
+
+In the =tiling= and =subtle= styles, every window reserves the same
+fringe widths and only the selected window's fringes are coloured.
+This keeps buffer contents from shifting when you move between windows.
 
 <<Changing-Color>>
 *** 4.3 Changing Color [[#Changing-Color][¶]]

@@ -11,6 +11,17 @@ project's main git repository: [[https://github.com/captainflasmr/selected-windo
 
 * Versions
 
+** v2.3.2 <2026-11-09>
+
+Prevent contents from shifting when moving between windows
+
+In tiling and subtle styles every window now keeps the same fringe
+widths, and the selected window's accent is drawn with a
+window-filtered =fringe= face remapping.  This stops the text area from
+being resized on window focus changes, which previously nudged buffer
+contents sideways.  Fringe indicators in non-selected windows are no
+longer hidden.
+
 ** v2.3.1 <2026-06-30>
 
 Stop clobbering window margins used by other packages

@@ -1,7 +1,7 @@
 ;;; selected-window-accent-mode.el --- Accent Selected Window -*- lexical-binding: t; -*-
 ;;
 ;; Author: James Dyer <captainflasmr@gmail.com>
-;; Version: 2.3.1
+;; Version: 2.3.2
 ;; Package-Requires: ((emacs "29.1"))
 ;; Keywords: convenience
 ;; URL: https://github.com/captainflasmr/selected-window-accent-mode
@@ -71,6 +71,7 @@
 ;;; Code:
 
 (require 'color)
+(require 'face-remap)
 
 (defgroup selected-window-accent nil
   "Customization group for the `selected-window-accent-mode' package."
@@ -163,6 +164,43 @@ Common values: color0 through color15."
 
 (defvar selected-window-accent--original-fringe-fg nil
   "Storage for original fringe foreground color.")
+
+(defconst selected-window-accent--fringe-window-parameter
+  'selected-window-accent--accented-fringe
+  "Window parameter used to mark windows with accented fringes.")
+
+(defface selected-window-accent--fringe
+  '((t :inherit fringe))
+  "Face remapped onto `fringe' in the selected window.")
+
+(defvar-local selected-window-accent--fringe-remap-cookie nil
+  "Cookie for the buffer-local, window-filtered `fringe' remapping.")
+
+(defun selected-window-accent--ensure-fringe-remapping ()
+  "Ensure the current buffer remaps `fringe' for the selected window.
+The remapping is filtered by `selected-window-accent--fringe-window-parameter',
+so it only takes effect in windows that carry that parameter."
+  (unless selected-window-accent--fringe-remap-cookie
+    (setq selected-window-accent--fringe-remap-cookie
+          (face-remap-add-relative
+           'fringe
+           `(:filtered
+             (:window ,selected-window-accent--fringe-window-parameter t)
+             selected-window-accent--fringe)))))
+
+(defun selected-window-accent--remove-fringe-remappings ()
+  "Remove all `fringe' face remappings installed by this mode."
+  (dolist (buffer (buffer-list))
+    (with-current-buffer buffer
+      (when selected-window-accent--fringe-remap-cookie
+        (ignore-errors
+          (face-remap-remove-relative
+           selected-window-accent--fringe-remap-cookie))
+        (setq selected-window-accent--fringe-remap-cookie nil)))))
+
+(defun selected-window-accent--fringe-color (color)
+  "Return COLOR if it is a color string, or `unspecified' otherwise."
+  (if (stringp color) color 'unspecified))
 
 (defun selected-window-accent--color-name-to-hex (color-name)
   "Convert COLOR-NAME to its hexadecimal representation.
@@ -284,57 +322,74 @@ FORCE-UPDATE argument is accepted for compatibility but currently unused."
       (setq selected-window-accent--original-fringe-fg
             (face-attribute 'fringe :foreground nil 'default)))
 
-    ;; Set global fringe face: accent color for tiling/subtle,
-    ;; match default background for default style so indicators remain visible
-    (if (eq selected-window-accent-mode-style 'default)
-        (set-face-attribute 'fringe nil
-                            :background (face-background 'default)
-                            :foreground selected-window-accent--original-fringe-fg)
-      (set-face-attribute 'fringe nil
+    ;; Match the global fringe background to the buffer background so
+    ;; the fringe widths reserved in non-selected windows blend into the
+    ;; buffer.  The selected window's fringes are coloured by the
+    ;; filtered face remapping set up below.
+    (set-face-attribute 'fringe nil
+                        :background (face-background 'default)
+                        :foreground (selected-window-accent--fringe-color
+                                     selected-window-accent--original-fringe-fg))
+    (when (memq selected-window-accent-mode-style '(tiling subtle))
+      (set-face-attribute 'selected-window-accent--fringe nil
                           :background accent-bg-color
                           :foreground accent-bg-color))
 
-    ;; Configure windows
+    ;; Configure windows.  All windows get the same fringe widths so that
+    ;; moving focus never changes a window's text area (which would make
+    ;; its contents shift).  The selected window is accented by remapping
+    ;; the `fringe' face only for windows carrying the accent parameter.
     (walk-windows
      (lambda (window)
-       (let ((is-selected (and (not smart-borders-active) (eq window (selected-window)))))
-          (if is-selected
-              (progn
-                ;; Selected window: use fringes with accent color
-                (pcase selected-window-accent-mode-style
-                  ('tiling
-                   (set-window-fringes window
-                                      selected-window-accent-fringe-thickness
-                                      selected-window-accent-fringe-thickness 0 nil))
-                  ('subtle
-                   (set-window-fringes window
-                                      selected-window-accent-fringe-thickness 0 0 nil))
-                  ('default
-                   (set-window-fringes window
-                                      selected-window-accent-fringe-minimum
-                                      selected-window-accent-fringe-minimum 0 nil))))
-           ;; Non-selected window: set fringes to 0
-           (progn
-             (pcase selected-window-accent-mode-style
-               ('tiling
-                (set-window-fringes window 0 0 0 nil))
-               ('subtle
-                (set-window-fringes window 0 0 0 nil))
-               ('default
+       (let* ((accented (and (not smart-borders-active)
+                             (memq selected-window-accent-mode-style
+                                   '(tiling subtle))))
+              (is-selected (and accented (eq window (selected-window)))))
+         (pcase selected-window-accent-mode-style
+           ('tiling
+            (if accented
                 (set-window-fringes window
-                                   selected-window-accent-fringe-minimum
-                                   selected-window-accent-fringe-minimum 0 nil)))))))
+                                    selected-window-accent-fringe-thickness
+                                    selected-window-accent-fringe-thickness 0 nil)
+              (set-window-fringes window 0 0 0 nil)))
+           ('subtle
+            (if accented
+                (set-window-fringes window
+                                    selected-window-accent-fringe-thickness 0 0 nil)
+              (set-window-fringes window 0 0 0 nil)))
+           ('default
+            (set-window-fringes window
+                                selected-window-accent-fringe-minimum
+                                selected-window-accent-fringe-minimum 0 nil)))
+         (when is-selected
+           (with-current-buffer (window-buffer window)
+             (selected-window-accent--ensure-fringe-remapping)))
+         (unless (eq (window-parameter
+                      window selected-window-accent--fringe-window-parameter)
+                     is-selected)
+           (set-window-parameter
+            window selected-window-accent--fringe-window-parameter
+            (and is-selected t))
+           ;; Emacs 31+ redraws automatically when a parameter used by a
+           ;; face filter changes.  Older versions need a nudge.
+           (unless (bound-and-true-p window-auto-redraw-on-parameter-change)
+             (force-window-update window)))))
      nil t)))
 
 (defun selected-window-accent--reset ()
   "Reset window accents to defaults.
 Removes all face customizations and restores default fringe
 settings for all windows. Called when the mode is disabled."
+  ;; Remove the window-filtered fringe remappings.
+  (selected-window-accent--remove-fringe-remappings)
+
   ;; Restore original fringe colors
   (when selected-window-accent--original-fringe-bg
     (set-face-attribute 'fringe nil
-                        :background selected-window-accent--original-fringe-bg
-                        :foreground selected-window-accent--original-fringe-fg)
+                        :background (selected-window-accent--fringe-color
+                                     selected-window-accent--original-fringe-bg)
+                        :foreground (selected-window-accent--fringe-color
+                                     selected-window-accent--original-fringe-fg))
     (setq selected-window-accent--original-fringe-bg nil
           selected-window-accent--original-fringe-fg nil))
 
@@ -344,6 +399,9 @@ settings for all windows. Called when the mode is disabled."
 
   (walk-windows
    (lambda (window)
+     (set-window-parameter
+      window selected-window-accent--fringe-window-parameter nil)
+     (force-window-update window)
      (set-window-fringes window 0 0 0 nil))
    nil t))
 
