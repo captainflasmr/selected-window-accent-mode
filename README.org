@@ -120,7 +120,7 @@ Optionally define a keymap:
 
 and then select any of the following keys:
 
-** =w= - Switch Window Accent Style
+** =w= / =n= - Switch Window Accent Style
 *Command:* =selected-window-accent-switch-style=
 
 This command allows you to cycle between the three available accent styles:
@@ -132,10 +132,10 @@ By default, fringes are hidden in the =default= style.  If you rely on fringe in
 
 When invoked, it will prompt you with a minibuffer completion interface to select your preferred style. This is ideal for quickly testing which style works best for your workflow.
 
-** =RET= (Enter) - Switch Accent Color
+** =RET= (Enter) / =j= - Switch Accent Color
 *Command:* =selected-window-accent-switch-color=
 
-Pressing Enter in the keymap will prompt you to choose a custom color for your window accenting. This opens a color selection interface where you can either:
+Pressing Enter or =j= in the keymap will prompt you to choose a custom color for your window accenting. This opens a color selection interface where you can either:
 - Type a color name (like "blue", "tomato", or "forest green")
 - Enter a hex code (like "#FF5500")
 - Use the color picker if your Emacs supports it

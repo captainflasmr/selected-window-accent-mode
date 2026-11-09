@@ -406,7 +406,9 @@ Displays a confirmation message."
 (defvar selected-window-accent-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "w") 'selected-window-accent-switch-style)
+    (define-key map (kbd "n") 'selected-window-accent-switch-style)
     (define-key map (kbd "RET") 'selected-window-accent-switch-color)
+    (define-key map (kbd "j") 'selected-window-accent-switch-color)
     (define-key map (kbd "t") 'selected-window-accent-toggle-tab-accent)
     (define-key map (kbd "l") 'selected-window-accent-sync-tab-bar-to-theme)
     (define-key map (kbd "b") 'selected-window-accent-toggle-smart-borders)

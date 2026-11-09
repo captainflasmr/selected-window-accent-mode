@@ -261,7 +261,11 @@ can access the following commands:
 
 - C-c w w :: Switch accent style
 
+- C-c w n :: Switch accent style
+
 - C-c w RET :: Change accent color
+
+- C-c w j :: Change accent color
 
 - C-c w t :: Toggle tab bar accenting
 
