@@ -125,7 +125,7 @@ and then select any of the following keys:
 
 This command allows you to cycle between the three available accent styles:
 - =default=: Standard Emacs appearance without special accenting
-- =tiling=: Thicker fringes and mode line for a more pronounced window border
+- =tiling=: Thicker fringes, header line, and mode line for a more pronounced window border
 - =subtle=: Minimal visual change with accent color applied to fringes
 
 By default, fringes are hidden in the =default= style.  If you rely on fringe indicators (line-wrapping arrows, git-gutter, flycheck, etc.) you can set =selected-window-accent-fringe-minimum= to a positive pixel value (e.g., 8) to keep fringes visible.  The fringe background will match the buffer background so indicators blend naturally.
@@ -179,6 +179,11 @@ This toggles the "smart borders" feature, which automatically disables window ac
 
 When enabled, your accent colors only appear when you have multiple windows in a frame; when disabled, accent colors are always applied regardless of window count.
 
+** =p= - Toggle Pywal Colors
+*Command:* =selected-window-accent-toggle-pywal=
+
+This toggles whether the accent color is taken from the Pywal palette instead of the theme highlight or =selected-window-accent-custom-color=. The palette file and color are controlled by =selected-window-accent--pywal-colors-file= and =selected-window-accent-pywal-color=.
+
 * Examples
 
 ** Example 1 - Default / custom color
@@ -215,7 +220,7 @@ This will accent the modeline only for the selected window with the =goldenrod= 
   (selected-window-accent-mode-style 'tiling))
 #+end_src
 
-This will accent the full outline of the window (except the header) of the window with the color #4179b2 more akin to a tiling window manager.
+This will accent the full outline of the window with the color #4179b2 more akin to a tiling window manager.  Tiling style reserves a header line on every window so the top edge can be part of the outline, with its height derived from =selected-window-accent-fringe-thickness= and the frame's font metrics so it matches the fringe thickness in pixels; set =selected-window-accent-tiling-outline= to nil to disable the top border.
 
 ** Example 3 - Tiling / theme highlight color
 
@@ -234,7 +239,7 @@ j[[file:img/selected-window-accent-mode-03.jpg]]
   (selected-window-accent-mode-style 'tiling))
 #+end_src
 
-This will accent the full outline (except the header) of the window with the =highlight= color taken from the current theme.
+This will accent the full outline of the window with the =highlight= color taken from the current theme.
 
 ** Example 4 - Subtle / custom fringe thickness (thick)
 
@@ -422,9 +427,10 @@ size: (set-window-fringes left right) : same for all windows
 *** header-line
 
 position: top
-value: header-line-format : per-window
-face-attribute: 'header-line : all-windows
-size: face-attribute :height : all-windows
+value: header-line-format : per-window (window parameter)
+face-attribute: 'header-line-active : selected-window (Emacs 31+),
+                or a filtered 'header-line remapping on older versions
+size: every tiling window reserves a header line
 
 *** mode-line
 
@@ -447,13 +453,14 @@ walk-windows
   for each window
     update mode-line and tab-bar appearance
     give every window the same style-dependent fringe widths
+    give every tiling window a header line (preserving existing content)
     mark the selected window with a window parameter
 ensure the selected window's buffer remaps `fringe' to the accent face
 #+end_src
 
 ** Limitations
 
-As a header-line can only have a single global color it does mean that the header-line-format for each window needs to be made blank in order to preserve accent consistency, this means that modes which change the header-line, such as some modes of magit and org-sticky-header will possibly have to be sacrificed for this selected-window-accent-mode to function coherently.
+Tiling style reserves a header line on every window when =selected-window-accent-tiling-outline= is non-nil.  Windows that already display a header line keep their content; blank header lines are added to the remaining windows.  Reserving the same header line height in every window keeps buffer contents from shifting when focus moves.  Set the option to nil to keep the previous behaviour and avoid the extra header line.
 
 There is a possibility that I could add in some extra logic depending on the mode that is set, but that might be for a future version, and at this moment I'm just not sure the effort is worth it.
 
@@ -461,7 +468,7 @@ This mode does not modify window margins, so packages such as olivetti-mode and 
 
 All windows reserve the same fringe widths for the active style, and the selected window's fringes are coloured with a window-filtered =fringe= face remapping.  Keeping the widths identical is what prevents buffer contents from shifting when focus moves between windows, while non-selected windows keep their normal fringe indicators.
 
-When a buffer is split into multiple windows in tiling mode the header line is shared, thus leading to an accented header line across all splits, this is an inherent limitation of Emacs and how it processes windows / buffers.
+When a buffer is split into multiple windows, a header line defined by the buffer is shared by all those windows, but only the selected window's header line is accented.  Blank header lines reserved by this mode are per-window.
 
 Phew!, that might be it, this can get quite complicated!
 

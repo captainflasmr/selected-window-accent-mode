@@ -11,6 +11,24 @@ project's main git repository: [[https://github.com/captainflasmr/selected-windo
 
 * Versions
 
+** v2.4.0 <2026-11-09>
+
+Full window outline in tiling style
+
+Tiling style can now reserve a header line on every window so that the
+selected window is accented on all four sides.  Windows that already
+display a header line keep their content; other windows get a blank
+header line.  The header line height follows
+=selected-window-accent-fringe-thickness=, converted via the frame's
+font metrics so it matches the fringe thickness in pixels.  Emacs 31's
+=header-line-active= face is used when available, with a
+window-filtered =header-line= face remapping on older versions.  Set
+=selected-window-accent-tiling-outline= to nil to keep the previous
+behaviour.
+
+Bind =p= in =selected-window-accent-map= to toggle Pywal colors with
+=selected-window-accent-toggle-pywal=.
+
 ** v2.3.2 <2026-11-09>
 
 Prevent contents from shifting when moving between windows

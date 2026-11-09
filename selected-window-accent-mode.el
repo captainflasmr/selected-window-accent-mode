@@ -1,7 +1,7 @@
 ;;; selected-window-accent-mode.el --- Accent Selected Window -*- lexical-binding: t; -*-
 ;;
 ;; Author: James Dyer <captainflasmr@gmail.com>
-;; Version: 2.3.2
+;; Version: 2.4.0
 ;; Package-Requires: ((emacs "29.1"))
 ;; Keywords: convenience
 ;; URL: https://github.com/captainflasmr/selected-window-accent-mode
@@ -114,11 +114,24 @@ When nil, uses the current theme's highlight color."
 (defcustom selected-window-accent-mode-style 'default
   "Style for accenting the selected window.
 - `default': Standard Emacs appearance
-- `tiling': Thicker fringes and mode line
+- `tiling': Thicker fringes, header line, and mode line
 - `subtle': Minimal visual change with accent color"
   :type '(choice (const :tag "Default Style" default)
                  (const :tag "Tiling Style" tiling)
                  (const :tag "Subtle Style" subtle))
+  :set #'selected-window-accent--set-and-refresh
+  :group 'selected-window-accent)
+
+(defcustom selected-window-accent-tiling-outline t
+  "When non-nil, tiling style outlines the window with a header line.
+Every window reserves a header line so that the selected window has an
+accent on all four sides.  Windows that already display a header line
+keep their content; other windows get a blank one.  The header line
+height follows `selected-window-accent-fringe-thickness', converted to
+a face height using the frame's font metrics so it matches the fringe
+thickness in pixels.  This adds one line of vertical space to each
+window while tiling style is active."
+  :type 'boolean
   :set #'selected-window-accent--set-and-refresh
   :group 'selected-window-accent)
 
@@ -165,42 +178,128 @@ Common values: color0 through color15."
 (defvar selected-window-accent--original-fringe-fg nil
   "Storage for original fringe foreground color.")
 
+(defvar selected-window-accent--original-header-line-height nil
+  "Storage for the original `header-line' face height.
+Only used on Emacs versions without the `header-line-active' face.")
+
 (defconst selected-window-accent--fringe-window-parameter
   'selected-window-accent--accented-fringe
   "Window parameter used to mark windows with accented fringes.")
+
+(defconst selected-window-accent--header-line-window-parameter
+  'selected-window-accent--accented-header-line
+  "Window parameter used to mark the window with an accented header line.")
+
+(defconst selected-window-accent--header-line-added-parameter
+  'selected-window-accent--header-line-added
+  "Window parameter recording that a blank header line was added.")
+
+(defconst selected-window-accent--original-header-line-format-parameter
+  'selected-window-accent--original-header-line-format
+  "Window parameter storing a window's original `header-line-format'.")
 
 (defface selected-window-accent--fringe
   '((t :inherit fringe))
   "Face remapped onto `fringe' in the selected window.")
 
-(defvar-local selected-window-accent--fringe-remap-cookie nil
-  "Cookie for the buffer-local, window-filtered `fringe' remapping.")
+(defface selected-window-accent--header-line
+  '((t :inherit header-line))
+  "Face remapped onto `header-line' in the selected window.
+This is only used on Emacs versions without the
+`header-line-active' face.")
 
-(defun selected-window-accent--ensure-fringe-remapping ()
-  "Ensure the current buffer remaps `fringe' for the selected window.
-The remapping is filtered by `selected-window-accent--fringe-window-parameter',
-so it only takes effect in windows that carry that parameter."
-  (unless selected-window-accent--fringe-remap-cookie
-    (setq selected-window-accent--fringe-remap-cookie
-          (face-remap-add-relative
+(defvar-local selected-window-accent--face-remap-cookies nil
+  "Face-remapping cookies installed in this buffer by this mode.")
+
+(defun selected-window-accent--ensure-face-remappings ()
+  "Ensure the current buffer remaps faces for the selected window.
+The remappings are filtered by the mode's window parameters, so they
+only take effect in the selected window."
+  (unless selected-window-accent--face-remap-cookies
+    (push (face-remap-add-relative
            'fringe
            `(:filtered
              (:window ,selected-window-accent--fringe-window-parameter t)
-             selected-window-accent--fringe)))))
+             selected-window-accent--fringe))
+          selected-window-accent--face-remap-cookies)
+    (unless (facep 'header-line-active)
+      (push (face-remap-add-relative
+             'header-line
+             `(:filtered
+               (:window ,selected-window-accent--header-line-window-parameter t)
+               selected-window-accent--header-line))
+            selected-window-accent--face-remap-cookies))))
 
-(defun selected-window-accent--remove-fringe-remappings ()
-  "Remove all `fringe' face remappings installed by this mode."
+(defun selected-window-accent--remove-face-remappings ()
+  "Remove all face remappings installed by this mode."
   (dolist (buffer (buffer-list))
     (with-current-buffer buffer
-      (when selected-window-accent--fringe-remap-cookie
+      (dolist (cookie selected-window-accent--face-remap-cookies)
         (ignore-errors
-          (face-remap-remove-relative
-           selected-window-accent--fringe-remap-cookie))
-        (setq selected-window-accent--fringe-remap-cookie nil)))))
+          (face-remap-remove-relative cookie)))
+      (setq selected-window-accent--face-remap-cookies nil))))
+
+(defun selected-window-accent--ensure-tiling-header-line (window)
+  "Give WINDOW a header line if it lacks one, for the tiling outline.
+Existing header lines are left untouched.  A blank header line added
+here is remembered so it can be removed again."
+  (let ((added (window-parameter
+                window selected-window-accent--header-line-added-parameter))
+        (original (window-parameter
+                   window selected-window-accent--original-header-line-format-parameter))
+        (window-format (window-parameter window 'header-line-format))
+        (buffer-format (with-current-buffer (window-buffer window)
+                         header-line-format)))
+    (cond
+     ;; The buffer acquired its own header line; stop overriding it.
+     ((and added (null original) buffer-format)
+      (selected-window-accent--remove-tiling-header-line window))
+     ;; No header line at all: add a blank one.
+     ((and (not added)
+           (or (eq window-format 'none)
+               (and (null window-format) (null buffer-format))))
+      (set-window-parameter
+       window selected-window-accent--original-header-line-format-parameter
+       window-format)
+      (set-window-parameter
+       window selected-window-accent--header-line-added-parameter t)
+      (set-window-parameter window 'header-line-format " ")
+      (force-window-update window)))))
+
+(defun selected-window-accent--remove-tiling-header-line (window)
+  "Remove the blank header line added to WINDOW, if any."
+  (when (window-parameter window selected-window-accent--header-line-added-parameter)
+    (set-window-parameter
+     window 'header-line-format
+     (window-parameter
+      window selected-window-accent--original-header-line-format-parameter))
+    (set-window-parameter
+     window selected-window-accent--header-line-added-parameter nil)
+    (set-window-parameter
+     window selected-window-accent--original-header-line-format-parameter nil)
+    (force-window-update window)))
 
 (defun selected-window-accent--fringe-color (color)
   "Return COLOR if it is a color string, or `unspecified' otherwise."
   (if (stringp color) color 'unspecified))
+
+(defun selected-window-accent--pixels-to-face-height (pixels)
+  "Convert PIXELS to an absolute face :height value.
+Face heights are measured in tenths of a point, while fringe widths are
+measured in pixels.  Use the default face's font pixel height to make
+the conversion display-independent."
+  (let* ((frame (selected-frame))
+         (default-height (face-attribute 'default :height frame))
+         (font (ignore-errors (font-info (face-font 'default frame) frame)))
+         (font-pixel-height (and (vectorp font)
+                                 (> (length font) 3)
+                                 (aref font 3))))
+    (if (and (numberp default-height) (> default-height 0)
+             (numberp font-pixel-height) (> font-pixel-height 0))
+        (max 1 (round (/ (* pixels default-height 1.0)
+                         font-pixel-height)))
+      ;; Fallback for terminals and font backends without metrics.
+      (* 8 pixels))))
 
 (defun selected-window-accent--color-name-to-hex (color-name)
   "Convert COLOR-NAME to its hexadecimal representation.
@@ -293,13 +392,17 @@ FORCE-UPDATE argument is accepted for compatibility but currently unused."
                                "#888888"))
           (accent-fg-color (selected-window-accent--determine-foreground accent-bg-color))
           (smart-borders-active (and selected-window-accent-smart-borders
-                                     (not (selected-window-accent--more-than-one-window-p)))))
+                                     (not (selected-window-accent--more-than-one-window-p))))
+          (outline-active (and (eq selected-window-accent-mode-style 'tiling)
+                               selected-window-accent-tiling-outline
+                               (not smart-borders-active))))
 
     ;; Configure mode-line height based on style
     (pcase selected-window-accent-mode-style
       ('tiling
        (set-face-attribute 'mode-line-active nil
-                           :height (* 8 selected-window-accent-fringe-thickness)))
+                           :height (selected-window-accent--pixels-to-face-height
+                                    selected-window-accent-fringe-thickness)))
       ('subtle
        (set-face-attribute 'mode-line-active nil :height 'unspecified))
       ('default
@@ -335,6 +438,43 @@ FORCE-UPDATE argument is accepted for compatibility but currently unused."
                           :background accent-bg-color
                           :foreground accent-bg-color))
 
+    ;; Accent the header line of the selected window for the tiling
+    ;; outline.  Emacs 31 has per-window `header-line-active' and
+    ;; `header-line-inactive' faces; older versions use a filtered
+    ;; `header-line' remapping instead.  The height mirrors the mode line
+    ;; so the outline has a uniform thickness on all sides.
+    (let ((header-height (selected-window-accent--pixels-to-face-height
+                          selected-window-accent-fringe-thickness)))
+      (if (facep 'header-line-active)
+          (progn
+            (set-face-attribute 'header-line-active nil
+                                :background (if outline-active
+                                                accent-bg-color
+                                              'unspecified)
+                                :foreground (if outline-active
+                                                accent-fg-color
+                                              'unspecified)
+                                :height (if outline-active
+                                            header-height
+                                          'unspecified))
+            (set-face-attribute 'header-line-inactive nil
+                                :height (if outline-active
+                                            header-height
+                                          'unspecified)))
+        (when outline-active
+          (unless selected-window-accent--original-header-line-height
+            (setq selected-window-accent--original-header-line-height
+                  (face-attribute 'header-line :height)))
+          (set-face-attribute 'header-line nil :height header-height))
+        (when (and (not outline-active)
+                   selected-window-accent--original-header-line-height)
+          (set-face-attribute 'header-line nil :height
+                              selected-window-accent--original-header-line-height)
+          (setq selected-window-accent--original-header-line-height nil))
+        (set-face-attribute 'selected-window-accent--header-line nil
+                            :background accent-bg-color
+                            :foreground accent-fg-color)))
+
     ;; Configure windows.  All windows get the same fringe widths so that
     ;; moving focus never changes a window's text area (which would make
     ;; its contents shift).  The selected window is accented by remapping
@@ -344,7 +484,21 @@ FORCE-UPDATE argument is accepted for compatibility but currently unused."
        (let* ((accented (and (not smart-borders-active)
                              (memq selected-window-accent-mode-style
                                    '(tiling subtle))))
-              (is-selected (and accented (eq window (selected-window)))))
+              (is-selected (and accented (eq window (selected-window))))
+              (is-header-selected (and outline-active
+                                       (eq window (selected-window)))))
+         (unless (window-minibuffer-p window)
+           (if outline-active
+               (selected-window-accent--ensure-tiling-header-line window)
+             (selected-window-accent--remove-tiling-header-line window))
+           (unless (eq (window-parameter
+                        window selected-window-accent--header-line-window-parameter)
+                       is-header-selected)
+             (set-window-parameter
+              window selected-window-accent--header-line-window-parameter
+              (and is-header-selected t))
+             (unless (bound-and-true-p window-auto-redraw-on-parameter-change)
+               (force-window-update window))))
          (pcase selected-window-accent-mode-style
            ('tiling
             (if accented
@@ -363,7 +517,7 @@ FORCE-UPDATE argument is accepted for compatibility but currently unused."
                                 selected-window-accent-fringe-minimum 0 nil)))
          (when is-selected
            (with-current-buffer (window-buffer window)
-             (selected-window-accent--ensure-fringe-remapping)))
+             (selected-window-accent--ensure-face-remappings)))
          (unless (eq (window-parameter
                       window selected-window-accent--fringe-window-parameter)
                      is-selected)
@@ -379,9 +533,9 @@ FORCE-UPDATE argument is accepted for compatibility but currently unused."
 (defun selected-window-accent--reset ()
   "Reset window accents to defaults.
 Removes all face customizations and restores default fringe
-settings for all windows. Called when the mode is disabled."
-  ;; Remove the window-filtered fringe remappings.
-  (selected-window-accent--remove-fringe-remappings)
+settings for all windows.  Called when the mode is disabled."
+  ;; Remove the window-filtered face remappings.
+  (selected-window-accent--remove-face-remappings)
 
   ;; Restore original fringe colors
   (when selected-window-accent--original-fringe-bg
@@ -395,10 +549,21 @@ settings for all windows. Called when the mode is disabled."
 
   (set-face-attribute 'mode-line-active nil :background 'unspecified
                       :foreground 'unspecified :height 'unspecified)
+  (when (facep 'header-line-active)
+    (set-face-attribute 'header-line-active nil :background 'unspecified
+                        :foreground 'unspecified :height 'unspecified)
+    (set-face-attribute 'header-line-inactive nil :height 'unspecified))
+  (when selected-window-accent--original-header-line-height
+    (set-face-attribute 'header-line nil :height
+                        selected-window-accent--original-header-line-height)
+    (setq selected-window-accent--original-header-line-height nil))
   (set-face-attribute 'tab-bar-tab nil :background 'unspecified :foreground 'unspecified)
 
   (walk-windows
    (lambda (window)
+     (selected-window-accent--remove-tiling-header-line window)
+     (set-window-parameter
+      window selected-window-accent--header-line-window-parameter nil)
      (set-window-parameter
       window selected-window-accent--fringe-window-parameter nil)
      (force-window-update window)
@@ -460,6 +625,18 @@ Displays a confirmation message."
            (if selected-window-accent-smart-borders "enabled" "disabled"))
   (selected-window-accent nil t))
 
+(defun selected-window-accent-toggle-pywal ()
+  "Toggle the use of Pywal generated colors.
+When enabled, the accent color is taken from the Pywal palette file
+specified by `selected-window-accent--pywal-colors-file' and
+`selected-window-accent-pywal-color'.  Displays a confirmation message."
+  (interactive)
+  (setq selected-window-accent-use-pywal
+        (not selected-window-accent-use-pywal))
+  (message "Pywal colors %s"
+           (if selected-window-accent-use-pywal "enabled" "disabled"))
+  (selected-window-accent nil t))
+
 ;; Simple command map for key bindings
 (defvar selected-window-accent-map
   (let ((map (make-sparse-keymap)))
@@ -470,6 +647,7 @@ Displays a confirmation message."
     (define-key map (kbd "t") 'selected-window-accent-toggle-tab-accent)
     (define-key map (kbd "l") 'selected-window-accent-sync-tab-bar-to-theme)
     (define-key map (kbd "b") 'selected-window-accent-toggle-smart-borders)
+    (define-key map (kbd "p") 'selected-window-accent-toggle-pywal)
     map)
   "Keymap for selected-window-accent commands.")
 

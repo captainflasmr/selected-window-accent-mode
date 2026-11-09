@@ -235,12 +235,16 @@ M-x selected-window-accent-switch-style RET
 You'll be prompted to choose between:
 
 - =default= - Standard Emacs appearance
-- =tiling= - Thicker fringes and mode line
+- =tiling= - Thicker fringes, header line, and mode line
 - =subtle= - Minimal visual change with accent color
 
 In the =tiling= and =subtle= styles, every window reserves the same
 fringe widths and only the selected window's fringes are coloured.
 This keeps buffer contents from shifting when you move between windows.
+Tiling style also reserves a header line on every window so that the
+selected window is outlined on all four sides; set
+=selected-window-accent-tiling-outline= to nil to disable the top
+header line.
 
 <<Changing-Color>>
 *** 4.3 Changing Color [[#Changing-Color][¶]]
@@ -277,6 +281,8 @@ can access the following commands:
 
 - C-c w b :: Toggle smart borders
 
+- C-c w p :: Toggle Pywal colors
+
 --------------
 
 <<Command-Reference>>
@@ -303,6 +309,9 @@ Up: [[#Top][Selected Window Accent Mode]]   [[[#Index][Index]]]
 
 - =selected-window-accent-toggle-smart-borders= :: Toggle whether to use
   smart borders (don't accent single-window frames).
+
+- =selected-window-accent-toggle-pywal= :: Toggle whether to use a color
+  from the Pywal palette.
 
 - =selected-window-accent-sync-tab-bar-to-theme= :: Synchronize tab bar
   faces with the current theme.
@@ -346,6 +355,14 @@ Reference]], Up: [[#Top][Selected Window Accent Mode]]  
 
 - =selected-window-accent-mode-style= :: Style for accenting the
   selected window: 'default, 'tiling, or 'subtle.
+
+- =selected-window-accent-tiling-outline= :: When non-nil (the default),
+  tiling style reserves a header line on every window so the selected
+  window has an accent on all four sides.  Existing header lines are
+  preserved; a blank one is added where needed.  The header line height
+  is derived from =selected-window-accent-fringe-thickness= and the
+  frame's font metrics so it matches the fringe thickness in pixels.
+  Set to nil to omit the top header line.
 
 - =selected-window-accent-percentage-darken= :: Percentage to darken the
   accent color. Default is 20.
