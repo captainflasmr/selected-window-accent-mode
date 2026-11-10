@@ -1,0 +1,24 @@
+#+title: Selected Window Accent Mode
+#+subtitle: A tiling-style walkthrough
+#+options: toc:nil num:nil
+
+- The accent follows the selected window (currently showing tiling)
+
+* Three styles
+
+- *Tiling* (current): the full outline
+- *Subtle*: left fringe and mode line only
+- *Default*: no accent, minimal fringes, just modeline and tabs
+  
+* Change the thickness
+
+- Increase thickness
+- Decrease thickness
+
+* Change the colour
+
+- Pywal integration, showing the change of wallpaper
+- Toggle Pywal with =p= in the command map
+- Now set your own colour
+
+* End
