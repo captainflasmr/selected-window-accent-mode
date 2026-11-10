@@ -16,45 +16,21 @@ The Selected Window Accent Mode is an Emacs package designed to visually disting
 
 See [[file:docs/selected-window-accent-mode.org]] for the manual!
 
+* Demos
+
+#+attr_org: :width 300px
+#+attr_html: :width 100%
+[[file:demos/selected-window-accent-mode.gif]]
+
 * Whats New
 
-** v2.2.1 <2025-12-05>
+** v2.4.0 <2026-11-09>
 
-Bug fixes and improvements:
+Full window outline in tiling style
 
-- Removed obsolete transient dependency from Package-Requires
-- Added configurable Pywal color selection (=selected-window-accent-pywal-color=)
-- Added robust error handling for Pywal JSON parsing
-- Added automatic refresh on customization changes (=:set= handlers)
-- Added user feedback messages to toggle functions
-- Improved all function docstrings with detailed explanations
-- Added future Emacs 31 header-line-active/inactive face support check function
-- Fixed minor typos in customization group names
+Tiling style can now reserve a header line on every window so that the selected window is accented on all four sides.  Windows that already display a header line keep their content; other windows get a blank header line.  The header line height follows =selected-window-accent-fringe-thickness=, converted via the frame's font metrics so it matches the fringe thickness in pixels.  Emacs 31's =header-line-active= face is used when available, with a window-filtered =header-line= face remapping on older versions.  Set =selected-window-accent-tiling-outline= to nil to keep the previous behaviour.
 
-This release focuses on reliability improvements and better user experience, particularly fixing an issue where colored fringes would persist on non-selected windows in tiling mode.
-
-** v2.2.0 <2025-04-23>
-
-Added back in Pywal color support
-
-Introduce =selected-window-accent-use-pywal= option to allow the usage of a color from the Pywal generated palette.
-
-** v2.1.0 <2025-04-05>
-
-- Added texinfo manual
-
-** v2.0.0 <2025-03-04>
-
-refactored/streamlined selected-window-accent-mode
-
-- Removed dependencies on json and transient libraries
-- Replaced complex color manipulation with straightforward foreground detection
-- Removed pywal integration and background blending features
-- Eliminated header line special handling logic
-- Replaced transient UI with simple keymap for commands
-- Consolidated window handling code for cleaner implementation
-- Reduced overall codebase by ~50%
-- Maintained backward compatibility for core configuration options
+Bind =p= in =selected-window-accent-map= to toggle Pywal colors with =selected-window-accent-toggle-pywal=.  Selecting a custom accent color while Pywal is enabled now shows a minibuffer message, since the Pywal color takes precedence.  Accent fringes are forced to redraw when focus moves, so the subtle style's colour appears immediately instead of popping in a moment later.
 
 * Quick Start
 
@@ -342,6 +318,7 @@ The takes the default highlight color from the theme as before but applies light
 | selected-window-accent-mode                  | Non-nil if Selected-Window-Accent mode is enabled.                |
 | selected-window-accent-percentage-darken     | Percentage to darken the accent color.                            |
 
+
 * Commands
 
 #+BEGIN_SRC emacs-lisp :results table :colnames '("Command" "Description") :exports results
@@ -392,6 +369,7 @@ The takes the default highlight color from the theme as before but applies light
 | selected-window-accent-toggle-blend-background                | Toggle between blend background.                                                 |
 | selected-window-accent-toggle-smart-borders                   | Toggle between smart borders.                                                    |
 | selected-window-accent-toggle-complementary-color             | Toggle between complementary color for foreground based on background color.     |
+
 
 * Minor Mode
 
@@ -509,18 +487,6 @@ I of course shall keep an eye on Emacs development to see if at some time in the
 |                                                    |                                                   | [[file:README.org::*Add ChangeLog.][Add ChangeLog.]]                                     |
 |                                                    |                                                   | [[file:README.org::*isual-fill-column-mode not working again!][isual-fill-column-mode not working again!]]          |
 |                                                    |                                                   | [[file:README.org::*Improve modeline contrast between fg and bg][Improve modeline contrast between fg and bg]]        |
-#+end:
-
-* ROADMAP
-
-#+begin: kanban :layout ("..." . 100) :scope nil :range ("TODO" . "DOING") :sort "O" :depth 3 :match "roadmap" :compressed t
-| TODO                                                                                  | DOING |
-|---------------------------------------------------------------------------------------+-------|
-| [[file:README.org::*Incorporate mode-line-active and mode-line-inactive][Incorporate mode-line-active and mode-line-inactive]]                                   |       |
-| [[file:README.org::*Header-line not shown on window split][Header-line not shown on window split]]                                                 |       |
-| [[file:README.org::*Adjust the not selected-window margin to avoid little window navigation. disruption][Adjust the not selected-window margin to avoid little window navigation. disruption]]   |       |
-| [[file:README.org::*Excess selected-window disruption in header-line. (not sure I can do much about this)][Excess selected-window disruption in header-line. (not sure I can do much about this)]] |       |
-| [[file:README.org::*Add some form of unit test][Add some form of unit test]]                                                            |       |
 #+end:
 
 * ISSUES (github)                                                    :issues:

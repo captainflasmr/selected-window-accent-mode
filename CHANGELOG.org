@@ -6,8 +6,7 @@
 #+todo: TODO DOING | DONE
 #+startup: showall
 
-This document contains the release notes for each tagged commit on the
-project's main git repository: [[https://github.com/captainflasmr/selected-window-accent-mode]].
+This document contains the release notes for each tagged commit on the project's main git repository: [[https://github.com/captainflasmr/selected-window-accent-mode]].
 
 * Versions
 
@@ -15,43 +14,21 @@ project's main git repository: [[https://github.com/captainflasmr/selected-windo
 
 Full window outline in tiling style
 
-Tiling style can now reserve a header line on every window so that the
-selected window is accented on all four sides.  Windows that already
-display a header line keep their content; other windows get a blank
-header line.  The header line height follows
-=selected-window-accent-fringe-thickness=, converted via the frame's
-font metrics so it matches the fringe thickness in pixels.  Emacs 31's
-=header-line-active= face is used when available, with a
-window-filtered =header-line= face remapping on older versions.  Set
-=selected-window-accent-tiling-outline= to nil to keep the previous
-behaviour.
+Tiling style can now reserve a header line on every window so that the selected window is accented on all four sides.  Windows that already display a header line keep their content; other windows get a blank header line.  The header line height follows =selected-window-accent-fringe-thickness=, converted via the frame's font metrics so it matches the fringe thickness in pixels.  Emacs 31's =header-line-active= face is used when available, with a window-filtered =header-line= face remapping on older versions.  Set =selected-window-accent-tiling-outline= to nil to keep the previous behaviour.
 
-Bind =p= in =selected-window-accent-map= to toggle Pywal colors with
-=selected-window-accent-toggle-pywal=.  Selecting a custom accent color
-while Pywal is enabled now shows a minibuffer message, since the Pywal
-color takes precedence.  Accent fringes are forced to redraw when focus
-moves, so the subtle style's colour appears immediately instead of
-popping in a moment later.
+Bind =p= in =selected-window-accent-map= to toggle Pywal colors with =selected-window-accent-toggle-pywal=.  Selecting a custom accent color while Pywal is enabled now shows a minibuffer message, since the Pywal color takes precedence.  Accent fringes are forced to redraw when focus moves, so the subtle style's colour appears immediately instead of popping in a moment later.
 
 ** v2.3.2 <2026-11-09>
 
 Prevent contents from shifting when moving between windows
 
-In tiling and subtle styles every window now keeps the same fringe
-widths, and the selected window's accent is drawn with a
-window-filtered =fringe= face remapping.  This stops the text area from
-being resized on window focus changes, which previously nudged buffer
-contents sideways.  Fringe indicators in non-selected windows are no
-longer hidden.
+In tiling and subtle styles every window now keeps the same fringe widths, and the selected window's accent is drawn with a window-filtered =fringe= face remapping.  This stops the text area from being resized on window focus changes, which previously nudged buffer contents sideways.  Fringe indicators in non-selected windows are no longer hidden.
 
 ** v2.3.1 <2026-06-30>
 
 Stop clobbering window margins used by other packages
 
-Remove all =set-window-margins= calls so that packages relying on
-margins (e.g., simply-annotate, olivetti, visual-fill-column) are no
-longer disrupted.  The mode now only touches fringes.  This aligns the
-code with the documented design intent.
+Remove all =set-window-margins= calls so that packages relying on margins (e.g., simply-annotate, olivetti, visual-fill-column) are no longer disrupted.  The mode now only touches fringes.  This aligns the code with the documented design intent.
 
 ** v2.3.0 <2026-03-26>
 
