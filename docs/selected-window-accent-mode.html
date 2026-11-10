@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<!-- Created by GNU Texinfo 7.2, https://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 7.3, https://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Selected Window Accent Mode User Manual</title>
@@ -16,66 +16,71 @@
 <link href="#Index" rel="index" title="Index">
 <link href="#Introduction" rel="next" title="Introduction">
 <style type="text/css">
-<!--
 a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
 kbd.kbd {font-style: oblique}
 span:hover a.copiable-link {visibility: visible}
 ul.mark-bullet {list-style-type: disc}
--->
 </style>
 
 
 </head>
 
-<body lang="en">
+<body>
 
 
 
 <div class="top-level-extent" id="Top">
-<div class="nav-panel">
-<p>
-Next: <a href="#Introduction" accesskey="n" rel="next">Introduction</a> &nbsp; [<a href="#Index" title="Index" rel="index">Index</a>]</p>
-</div>
+<p class="nav-panel">
+<span class="nav-button"><span class="nav-label">Next: </span><span class="nav-link"><a href="#Introduction" rel="next">Introduction</a></span></span><span class="nav-button"> &nbsp; </span><span class="nav-button">[<a href="#Index" title="Index" rel="index">Index</a>]</span></p>
 <h1 class="top" id="Selected-Window-Accent-Mode"><span>Selected Window Accent Mode<a class="copiable-link" href="#Selected-Window-Accent-Mode"> &para;</a></span></h1>
 
-<p>The Selected Window Accent Mode is an Emacs package designed to
-visually distinguish the currently selected window by applying a
-unique accent color to its fringes, mode line, header line, and
-margins.
+<p>The Selected Window Accent Mode is an Emacs package that visually
+distinguishes the currently selected window by applying an accent color
+to its fringes, mode line, and header line.
 </p>
 
 <ul class="mini-toc">
-<li><a href="#Introduction" accesskey="1">Introduction</a></li>
-<li><a href="#Installation" accesskey="2">Installation</a></li>
-<li><a href="#Configuration" accesskey="3">Configuration</a></li>
-<li><a href="#Usage" accesskey="4">Usage</a></li>
-<li><a href="#Command-Reference" accesskey="5">Command Reference</a></li>
-<li><a href="#Customization" accesskey="6">Customization</a></li>
-<li><a href="#License" accesskey="7">License</a></li>
-<li><a href="#Index" accesskey="8">Index</a></li>
+<li><a href="#Introduction">Introduction</a></li>
+<li><a href="#Installation">Installation</a></li>
+<li><a href="#Configuration">Configuration</a></li>
+<li><a href="#Usage">Usage</a></li>
+<li><a href="#Command-Reference">Command Reference</a></li>
+<li><a href="#Customization">Customization</a></li>
+<li><a href="#License">License</a></li>
+<li><a href="#Index">Index</a></li>
 </ul>
 <hr>
 <div class="chapter-level-extent" id="Introduction">
-<div class="nav-panel">
-<p>
-Next: <a href="#Installation" accesskey="n" rel="next">Installation</a>, Previous: <a href="#Top" accesskey="p" rel="prev">Selected Window Accent Mode</a>, Up: <a href="#Top" accesskey="u" rel="up">Selected Window Accent Mode</a> &nbsp; [<a href="#Index" title="Index" rel="index">Index</a>]</p>
-</div>
+<p class="nav-panel">
+<span class="nav-button"><span class="nav-label">Next: </span><span class="nav-link"><a href="#Installation" rel="next">Installation</a></span></span>, <span class="nav-button"><span class="nav-label">Previous: </span><span class="nav-link"><a href="#Top" rel="prev">Selected Window Accent Mode</a></span></span>, <span class="nav-button"><span class="nav-label">Up: </span><span class="nav-link"><a href="#Top" rel="up">Selected Window Accent Mode</a></span></span><span class="nav-button"> &nbsp; </span><span class="nav-button">[<a href="#Index" title="Index" rel="index">Index</a>]</span></p>
 <h2 class="chapter" id="Introduction-1"><span>1 Introduction<a class="copiable-link" href="#Introduction-1"> &para;</a></span></h2>
 
 <ul class="mini-toc">
-<li><a href="#Overview" accesskey="1">Overview</a></li>
-<li><a href="#Features" accesskey="2">Features</a></li>
+<li><a href="#Overview">Overview</a></li>
+<li><a href="#Features">Features</a></li>
 </ul>
 <div class="section-level-extent" id="Overview">
 <h3 class="section"><span>1.1 Overview<a class="copiable-link" href="#Overview"> &para;</a></span></h3>
 
-<p>Selected Window Accent Mode is an Emacs package that helps you keep track of which
-window has focus by visually accenting it. It applies distinctive colors to the
-fringes, mode line, and potentially tabs of the active window.
+<p>Selected Window Accent Mode is a global minor mode that helps you keep
+track of which window has focus by visually accenting it.  It applies
+distinctive colors to the fringes, mode line, and header line of the
+selected window.
 </p>
-<p>This is particularly helpful when working with complex window layouts or when using
-themes where the distinction between active and inactive windows is subtle.
+<p>In the <code class="code">tiling</code> style the selected window is surrounded by a
+complete outline: accent-colored fringes on the left and right, an
+accented header line across the top, and an accented mode line across
+the bottom.
+</p>
+<p>The mode uses the same fringe widths on every window, so moving focus
+does not change a window&rsquo;s text area and does not shift its contents.
+It does not modify window margins, which leaves packages such as
+<code class="code">olivetti-mode</code> and <code class="code">visual-fill-column</code> free to use them.
+</p>
+<p>This is particularly helpful when working with complex window layouts or
+themes where the distinction between active and inactive windows is
+subtle.
 </p>
 </div>
 <div class="section-level-extent" id="Features">
@@ -83,26 +88,31 @@ themes where the distinction between active and inactive windows is subtle.
 
 <ul class="itemize mark-bullet">
 <li>Visually highlights the currently selected window
-</li><li>Multiple accent styles (default, tiling, subtle)
-</li><li>Customizable accent colors
+</li><li>Multiple accent styles: <code class="code">default</code>, <code class="code">tiling</code>, and <code class="code">subtle</code>
+</li><li>Full four-sided outline in <code class="code">tiling</code> style
+</li><li>Stable layout: all windows reserve the same fringe widths, so
+contents do not shift when focus moves
+</li><li>Customizable accent colors from the theme highlight, a custom
+color, or a Pywal palette
+</li><li>Optional tiling header line, preserving any header lines that
+windows already display
 </li><li>Optional tab-bar integration
 </li><li>Smart borders option for single-window frames
-</li><li>Theme integration via highlight color
 </li></ul>
 
 <hr>
 </div>
 </div>
 <div class="chapter-level-extent" id="Installation">
-<div class="nav-panel">
-<p>
-Next: <a href="#Configuration" accesskey="n" rel="next">Configuration</a>, Previous: <a href="#Introduction" accesskey="p" rel="prev">Introduction</a>, Up: <a href="#Top" accesskey="u" rel="up">Selected Window Accent Mode</a> &nbsp; [<a href="#Index" title="Index" rel="index">Index</a>]</p>
-</div>
+<p class="nav-panel">
+<span class="nav-button"><span class="nav-label">Next: </span><span class="nav-link"><a href="#Configuration" rel="next">Configuration</a></span></span>, <span class="nav-button"><span class="nav-label">Previous: </span><span class="nav-link"><a href="#Introduction" rel="prev">Introduction</a></span></span>, <span class="nav-button"><span class="nav-label">Up: </span><span class="nav-link"><a href="#Top" rel="up">Selected Window Accent Mode</a></span></span><span class="nav-button"> &nbsp; </span><span class="nav-button">[<a href="#Index" title="Index" rel="index">Index</a>]</span></p>
 <h2 class="chapter" id="Installation-1"><span>2 Installation<a class="copiable-link" href="#Installation-1"> &para;</a></span></h2>
 
+<p>Selected Window Accent Mode requires Emacs 29.1 or later.
+</p>
 <ul class="mini-toc">
-<li><a href="#Package-Repositories" accesskey="1">Package Repositories</a></li>
-<li><a href="#Manual-Installation" accesskey="2">Manual Installation</a></li>
+<li><a href="#Package-Repositories">Package Repositories</a></li>
+<li><a href="#Manual-Installation">Manual Installation</a></li>
 </ul>
 <div class="section-level-extent" id="Package-Repositories">
 <h3 class="section"><span>2.1 Package Repositories<a class="copiable-link" href="#Package-Repositories"> &para;</a></span></h3>
@@ -124,17 +134,17 @@ Next: <a href="#Configuration" accesskey="n" rel="next">Configuration</a>, Previ
 </div>
 </div>
 <div class="chapter-level-extent" id="Configuration">
-<div class="nav-panel">
-<p>
-Next: <a href="#Usage" accesskey="n" rel="next">Usage</a>, Previous: <a href="#Installation" accesskey="p" rel="prev">Installation</a>, Up: <a href="#Top" accesskey="u" rel="up">Selected Window Accent Mode</a> &nbsp; [<a href="#Index" title="Index" rel="index">Index</a>]</p>
-</div>
+<p class="nav-panel">
+<span class="nav-button"><span class="nav-label">Next: </span><span class="nav-link"><a href="#Usage" rel="next">Usage</a></span></span>, <span class="nav-button"><span class="nav-label">Previous: </span><span class="nav-link"><a href="#Installation" rel="prev">Installation</a></span></span>, <span class="nav-button"><span class="nav-label">Up: </span><span class="nav-link"><a href="#Top" rel="up">Selected Window Accent Mode</a></span></span><span class="nav-button"> &nbsp; </span><span class="nav-button">[<a href="#Index" title="Index" rel="index">Index</a>]</span></p>
 <h2 class="chapter" id="Configuration-1"><span>3 Configuration<a class="copiable-link" href="#Configuration-1"> &para;</a></span></h2>
 
 <ul class="mini-toc">
-<li><a href="#Basic-Configuration" accesskey="1">Basic Configuration</a></li>
-<li><a href="#Using-a-Custom-Color" accesskey="2">Using a Custom Color</a></li>
-<li><a href="#Tweaking-Theme-Highlight-Color" accesskey="3">Tweaking Theme Highlight Color</a></li>
-<li><a href="#Keybinding-Setup" accesskey="4">Keybinding Setup</a></li>
+<li><a href="#Basic-Configuration">Basic Configuration</a></li>
+<li><a href="#Using-a-Custom-Color">Using a Custom Color</a></li>
+<li><a href="#Tweaking-Theme-Highlight-Color">Tweaking Theme Highlight Color</a></li>
+<li><a href="#Using-Pywal">Using Pywal</a></li>
+<li><a href="#Tiling-Outline">Tiling Outline</a></li>
+<li><a href="#Keybinding-Setup">Keybinding Setup</a></li>
 </ul>
 <div class="section-level-extent" id="Basic-Configuration">
 <h3 class="section"><span>3.1 Basic Configuration<a class="copiable-link" href="#Basic-Configuration"> &para;</a></span></h3>
@@ -150,8 +160,9 @@ Next: <a href="#Usage" accesskey="n" rel="next">Usage</a>, Previous: <a href="#I
   (selected-window-accent-mode-style 'subtle))
 </pre></div>
 
-<p>This will enable the mode with a subtle style, using the current theme&rsquo;s highlight
-color for accents and setting the fringe thickness to 10 pixels.
+<p>This enables the mode with the <code class="code">subtle</code> style, using the current
+theme&rsquo;s highlight color for accents and setting the fringe thickness to
+10 pixels.
 </p>
 </div>
 <div class="section-level-extent" id="Using-a-Custom-Color">
@@ -172,6 +183,11 @@ color for accents and setting the fringe thickness to 10 pixels.
   (selected-window-accent-smart-borders t))
 </pre></div>
 
+<p>A custom color takes precedence over the theme highlight color, but a
+Pywal color takes precedence over both when
+<code class="code">selected-window-accent-use-pywal</code> is non-nil and the selected
+Pywal palette color is available.
+</p>
 </div>
 <div class="section-level-extent" id="Tweaking-Theme-Highlight-Color">
 <h3 class="section"><span>3.3 Tweaking Theme Highlight Color<a class="copiable-link" href="#Tweaking-Theme-Highlight-Color"> &para;</a></span></h3>
@@ -191,9 +207,59 @@ color for accents and setting the fringe thickness to 10 pixels.
   (selected-window-accent-smart-borders t))
 </pre></div>
 
+<p>The <code class="code">selected-window-accent-percentage-darken</code> and
+<code class="code">selected-window-accent-percentage-desaturate</code> options apply when
+no custom or Pywal color is in use.
+</p>
+</div>
+<div class="section-level-extent" id="Using-Pywal">
+<h3 class="section"><span>3.4 Using Pywal<a class="copiable-link" href="#Using-Pywal"> &para;</a></span></h3>
+
+<p>When <code class="code">selected-window-accent-use-pywal</code> is non-nil and the Pywal
+palette file <samp class="file">~/.cache/wal/colors.json</samp> provides the selected
+color, that color is used for the accent.  Use
+<code class="code">selected-window-accent-pywal-color</code> to choose the palette entry;
+it defaults to <code class="code">&quot;color1&quot;</code> and accepts entries from <code class="code">color0</code>
+through <code class="code">color15</code>.
+</p>
+<div class="example">
+<pre class="example-preformatted">(use-package selected-window-accent-mode
+  :config (selected-window-accent-mode 1)
+  :custom
+  (selected-window-accent-fringe-thickness 10)
+  (selected-window-accent-mode-style 'tiling)
+  (selected-window-accent-use-pywal t)
+  (selected-window-accent-pywal-color &quot;color5&quot;))
+</pre></div>
+
+<p>If the palette file is missing, the mode falls back to the custom color
+or the theme highlight color.  If you choose a custom accent color while
+Pywal is enabled and its palette file exists, the custom color is
+ignored and a short message is shown in the minibuffer.  Toggle Pywal
+off with the <kbd class="kbd">p</kbd> key in the command map, or with
+<code class="code">M-x selected-window-accent-toggle-pywal RET</code>.
+</p>
+</div>
+<div class="section-level-extent" id="Tiling-Outline">
+<h3 class="section"><span>3.5 Tiling Outline<a class="copiable-link" href="#Tiling-Outline"> &para;</a></span></h3>
+
+<p>In <code class="code">tiling</code> style the mode reserves a header line on every window
+so that the selected window has an accent on all four sides.  Windows
+that already display a header line keep their content; windows without
+one get a blank header line.
+</p>
+<p>The header line height follows
+<code class="code">selected-window-accent-fringe-thickness</code>, converted using the
+frame&rsquo;s font metrics so the top border matches the fringe thickness in
+pixels.  The reserved header line reduces each window&rsquo;s text area by its
+height.
+</p>
+<p>Set <code class="code">selected-window-accent-tiling-outline</code> to <code class="code">nil</code> to
+disable the top header line and keep the previous behavior.
+</p>
 </div>
 <div class="section-level-extent" id="Keybinding-Setup">
-<h3 class="section"><span>3.4 Keybinding Setup<a class="copiable-link" href="#Keybinding-Setup"> &para;</a></span></h3>
+<h3 class="section"><span>3.6 Keybinding Setup<a class="copiable-link" href="#Keybinding-Setup"> &para;</a></span></h3>
 
 <p>To set up a key binding for the command map:
 </p>
@@ -205,23 +271,27 @@ color for accents and setting the fringe thickness to 10 pixels.
 </div>
 </div>
 <div class="chapter-level-extent" id="Usage">
-<div class="nav-panel">
-<p>
-Next: <a href="#Command-Reference" accesskey="n" rel="next">Command Reference</a>, Previous: <a href="#Configuration" accesskey="p" rel="prev">Configuration</a>, Up: <a href="#Top" accesskey="u" rel="up">Selected Window Accent Mode</a> &nbsp; [<a href="#Index" title="Index" rel="index">Index</a>]</p>
-</div>
+<p class="nav-panel">
+<span class="nav-button"><span class="nav-label">Next: </span><span class="nav-link"><a href="#Command-Reference" rel="next">Command Reference</a></span></span>, <span class="nav-button"><span class="nav-label">Previous: </span><span class="nav-link"><a href="#Configuration" rel="prev">Configuration</a></span></span>, <span class="nav-button"><span class="nav-label">Up: </span><span class="nav-link"><a href="#Top" rel="up">Selected Window Accent Mode</a></span></span><span class="nav-button"> &nbsp; </span><span class="nav-button">[<a href="#Index" title="Index" rel="index">Index</a>]</span></p>
 <h2 class="chapter" id="Usage-1"><span>4 Usage<a class="copiable-link" href="#Usage-1"> &para;</a></span></h2>
 
 <ul class="mini-toc">
-<li><a href="#Basic-Usage" accesskey="1">Basic Usage</a></li>
-<li><a href="#Switching-Styles" accesskey="2">Switching Styles</a></li>
-<li><a href="#Changing-Color" accesskey="3">Changing Color</a></li>
-<li><a href="#Using-the-Command-Map" accesskey="4">Using the Command Map</a></li>
+<li><a href="#Basic-Usage">Basic Usage</a></li>
+<li><a href="#Switching-Styles">Switching Styles</a></li>
+<li><a href="#Changing-Color">Changing Color</a></li>
+<li><a href="#Toggling-Pywal">Toggling Pywal</a></li>
+<li><a href="#Using-the-Command-Map">Using the Command Map</a></li>
 </ul>
 <div class="section-level-extent" id="Basic-Usage">
 <h3 class="section"><span>4.1 Basic Usage<a class="copiable-link" href="#Basic-Usage"> &para;</a></span></h3>
 
-<p>Once enabled, the mode will automatically highlight the selected window. No further
-actions are required for basic functionality.
+<p>Once enabled, the mode automatically highlights the selected window.
+No further actions are required for basic functionality.
+</p>
+<p>The mode installs functions on
+<code class="code">window-configuration-change-hook</code> and
+<code class="code">window-state-change-hook</code>, so the accent follows window selection,
+window creation and deletion, and buffer changes.
 </p>
 </div>
 <div class="section-level-extent" id="Switching-Styles">
@@ -234,12 +304,30 @@ actions are required for basic functionality.
 </pre></div>
 
 <p>You&rsquo;ll be prompted to choose between:
-</p><ul class="itemize mark-bullet">
-<li><code class="code">default</code> - Standard Emacs appearance
-</li><li><code class="code">tiling</code> - Thicker fringes and mode line
-</li><li><code class="code">subtle</code> - Minimal visual change with accent color
+</p>
+<ul class="itemize mark-bullet">
+<li><code class="code">default</code> &mdash; standard fringe appearance (fringes use
+<code class="code">selected-window-accent-fringe-minimum</code>), with the selected
+window&rsquo;s mode line still accented.
+</li><li><code class="code">tiling</code> &mdash; a full outline: thick accent fringes on the left
+and right, an accented header line on top, and an accented mode line on
+the bottom.  The border heights follow
+<code class="code">selected-window-accent-fringe-thickness</code>.
+</li><li><code class="code">subtle</code> &mdash; a narrower accent: the left fringe and the mode
+line only.
 </li></ul>
 
+<p>In <code class="code">tiling</code> and <code class="code">subtle</code> styles, every window reserves the
+same fringe widths, and only the selected window&rsquo;s fringes are colored.
+This keeps buffer contents from shifting when focus moves between
+windows.
+</p>
+<p>Tiling style also reserves a header line on every window so the selected
+window is outlined on all four sides.  Existing header lines are
+preserved; a blank header line is added where needed.  Set
+<code class="code">selected-window-accent-tiling-outline</code> to <code class="code">nil</code> to disable
+the top header line.
+</p>
 </div>
 <div class="section-level-extent" id="Changing-Color">
 <h3 class="section"><span>4.3 Changing Color<a class="copiable-link" href="#Changing-Color"> &para;</a></span></h3>
@@ -250,18 +338,43 @@ actions are required for basic functionality.
 <pre class="example-preformatted">M-x selected-window-accent-switch-color RET
 </pre></div>
 
+<p>With the command map bound, <kbd class="kbd">RET</kbd> and <kbd class="kbd">j</kbd> both run this command.
+If Pywal is enabled and its palette file exists, the selected custom
+color is ignored and a short message is shown in the minibuffer.  Toggle
+Pywal off before choosing a custom color.
+</p>
+</div>
+<div class="section-level-extent" id="Toggling-Pywal">
+<h3 class="section"><span>4.4 Toggling Pywal<a class="copiable-link" href="#Toggling-Pywal"> &para;</a></span></h3>
+
+<p>To toggle Pywal colors:
+</p>
+<div class="example">
+<pre class="example-preformatted">M-x selected-window-accent-toggle-pywal RET
+</pre></div>
+
+<p>With the command map bound, <kbd class="kbd">p</kbd> toggles Pywal colors.  When Pywal is
+enabled and its palette file exists, the accent color comes from the
+palette instead of the custom color or theme highlight.
+</p>
 </div>
 <div class="section-level-extent" id="Using-the-Command-Map">
-<h3 class="section"><span>4.4 Using the Command Map<a class="copiable-link" href="#Using-the-Command-Map"> &para;</a></span></h3>
+<h3 class="section"><span>4.5 Using the Command Map<a class="copiable-link" href="#Using-the-Command-Map"> &para;</a></span></h3>
 
-<p>If you&rsquo;ve set up the keybinding for the command map (e.g., <code class="code">C-c w</code>), you can access
-the following commands:
+<p>If you&rsquo;ve set up the keybinding for the command map (e.g., <kbd class="kbd">C-c w</kbd>),
+you can access the following commands:
 </p>
 <dl class="table">
 <dt><kbd class="kbd">C-c w w</kbd></dt>
 <dd><p>Switch accent style
 </p></dd>
+<dt><kbd class="kbd">C-c w n</kbd></dt>
+<dd><p>Switch accent style
+</p></dd>
 <dt><kbd class="kbd">C-c w RET</kbd></dt>
+<dd><p>Change accent color
+</p></dd>
+<dt><kbd class="kbd">C-c w j</kbd></dt>
 <dd><p>Change accent color
 </p></dd>
 <dt><kbd class="kbd">C-c w t</kbd></dt>
@@ -273,97 +386,136 @@ the following commands:
 <dt><kbd class="kbd">C-c w b</kbd></dt>
 <dd><p>Toggle smart borders
 </p></dd>
+<dt><kbd class="kbd">C-c w p</kbd></dt>
+<dd><p>Toggle Pywal colors
+</p></dd>
 </dl>
 
 <hr>
 </div>
 </div>
 <div class="chapter-level-extent" id="Command-Reference">
-<div class="nav-panel">
-<p>
-Next: <a href="#Customization" accesskey="n" rel="next">Customization</a>, Previous: <a href="#Usage" accesskey="p" rel="prev">Usage</a>, Up: <a href="#Top" accesskey="u" rel="up">Selected Window Accent Mode</a> &nbsp; [<a href="#Index" title="Index" rel="index">Index</a>]</p>
-</div>
+<p class="nav-panel">
+<span class="nav-button"><span class="nav-label">Next: </span><span class="nav-link"><a href="#Customization" rel="next">Customization</a></span></span>, <span class="nav-button"><span class="nav-label">Previous: </span><span class="nav-link"><a href="#Usage" rel="prev">Usage</a></span></span>, <span class="nav-button"><span class="nav-label">Up: </span><span class="nav-link"><a href="#Top" rel="up">Selected Window Accent Mode</a></span></span><span class="nav-button"> &nbsp; </span><span class="nav-button">[<a href="#Index" title="Index" rel="index">Index</a>]</span></p>
 <h2 class="chapter" id="Command-Reference-1"><span>5 Command Reference<a class="copiable-link" href="#Command-Reference-1"> &para;</a></span></h2>
 
 <dl class="table">
 <dt><code class="code">selected-window-accent-mode</code></dt>
-<dd><p>Toggle the minor mode on or off. When enabled, the selected window will be visually
-accented.
+<dd><p>Toggle the global minor mode on or off.  When enabled, the selected
+window is visually accented.
 </p>
 </dd>
 <dt><code class="code">selected-window-accent-switch-style</code></dt>
-<dd><p>Switch between different accent styles (default, tiling, or subtle).
+<dd><p>Switch between the <code class="code">default</code>, <code class="code">tiling</code>, and <code class="code">subtle</code>
+accent styles and apply the new style immediately.
 </p>
 </dd>
 <dt><code class="code">selected-window-accent-switch-color</code></dt>
-<dd><p>Interactively choose a new accent color.
+<dd><p>Interactively choose a new custom accent color and apply it.
 </p>
 </dd>
 <dt><code class="code">selected-window-accent-toggle-tab-accent</code></dt>
-<dd><p>Toggle whether to apply the accent color to the tab bar.
+<dd><p>Toggle whether the accent color is also applied to the active tab in
+the tab bar.
 </p>
 </dd>
 <dt><code class="code">selected-window-accent-toggle-smart-borders</code></dt>
-<dd><p>Toggle whether to use smart borders (don&rsquo;t accent single-window frames).
+<dd><p>Toggle smart borders.  When enabled, fringe, header-line, and mode-line
+accenting is disabled for frames that contain only one window.
+</p>
+</dd>
+<dt><code class="code">selected-window-accent-toggle-pywal</code></dt>
+<dd><p>Toggle the use of a color from the Pywal palette.
 </p>
 </dd>
 <dt><code class="code">selected-window-accent-sync-tab-bar-to-theme</code></dt>
-<dd><p>Synchronize tab bar faces with the current theme.
+<dd><p>Synchronize the tab bar faces with the current theme, removing any
+custom accenting applied to the tab bar.
 </p></dd>
 </dl>
 
 <hr>
 </div>
 <div class="chapter-level-extent" id="Customization">
-<div class="nav-panel">
-<p>
-Next: <a href="#License" accesskey="n" rel="next">License</a>, Previous: <a href="#Command-Reference" accesskey="p" rel="prev">Command Reference</a>, Up: <a href="#Top" accesskey="u" rel="up">Selected Window Accent Mode</a> &nbsp; [<a href="#Index" title="Index" rel="index">Index</a>]</p>
-</div>
+<p class="nav-panel">
+<span class="nav-button"><span class="nav-label">Next: </span><span class="nav-link"><a href="#License" rel="next">License</a></span></span>, <span class="nav-button"><span class="nav-label">Previous: </span><span class="nav-link"><a href="#Command-Reference" rel="prev">Command Reference</a></span></span>, <span class="nav-button"><span class="nav-label">Up: </span><span class="nav-link"><a href="#Top" rel="up">Selected Window Accent Mode</a></span></span><span class="nav-button"> &nbsp; </span><span class="nav-button">[<a href="#Index" title="Index" rel="index">Index</a>]</span></p>
 <h2 class="chapter" id="Customization-1"><span>6 Customization<a class="copiable-link" href="#Customization-1"> &para;</a></span></h2>
 
 <ul class="mini-toc">
-<li><a href="#Available-Options" accesskey="1">Available Options</a></li>
-<li><a href="#Accessing-Customization-Interface" accesskey="2">Accessing Customization Interface</a></li>
+<li><a href="#Available-Options">Available Options</a></li>
+<li><a href="#Accessing-Customization-Interface">Accessing Customization Interface</a></li>
 </ul>
 <div class="section-level-extent" id="Available-Options">
 <h3 class="section"><span>6.1 Available Options<a class="copiable-link" href="#Available-Options"> &para;</a></span></h3>
 
 <dl class="table">
 <dt><code class="code">selected-window-accent-fringe-thickness</code></dt>
-<dd><p>The thickness of the accent fringes in pixels. Default is 6.
+<dd><p>The thickness of the accent fringes in pixels.  Default is 6.  In
+<code class="code">tiling</code> style this value also determines the header line and
+mode-line border heights.
 </p>
 </dd>
 <dt><code class="code">selected-window-accent-fringe-minimum</code></dt>
-<dd><p>Minimum fringe width in pixels to preserve in default style.  When set to a
-positive value (e.g., 8), fringes remain visible in default style so that fringe
-indicators such as line-wrapping arrows, git-gutter marks, and flycheck icons are
-usable.  The fringe background matches the buffer background so indicators blend
-naturally.  Default is 0 (fringes hidden in default style, matching prior
-behaviour).
+<dd><p>Minimum fringe width in pixels to preserve in <code class="code">default</code> style.
+When set to a positive value (e.g., 8), fringes remain visible in
+<code class="code">default</code> style so that fringe indicators such as line-wrapping
+arrows, git-gutter marks, and flycheck icons are usable.  The fringe
+background matches the buffer background so indicators blend
+naturally.  Default is 0 (fringes hidden in <code class="code">default</code> style).
 </p>
 </dd>
 <dt><code class="code">selected-window-accent-custom-color</code></dt>
-<dd><p>Custom accent color for the selected window. When nil, uses the current theme&rsquo;s highlight color.
+<dd><p>Custom accent color for the selected window.  When <code class="code">nil</code>, the mode
+uses the current theme&rsquo;s highlight color.  A Pywal color takes
+precedence when Pywal is enabled and the selected palette color is
+available.
 </p>
 </dd>
 <dt><code class="code">selected-window-accent-mode-style</code></dt>
-<dd><p>Style for accenting the selected window: &rsquo;default, &rsquo;tiling, or &rsquo;subtle.
+<dd><p>Style for accenting the selected window: <code class="code">default</code>,
+<code class="code">tiling</code>, or <code class="code">subtle</code>.  Default is <code class="code">default</code>.
+</p>
+</dd>
+<dt><code class="code">selected-window-accent-tiling-outline</code></dt>
+<dd><p>When non-nil (the default), <code class="code">tiling</code> style reserves a header line
+on every window so the selected window has an accent on all four sides.
+Existing header lines are preserved; a blank header line is added where
+needed.  The header line height follows
+<code class="code">selected-window-accent-fringe-thickness</code> and the frame&rsquo;s font
+metrics.  The reserved header line reduces each window&rsquo;s text area by
+its height.  Set to <code class="code">nil</code> to omit the top header line.
 </p>
 </dd>
 <dt><code class="code">selected-window-accent-percentage-darken</code></dt>
-<dd><p>Percentage to darken the accent color. Default is 20.
+<dd><p>Percentage to darken the theme&rsquo;s highlight color when no custom or
+Pywal color is used.  Default is 20.
 </p>
 </dd>
 <dt><code class="code">selected-window-accent-percentage-desaturate</code></dt>
-<dd><p>Percentage to desaturate the accent color. Default is 20.
+<dd><p>Percentage to desaturate the theme&rsquo;s highlight color when no custom or
+Pywal color is used.  Default is 20.
 </p>
 </dd>
 <dt><code class="code">selected-window-accent-tab-accent</code></dt>
-<dd><p>When non-nil, accent the selected tab in the tab-bar.
+<dd><p>When non-nil, accent the selected tab in the tab bar.
 </p>
 </dd>
 <dt><code class="code">selected-window-accent-smart-borders</code></dt>
-<dd><p>When non-nil, don&rsquo;t accent single-window frames.
+<dd><p>When non-nil, don&rsquo;t accent single-window frames.  This disables fringe,
+header-line, and mode-line accenting when the frame contains only one
+window.
+</p>
+</dd>
+<dt><code class="code">selected-window-accent-use-pywal</code></dt>
+<dd><p>When non-nil and the selected Pywal palette color is available, use a
+color from the Pywal palette instead of the custom color or theme
+highlight.  The palette is read from
+<samp class="file">~/.cache/wal/colors.json</samp>.  Default is <code class="code">nil</code>.
+</p>
+</dd>
+<dt><code class="code">selected-window-accent-pywal-color</code></dt>
+<dd><p>Which Pywal palette color to use.  The default is <code class="code">&quot;color1&quot;</code>; the
+valid entries are <code class="code">color0</code> through <code class="code">color15</code>.
 </p></dd>
 </dl>
 
@@ -371,7 +523,8 @@ behaviour).
 <div class="section-level-extent" id="Accessing-Customization-Interface">
 <h3 class="section"><span>6.2 Accessing Customization Interface<a class="copiable-link" href="#Accessing-Customization-Interface"> &para;</a></span></h3>
 
-<p>You can access all customization options through the Emacs customization interface:
+<p>You can access all customization options through the Emacs
+customization interface:
 </p>
 <div class="example">
 <pre class="example-preformatted">M-x customize-group RET selected-window-accent RET
@@ -381,21 +534,18 @@ behaviour).
 </div>
 </div>
 <div class="chapter-level-extent" id="License">
-<div class="nav-panel">
-<p>
-Next: <a href="#Index" accesskey="n" rel="next">Index</a>, Previous: <a href="#Customization" accesskey="p" rel="prev">Customization</a>, Up: <a href="#Top" accesskey="u" rel="up">Selected Window Accent Mode</a> &nbsp; [<a href="#Index" title="Index" rel="index">Index</a>]</p>
-</div>
+<p class="nav-panel">
+<span class="nav-button"><span class="nav-label">Next: </span><span class="nav-link"><a href="#Index" rel="next">Index</a></span></span>, <span class="nav-button"><span class="nav-label">Previous: </span><span class="nav-link"><a href="#Customization" rel="prev">Customization</a></span></span>, <span class="nav-button"><span class="nav-label">Up: </span><span class="nav-link"><a href="#Top" rel="up">Selected Window Accent Mode</a></span></span><span class="nav-button"> &nbsp; </span><span class="nav-button">[<a href="#Index" title="Index" rel="index">Index</a>]</span></p>
 <h2 class="chapter" id="License-1"><span>7 License<a class="copiable-link" href="#License-1"> &para;</a></span></h2>
 
-<p>Selected Window Accent Mode is licensed under the GNU General Public License version 3 or later.
+<p>Selected Window Accent Mode is licensed under the GNU General Public
+License version 3 or later.
 </p>
 <hr>
 </div>
 <div class="unnumbered-level-extent" id="Index">
-<div class="nav-panel">
-<p>
-Previous: <a href="#License" accesskey="p" rel="prev">License</a>, Up: <a href="#Top" accesskey="u" rel="up">Selected Window Accent Mode</a> &nbsp; [<a href="#Index" title="Index" rel="index">Index</a>]</p>
-</div>
+<p class="nav-panel">
+<span class="nav-button"><span class="nav-label">Previous: </span><span class="nav-link"><a href="#License" rel="prev">License</a></span></span>, <span class="nav-button"><span class="nav-label">Up: </span><span class="nav-link"><a href="#Top" rel="up">Selected Window Accent Mode</a></span></span><span class="nav-button"> &nbsp; </span><span class="nav-button">[<a href="#Index" title="Index" rel="index">Index</a>]</span></p>
 <h2 class="unnumbered" id="Index-1"><span>Index<a class="copiable-link" href="#Index-1"> &para;</a></span></h2>
 
 

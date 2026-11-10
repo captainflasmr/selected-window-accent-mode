@@ -129,8 +129,8 @@ accent on all four sides.  Windows that already display a header line
 keep their content; other windows get a blank one.  The header line
 height follows `selected-window-accent-fringe-thickness', converted to
 a face height using the frame's font metrics so it matches the fringe
-thickness in pixels.  This adds one line of vertical space to each
-window while tiling style is active."
+thickness in pixels.  The reserved header line reduces each window's
+text area by its height."
   :type 'boolean
   :set #'selected-window-accent--set-and-refresh
   :group 'selected-window-accent)

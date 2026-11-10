@@ -1,5 +1,5 @@
 This is selected-window-accent-mode.info, produced by makeinfo version
-7.2 from selected-window-accent-mode.texi.
+7.3 from selected-window-accent-mode.texi.
 
 INFO-DIR-SECTION Emacs
 START-INFO-DIR-ENTRY
@@ -12,9 +12,9 @@ File: selected-window-accent-mode.info,  Node: Top,  Next: Introduction,  Up: (d
 Selected Window Accent Mode
 ***************************
 
-The Selected Window Accent Mode is an Emacs package designed to visually
-distinguish the currently selected window by applying a unique accent
-color to its fringes, mode line, header line, and margins.
+The Selected Window Accent Mode is an Emacs package that visually
+distinguishes the currently selected window by applying an accent color
+to its fringes, mode line, and header line.
 
 * Menu:
 
@@ -36,30 +36,46 @@ File: selected-window-accent-mode.info,  Node: Introduction,  Next: Installation
 1.1 Overview
 ============
 
-Selected Window Accent Mode is an Emacs package that helps you keep
+Selected Window Accent Mode is a global minor mode that helps you keep
 track of which window has focus by visually accenting it.  It applies
-distinctive colors to the fringes, mode line, and potentially tabs of
-the active window.
+distinctive colors to the fringes, mode line, and header line of the
+selected window.
+
+   In the ‘tiling’ style the selected window is surrounded by a complete
+outline: accent-colored fringes on the left and right, an accented
+header line across the top, and an accented mode line across the bottom.
+
+   The mode uses the same fringe widths on every window, so moving focus
+does not change a window's text area and does not shift its contents.
+It does not modify window margins, which leaves packages such as
+‘olivetti-mode’ and ‘visual-fill-column’ free to use them.
 
    This is particularly helpful when working with complex window layouts
-or when using themes where the distinction between active and inactive
-windows is subtle.
+or themes where the distinction between active and inactive windows is
+subtle.
 
 1.2 Features
 ============
 
    • Visually highlights the currently selected window
-   • Multiple accent styles (default, tiling, subtle)
-   • Customizable accent colors
+   • Multiple accent styles: ‘default’, ‘tiling’, and ‘subtle’
+   • Full four-sided outline in ‘tiling’ style
+   • Stable layout: all windows reserve the same fringe widths, so
+     contents do not shift when focus moves
+   • Customizable accent colors from the theme highlight, a custom
+     color, or a Pywal palette
+   • Optional tiling header line, preserving any header lines that
+     windows already display
    • Optional tab-bar integration
    • Smart borders option for single-window frames
-   • Theme integration via highlight color
 
 
 File: selected-window-accent-mode.info,  Node: Installation,  Next: Configuration,  Prev: Introduction,  Up: Top
 
 2 Installation
 **************
+
+Selected Window Accent Mode requires Emacs 29.1 or later.
 
 2.1 Package Repositories
 ========================
@@ -92,7 +108,7 @@ Here's a simple configuration using ‘use-package’:
        (selected-window-accent-custom-color nil)
        (selected-window-accent-mode-style 'subtle))
 
-   This will enable the mode with a subtle style, using the current
+   This enables the mode with the ‘subtle’ style, using the current
 theme's highlight color for accents and setting the fringe thickness to
 10 pixels.
 
@@ -112,6 +128,11 @@ If you want to specify your own accent color:
        (selected-window-accent-tab-accent t)
        (selected-window-accent-smart-borders t))
 
+   A custom color takes precedence over the theme highlight color, but a
+Pywal color takes precedence over both when
+‘selected-window-accent-use-pywal’ is non-nil and the selected Pywal
+palette color is available.
+
 3.3 Tweaking Theme Highlight Color
 ==================================
 
@@ -128,7 +149,51 @@ You can also use the theme's highlight color but adjust it:
        (selected-window-accent-tab-accent t)
        (selected-window-accent-smart-borders t))
 
-3.4 Keybinding Setup
+   The ‘selected-window-accent-percentage-darken’ and
+‘selected-window-accent-percentage-desaturate’ options apply when no
+custom or Pywal color is in use.
+
+3.4 Using Pywal
+===============
+
+When ‘selected-window-accent-use-pywal’ is non-nil and the Pywal palette
+file ‘~/.cache/wal/colors.json’ provides the selected color, that color
+is used for the accent.  Use ‘selected-window-accent-pywal-color’ to
+choose the palette entry; it defaults to ‘"color1"’ and accepts entries
+from ‘color0’ through ‘color15’.
+
+     (use-package selected-window-accent-mode
+       :config (selected-window-accent-mode 1)
+       :custom
+       (selected-window-accent-fringe-thickness 10)
+       (selected-window-accent-mode-style 'tiling)
+       (selected-window-accent-use-pywal t)
+       (selected-window-accent-pywal-color "color5"))
+
+   If the palette file is missing, the mode falls back to the custom
+color or the theme highlight color.  If you choose a custom accent color
+while Pywal is enabled and its palette file exists, the custom color is
+ignored and a short message is shown in the minibuffer.  Toggle Pywal
+off with the ‘p’ key in the command map, or with ‘M-x
+selected-window-accent-toggle-pywal RET’.
+
+3.5 Tiling Outline
+==================
+
+In ‘tiling’ style the mode reserves a header line on every window so
+that the selected window has an accent on all four sides.  Windows that
+already display a header line keep their content; windows without one
+get a blank header line.
+
+   The header line height follows
+‘selected-window-accent-fringe-thickness’, converted using the frame's
+font metrics so the top border matches the fringe thickness in pixels.
+The reserved header line reduces each window's text area by its height.
+
+   Set ‘selected-window-accent-tiling-outline’ to ‘nil’ to disable the
+top header line and keep the previous behavior.
+
+3.6 Keybinding Setup
 ====================
 
 To set up a key binding for the command map:
@@ -144,8 +209,12 @@ File: selected-window-accent-mode.info,  Node: Usage,  Next: Command Reference, 
 4.1 Basic Usage
 ===============
 
-Once enabled, the mode will automatically highlight the selected window.
-No further actions are required for basic functionality.
+Once enabled, the mode automatically highlights the selected window.  No
+further actions are required for basic functionality.
+
+   The mode installs functions on ‘window-configuration-change-hook’ and
+‘window-state-change-hook’, so the accent follows window selection,
+window creation and deletion, and buffer changes.
 
 4.2 Switching Styles
 ====================
@@ -155,9 +224,26 @@ You can interactively switch between different accent styles using:
      M-x selected-window-accent-switch-style RET
 
    You'll be prompted to choose between:
-   • ‘default’ - Standard Emacs appearance
-   • ‘tiling’ - Thicker fringes and mode line
-   • ‘subtle’ - Minimal visual change with accent color
+
+   • ‘default’ -- standard fringe appearance (fringes use
+     ‘selected-window-accent-fringe-minimum’), with the selected
+     window's mode line still accented.
+   • ‘tiling’ -- a full outline: thick accent fringes on the left and
+     right, an accented header line on top, and an accented mode line on
+     the bottom.  The border heights follow
+     ‘selected-window-accent-fringe-thickness’.
+   • ‘subtle’ -- a narrower accent: the left fringe and the mode line
+     only.
+
+   In ‘tiling’ and ‘subtle’ styles, every window reserves the same
+fringe widths, and only the selected window's fringes are colored.  This
+keeps buffer contents from shifting when focus moves between windows.
+
+   Tiling style also reserves a header line on every window so the
+selected window is outlined on all four sides.  Existing header lines
+are preserved; a blank header line is added where needed.  Set
+‘selected-window-accent-tiling-outline’ to ‘nil’ to disable the top
+header line.
 
 4.3 Changing Color
 ==================
@@ -166,7 +252,23 @@ To interactively change the accent color:
 
      M-x selected-window-accent-switch-color RET
 
-4.4 Using the Command Map
+   With the command map bound, ‘RET’ and ‘j’ both run this command.  If
+Pywal is enabled and its palette file exists, the selected custom color
+is ignored and a short message is shown in the minibuffer.  Toggle Pywal
+off before choosing a custom color.
+
+4.4 Toggling Pywal
+==================
+
+To toggle Pywal colors:
+
+     M-x selected-window-accent-toggle-pywal RET
+
+   With the command map bound, ‘p’ toggles Pywal colors.  When Pywal is
+enabled and its palette file exists, the accent color comes from the
+palette instead of the custom color or theme highlight.
+
+4.5 Using the Command Map
 =========================
 
 If you've set up the keybinding for the command map (e.g., ‘C-c w’), you
@@ -174,7 +276,11 @@ can access the following commands:
 
 ‘C-c w w’
      Switch accent style
+‘C-c w n’
+     Switch accent style
 ‘C-c w RET’
+     Change accent color
+‘C-c w j’
      Change accent color
 ‘C-c w t’
      Toggle tab bar accenting
@@ -182,6 +288,8 @@ can access the following commands:
      Synchronize tab bar with theme
 ‘C-c w b’
      Toggle smart borders
+‘C-c w p’
+     Toggle Pywal colors
 
 
 File: selected-window-accent-mode.info,  Node: Command Reference,  Next: Customization,  Prev: Usage,  Up: Top
@@ -190,25 +298,31 @@ File: selected-window-accent-mode.info,  Node: Command Reference,  Next: Customi
 *******************
 
 ‘selected-window-accent-mode’
-     Toggle the minor mode on or off.  When enabled, the selected window
-     will be visually accented.
+     Toggle the global minor mode on or off.  When enabled, the selected
+     window is visually accented.
 
 ‘selected-window-accent-switch-style’
-     Switch between different accent styles (default, tiling, or
-     subtle).
+     Switch between the ‘default’, ‘tiling’, and ‘subtle’ accent styles
+     and apply the new style immediately.
 
 ‘selected-window-accent-switch-color’
-     Interactively choose a new accent color.
+     Interactively choose a new custom accent color and apply it.
 
 ‘selected-window-accent-toggle-tab-accent’
-     Toggle whether to apply the accent color to the tab bar.
+     Toggle whether the accent color is also applied to the active tab
+     in the tab bar.
 
 ‘selected-window-accent-toggle-smart-borders’
-     Toggle whether to use smart borders (don't accent single-window
-     frames).
+     Toggle smart borders.  When enabled, fringe, header-line, and
+     mode-line accenting is disabled for frames that contain only one
+     window.
+
+‘selected-window-accent-toggle-pywal’
+     Toggle the use of a color from the Pywal palette.
 
 ‘selected-window-accent-sync-tab-bar-to-theme’
-     Synchronize tab bar faces with the current theme.
+     Synchronize the tab bar faces with the current theme, removing any
+     custom accenting applied to the tab bar.
 
 
 File: selected-window-accent-mode.info,  Node: Customization,  Next: License,  Prev: Command Reference,  Up: Top
@@ -220,36 +334,62 @@ File: selected-window-accent-mode.info,  Node: Customization,  Next: License,  P
 =====================
 
 ‘selected-window-accent-fringe-thickness’
-     The thickness of the accent fringes in pixels.  Default is 6.
+     The thickness of the accent fringes in pixels.  Default is 6.  In
+     ‘tiling’ style this value also determines the header line and
+     mode-line border heights.
 
 ‘selected-window-accent-fringe-minimum’
-     Minimum fringe width in pixels to preserve in default style.  When
-     set to a positive value (e.g., 8), fringes remain visible in
-     default style so that fringe indicators such as line-wrapping
+     Minimum fringe width in pixels to preserve in ‘default’ style.
+     When set to a positive value (e.g., 8), fringes remain visible in
+     ‘default’ style so that fringe indicators such as line-wrapping
      arrows, git-gutter marks, and flycheck icons are usable.  The
      fringe background matches the buffer background so indicators blend
-     naturally.  Default is 0 (fringes hidden in default style, matching
-     prior behaviour).
+     naturally.  Default is 0 (fringes hidden in ‘default’ style).
 
 ‘selected-window-accent-custom-color’
-     Custom accent color for the selected window.  When nil, uses the
-     current theme's highlight color.
+     Custom accent color for the selected window.  When ‘nil’, the mode
+     uses the current theme's highlight color.  A Pywal color takes
+     precedence when Pywal is enabled and the selected palette color is
+     available.
 
 ‘selected-window-accent-mode-style’
-     Style for accenting the selected window: 'default, 'tiling, or
-     'subtle.
+     Style for accenting the selected window: ‘default’, ‘tiling’, or
+     ‘subtle’.  Default is ‘default’.
+
+‘selected-window-accent-tiling-outline’
+     When non-nil (the default), ‘tiling’ style reserves a header line
+     on every window so the selected window has an accent on all four
+     sides.  Existing header lines are preserved; a blank header line is
+     added where needed.  The header line height follows
+     ‘selected-window-accent-fringe-thickness’ and the frame's font
+     metrics.  The reserved header line reduces each window's text area
+     by its height.  Set to ‘nil’ to omit the top header line.
 
 ‘selected-window-accent-percentage-darken’
-     Percentage to darken the accent color.  Default is 20.
+     Percentage to darken the theme's highlight color when no custom or
+     Pywal color is used.  Default is 20.
 
 ‘selected-window-accent-percentage-desaturate’
-     Percentage to desaturate the accent color.  Default is 20.
+     Percentage to desaturate the theme's highlight color when no custom
+     or Pywal color is used.  Default is 20.
 
 ‘selected-window-accent-tab-accent’
-     When non-nil, accent the selected tab in the tab-bar.
+     When non-nil, accent the selected tab in the tab bar.
 
 ‘selected-window-accent-smart-borders’
-     When non-nil, don't accent single-window frames.
+     When non-nil, don't accent single-window frames.  This disables
+     fringe, header-line, and mode-line accenting when the frame
+     contains only one window.
+
+‘selected-window-accent-use-pywal’
+     When non-nil and the selected Pywal palette color is available, use
+     a color from the Pywal palette instead of the custom color or theme
+     highlight.  The palette is read from ‘~/.cache/wal/colors.json’.
+     Default is ‘nil’.
+
+‘selected-window-accent-pywal-color’
+     Which Pywal palette color to use.  The default is ‘"color1"’; the
+     valid entries are ‘color0’ through ‘color15’.
 
 6.2 Accessing Customization Interface
 =====================================
@@ -277,14 +417,14 @@ Index
 
 Tag Table:
 Node: Top281
-Node: Introduction1117
-Node: Installation1982
-Node: Configuration2499
-Node: Usage4476
-Node: Command Reference5651
-Node: Customization6508
-Node: License8217
-Node: Index8440
+Node: Introduction1097
+Node: Installation2751
+Node: Configuration3327
+Node: Usage7429
+Node: Command Reference10348
+Node: Customization11532
+Node: License14712
+Node: Index14935
 
 End Tag Table
 
